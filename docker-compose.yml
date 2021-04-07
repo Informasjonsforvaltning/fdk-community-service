@@ -1,0 +1,29 @@
+version: '3'
+services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - 4567:4567
+    depends_on:
+      - db
+    networks:
+      fdk:
+        aliases:
+          - fdk-community-service
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=nodebb
+    networks:
+      fdk:
+        aliases:
+          - db
+networks:
+  fdk:
+    name: fdk
