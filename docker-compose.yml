@@ -5,8 +5,12 @@ services:
     restart: always
     ports:
       - 4567:4567
+    environment:
+      config: config/config.json
     depends_on:
       - db
+    volumes:
+      - ./nodebb/config.json:/usr/src/app/config/config.json
     networks:
       fdk:
         aliases:
@@ -17,9 +21,10 @@ services:
     ports:
       - 27017:27017
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
-      - MONGO_INITDB_DATABASE=nodebb
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./mongo/init.js:/docker-entrypoint-initdb.d/init.js:ro
     networks:
       fdk:
         aliases:
