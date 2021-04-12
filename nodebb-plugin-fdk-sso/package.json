@@ -1,0 +1,30 @@
+{
+  "name": "nodebb-plugin-fdk-sso",
+  "version": "0.0.1",
+  "description": "NodeBB FDK Single Sign-On",
+  "main": "library.js",
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "fdk",
+    "sso",
+    "single sign on",
+    "login",
+    "registration"
+  ],
+  "author": {
+    "name": "Jeff Reiffers",
+    "email": "jeff.reiffers@digdir.no"
+  },
+  "license": "MIT",
+  "readme": "",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "keycloak-connect": "11.0.3",
+    "uuid": "^8.3.1"
+  },
+  "nbbpm": {
+    "compatibility": "^1.0.1",
+    "index": false
+  }
+}
