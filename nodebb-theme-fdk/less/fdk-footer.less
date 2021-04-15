@@ -1,0 +1,58 @@
+@import './colours.less';
+
+.fdk-footer {
+  position: relative;
+  background-color: @NEUTRAL-60;
+  color: @NEUTRAL-N0;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin-top: auto;
+
+  .footer-title > h6{
+    font-size: 16px;
+    font-weight: 600;
+    color: @NEUTRAL-N0;
+  }
+
+  .footer-illustration {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    height: 75%;
+    z-index: 0;
+  }
+
+  a {
+    color: @NEUTRAL-N0;
+    text-decoration: none;
+    border-bottom: 1px solid;
+    margin-bottom: 5px;
+  }
+}
+
+.footer-content {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  z-index: 1;
+
+  > ul {
+    list-style: none;
+
+    > li {
+      margin-bottom: 5px;
+
+      > span > .fdk-text-icon {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.footer-content::before {
+  content: none;
+}
+
+.footer-content::after {
+  content: none;
+}
