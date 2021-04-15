@@ -11,6 +11,9 @@
 		var app = {
 			user: JSON.parse('{{userJSON}}')
 		};
+    function toggleDropdown(id) {
+      document.getElementById(id).classList.toggle("show");
+    }
 	</script>
 
 	<!-- IF useCustomHTML -->
@@ -22,7 +25,7 @@
 </head>
 
 <body class="{bodyClass} skin-<!-- IF bootswatchSkin -->{bootswatchSkin}<!-- ELSE -->noskin<!-- END -->">
-  </div>
+  <!-- IMPORT fdk-header.tpl -->
   <nav id="menu" class="slideout-menu hidden">
 		<!-- IMPORT partials/slideout-menu.tpl -->
 	</nav>
