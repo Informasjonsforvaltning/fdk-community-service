@@ -3,12 +3,26 @@
 .navbar-default {
   background-color: @NEUTRAL-60;
   color: @NEUTRAL-N0;
-}
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  padding: 0;
+  border-radius: 5px;
 
-.navbar-default .navbar-nav > li > a{
-  color: @NEUTRAL-N0;
-}
+  .navbar-header > a {
+    display: none;
+  }
 
-.navbar-default .navbar-nav > li > a:hover{
-  color: @NEUTRAL-50;
+  .navbar-nav {
+    > li > a{
+      color: @NEUTRAL-N0;
+    }
+    > li > a:hover{
+      color: @NEUTRAL-50;
+    }
+  }
+
+  .navbar-right {
+    padding-right: 10px;
+  }
 }
