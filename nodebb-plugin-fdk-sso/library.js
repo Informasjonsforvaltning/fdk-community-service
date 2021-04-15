@@ -291,15 +291,10 @@
                 User.updateProfile(
                   uid,
                   {
-                    username: username,
+                    uid,
+                    username,
                     email: payload.email,
                     fullname: payload.fullname
-                  },
-                  (err, userData) => {
-                    if (err) {
-                      return callback(err);
-                    }
-                    return callback(null, userData);
                   }
                 );
               });
@@ -382,12 +377,8 @@
                 User.updateProfile(
                   uid,
                   {
+                    uid,
                     fullname: payload.fullname
-                  },
-                  (err, userData) => {
-                    if (err) {
-                      return callback(err);
-                    }
                   }
                 );
                 success(uid);
