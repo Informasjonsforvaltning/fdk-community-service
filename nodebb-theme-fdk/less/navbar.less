@@ -14,15 +14,80 @@
   }
 
   .navbar-nav {
-    > li > a{
+    > li > a, .navigation-link{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
       color: @NEUTRAL-N0;
+      width: 75px;
+
+      > .navbar-fdk-icon {
+        height: 25px;
+        width: 25px;
+      }
     }
-    > li > a:hover{
-      color: @NEUTRAL-50;
+
+    > li > a, .navigation-link {
+      background-color: transparent;
+      color: @NEUTRAL-N0;
+
+      &:hover, &:active, &:focus {
+        text-decoration: none;
+        background-color: @NEUTRAL-70;
+        color: @NEUTRAL-N0;
+      }
+    }
+
+    > .active a {
+      background-color: transparent;
+      color: @NEUTRAL-N0;
+
+      &:hover, &:active, &:focus{
+        background-color: @NEUTRAL-70;
+        color: @NEUTRAL-N0;
+      }
     }
   }
 
   .navbar-right {
     padding-right: 10px;
+    float: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
   }
+
+  .logged-out-menu > li {
+    display: flex;
+    align-items: center;
+  }
+
+  .notifications {
+    display: none;
+  }
+
+  > .container >.hidden-xs {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  i {
+    text-decoration: none;
+    font-size: 25px;
+  }
+}
+
+.menu-section {
+  img {
+    width: 25px;
+    height: 25px;
+  }
+
+  i {
+    text-decoration: none;
+    font-size: 25px;
+  }
+
 }

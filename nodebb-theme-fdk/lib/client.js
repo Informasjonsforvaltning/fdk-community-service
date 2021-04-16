@@ -1,16 +1,5 @@
-
-/*
-	Hey there!
-	This is the client file for your theme. If you need to do any client-side work in javascript,
-	this is where it needs to go.
-	You can listen for page changes by writing something like this:
-	  $(window).on('action:ajaxify.end', function(data) {
-		var	url = data.url;
-		console.log('I am now at: ' + url);
-	  });
-*/
-
 $(document).ready(function() {
+
 	$('main').on( "DOMNodeInserted", function( e ) {
 		if(window.location.pathname !== '/') {
 			let bc = $('main > div > ol.breadcrumb')[0];
@@ -23,4 +12,17 @@ $(document).ready(function() {
 			$('div.fdk-breadcrumbs').hide();
 		}
 	});
+
+	(function(history){
+    var pushState = history.pushState;
+    history.pushState = function(state) {
+			if (arguments[0].url === "") {
+				document.getElementById("fdk-splash").style.display = "";
+			} else {
+				document.getElementById("fdk-splash").style.display = "none";
+			}
+      return pushState.apply(history, arguments);
+    };
+})(window.history);
 });
+
