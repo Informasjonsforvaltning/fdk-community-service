@@ -1,7 +1,9 @@
 
 "use strict";
+const Benchpress = require('benchpressjs');
 
 var Theme = module.exports;
+
 
 Theme.defineWidgetAreas = async function(areas) {
 	return areas.concat([
@@ -27,3 +29,11 @@ Theme.defineWidgetAreas = async function(areas) {
 		}
 	]);
 };
+
+Benchpress.registerHelper('resolvePathIconSrc', (route) => {
+	var routeName = route.match(/;.*/)[0].substring(1);
+	if (["categories", "groups", "popular", "recent", "tags", "users"].includes(routeName)) {
+		return `/plugins/nodebb-theme-fdk/images/icon-community-${routeName}-md.svg`;
+	}
+	return '';
+});

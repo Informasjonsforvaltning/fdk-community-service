@@ -57,15 +57,16 @@
 
   > .fdk-dropdown-menu {
     display: none;
-    position: fixed;
+    position: absolute;
     width: 100vw;
-    height: calc(-80px + 100vh);
     top: 80px;
     list-style: none;
     left: 0;
     background-color: @NEUTRAL-N0;
     z-index: 1000;
     border-top: 1px solid @NEUTRAL-15;
+    border-bottom: 1px solid @NEUTRAL-15;
+    padding-bottom: 25px;
 
     > li {
       white-space: nowrap;

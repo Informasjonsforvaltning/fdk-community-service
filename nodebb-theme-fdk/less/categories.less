@@ -3,15 +3,33 @@
 .categories > li {
   padding: 0px;
   margin-bottom: 10px;
+  border-radius: 5px;
   background-color: @NEUTRAL-N0;
+
+  .content .icon {
+    border-radius: 0;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+  }
+
+  i {
+    display: none;
+  }
+
+  a {
+    color: @NEUTRAL-60;
+    text-decoration: underline;
+
+    &:hover {
+        color: @NEUTRAL-60;
+    }
+  }
 }
 
-.categories i {
-  color: @NEUTRAL-60;
-}
+
 
 .categories-title {
-  font-size: 48px;
+  font-size: 24px;
   font-weight: 600;
   text-transform: none;
   color: @NEUTRAL-60;
