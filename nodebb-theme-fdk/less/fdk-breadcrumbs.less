@@ -1,0 +1,17 @@
+@import './colours.less';
+
+.fdk-breadcrumbs {
+  margin: 24px 0 24px 0;
+  border-bottom: 1px solid @NEUTRAL-20;
+}
+
+.fdk-breadcrumbs-container {
+  padding-left: 0px;
+  padding-right: 0px;
+
+  .breadcrumb>li+li:before {
+    content: ">\00a0";
+  }
+}
+
+
