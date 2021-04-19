@@ -25,7 +25,6 @@
 </head>
 
 <body class="{bodyClass} skin-<!-- IF bootswatchSkin -->{bootswatchSkin}<!-- ELSE -->noskin<!-- END -->">
-  <!-- IMPORT fdk-header.tpl -->
   <nav id="menu" class="slideout-menu hidden">
 		<!-- IMPORT partials/slideout-menu.tpl -->
 	</nav>
@@ -34,6 +33,8 @@
 	</nav>
 
 	<main id="panel" class="slideout-panel">
+		<!-- IMPORT fdk-header.tpl -->
+		<!-- IMPORT fdk-breadcrumbs.tpl -->
 		<nav class="navbar navbar-default header container" id="header-menu" component="navbar">
 			<div class="container">
 				<!-- IMPORT partials/menu.tpl -->
