@@ -1,7 +1,7 @@
 <div class="fdk-header">
   <div class="fdk-container container">
     <div class="fdk-logo">
-      <a href="https://data.norge.no/">
+      <a id="fdk-logo-link" href="https://data.norge.no/">
         <img src="/plugins/nodebb-theme-fdk/images/fdk-logo-positiv.svg" alt="FDK Logo">
       </a>
     </div>
