@@ -16,8 +16,8 @@ $(document).ready(function() {
 	(function(history){
     var pushState = history.pushState;
     history.pushState = function(state) {
-			if (arguments[0].url === "") {
-				document.getElementById("fdk-splash").style.display = "";
+			if (arguments[0].url !== undefined && arguments[0].url === "") {
+				document.getElementById("fdk-splash").style.display = "inherit";
 			} else {
 				document.getElementById("fdk-splash").style.display = "none";
 			}
