@@ -11,11 +11,16 @@
 */
 
 $(document).ready(function() {
-	$('body').on( "DOMNodeInserted", function( e ) {
-		let bc = $('main > div > ol.breadcrumb')[0];
-		if(bc) {
-			$('div.fdk-breadcrumbs-container').empty();
-			$('div.fdk-breadcrumbs-container')[0].appendChild(bc);
+	$('main').on( "DOMNodeInserted", function( e ) {
+		if(window.location.pathname !== '/') {
+			let bc = $('main > div > ol.breadcrumb')[0];
+			if(bc) {
+				$('div.fdk-breadcrumbs-container').empty();
+				$('div.fdk-breadcrumbs-container')[0].appendChild(bc);
+				$('div.fdk-breadcrumbs').show();
+			}
+		} else {
+			$('div.fdk-breadcrumbs').hide();
 		}
 	});
 });
