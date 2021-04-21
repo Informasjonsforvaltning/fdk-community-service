@@ -1,5 +1,16 @@
+function getEnvironment() {
+	const host = window.location.hostname.split(".")
+
+	if (host.includes("staging") || host.includes("localhost")) {
+		return "staging";
+	} else if (host.includes("demo")) {
+		return "demo";
+	}
+	return "prod";
+}
+
 // Redirect user to register form
-const registerUser = () => {
+function registerUser() {
 	const environment = getEnvironment();
 		var href = "";
 		switch (environment) {
@@ -51,17 +62,6 @@ $(document).ready(function() {
 
 		toggleSplash(location.pathname)
 	})(window.history);
-
-	function getEnvironment() {
-		const host = window.location.hostname.split(".")
-
-		if (host.includes("staging") || host.includes("localhost")) {
-			return "staging";
-		} else if (host.includes("demo")) {
-			return "demo";
-		}
-		return "prod";
-	}
 
 	function setHomeLink() {
 		const environment = getEnvironment();
