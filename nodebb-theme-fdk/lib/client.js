@@ -4,14 +4,14 @@ const registerUser = () => {
 		var href = "";
 		switch (environment) {
 			case "demo":
-				href = 'https://user.difi.no/auth/realms/difi/protocol/openid-connect/registrations?client_id=felles-datakatalog-demo&response_type=code&scope=openid email&redirect_uri=https%3A%2F%2Fsso.demo.fellesdatakatalog.digdir.no%2Fauth%2Frealms%2Ffdk%2Fbroker%2Ffelles-datakatalog-demo%2Fendpoint';
+				href = 'https://user.difi.no/auth/realms/difi/protocol/openid-connect/registrations?client_id=felles-datakatalog-demo&response_type=code&scope=openid%20email&redirect_uri=https%3A%2F%2Fsso.demo.fellesdatakatalog.digdir.no%2Fauth%2Frealms%2Ffdk%2Fbroker%2Ffelles-datakatalog-demo%2Fendpoint';
 				break;
 			case "staging":
-				href = 'https://user.difi.no/auth/realms/difi/protocol/openid-connect/registrations?client_id=felles-datakatalog-staging&response_type=code&scope=openid email&redirect_uri=https%3A%2F%2Fsso.staging.fellesdatakatalog.digdir.no%2Fauth%2Frealms%2Ffdk%2Fbroker%2Ffelles-datakatalog-staging%2Fendpoint';
+				href = 'https://user.difi.no/auth/realms/difi/protocol/openid-connect/registrations?client_id=felles-datakatalog-staging&response_type=code&scope=openid%20email&redirect_uri=https%3A%2F%2Fsso.staging.fellesdatakatalog.digdir.no%2Fauth%2Frealms%2Ffdk%2Fbroker%2Ffelles-datakatalog-staging%2Fendpoint';
 				break;
 			case "prod":
 			default:
-				href = 'https://user.difi.no/auth/realms/difi/protocol/openid-connect/registrations?client_id=felles-datakatalog&response_type=code&scope=openid email&redirect_uri=https%3A%2F%2Fsso.fellesdatakatalog.digdir.no%2Fauth%2Frealms%2Ffdk%2Fbroker%2Ffelles-datakatalog%2Fendpoint';
+				href = 'https://user.difi.no/auth/realms/difi/protocol/openid-connect/registrations?client_id=felles-datakatalog&response_type=code&scope=openid%20email&redirect_uri=https%3A%2F%2Fsso.fellesdatakatalog.digdir.no%2Fauth%2Frealms%2Ffdk%2Fbroker%2Ffelles-datakatalog%2Fendpoint';
 				break;
 		}
 		window.location.href = href;
