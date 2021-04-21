@@ -144,14 +144,12 @@
 				</ul>
 				<!-- ELSE -->
 				<ul id="logged-out-menu" class="nav navbar-nav navbar-right">
-					<!-- IF allowRegistration -->
 					<li>
-						<a href="{relative_path}/register">
+						<a href="#" onClick="registerUser()">
 							<i class="fa fa-pencil fa-fw hidden-sm hidden-md hidden-lg"></i>
 							<span>[[global:register]]</span>
 						</a>
 					</li>
-					<!-- ENDIF allowRegistration -->
 					<li>
 						<a href="{relative_path}/login">
 							<i class="fa fa-sign-in fa-fw hidden-sm hidden-md hidden-lg"></i>
