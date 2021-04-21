@@ -68,6 +68,7 @@
 					<!-- IMPORT partials/topic/post.tpl -->
 				</li>
 			{{{end}}}
+				<!-- IMPORT partials/topic/reply-button.tpl -->
 		</ul>
 
 		<!-- IF config.enableQuickReply -->

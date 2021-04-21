@@ -16,5 +16,4 @@
 	<div class="inline-block">
 	<!-- IMPORT partials/thread_tools.tpl -->
 	</div>
-	<!-- IMPORT partials/topic/reply-button.tpl -->
 </div>
