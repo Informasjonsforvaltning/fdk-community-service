@@ -199,6 +199,21 @@
   };
 
   plugin.parseUserReturn = (userData, callback) => {
+    const hasAuthorityMatch = (authority) => {
+      const [resource, resourceId, role] = authority.split(':');
+      const authorities = userData.access_token.content.authorities?.split(',');
+      for (let i = 0; i < authorities.length; i++) {
+        const [clientResource, clientResourceId, clientRole] = authorities[i].split(':');
+        if((resource === '*' || resource === clientResource) &&
+          (resourceId === '*' || resourceId === clientResourceId) &&
+          (role === '*' || role === clientRole)) {
+            return true;
+          }
+      }
+
+      return false;
+    }
+
     const profile = {};
     for (const key in plugin.tokenMapper) {
       if (plugin.tokenMapper.hasOwnProperty(key)) {
@@ -208,12 +223,12 @@
     if (plugin.clientRoleToGroupMapper) {
       profile.joinGroups = [];
       profile.leaveGroups = [];
-      const access = userData.access_token.content.resource_access;
-      const clients = Object.keys(plugin.clientRoleToGroupMapper);
-      for (let i = 0; i < clients.length; i++) {
-        const client = clients[i];
-        if (access[client]) {
-          profile.joinGroups = profile.joinGroups.concat(access[client].roles);
+
+      const authorities = Object.keys(plugin.clientRoleToGroupMapper);
+      for (let i = 0; i < authorities.length; i++) {
+        const authority = authorities[i];
+        if (hasAuthorityMatch(authority)) {
+          profile.joinGroups = profile.joinGroups.concat(plugin.clientRoleToGroupMapper[authority]);
         }
       }
       profile.leaveGroups = plugin.allRoleGroups.filter((role) => {
@@ -234,25 +249,6 @@
       if (uid !== null) {
         async.parallel(
           [
-            (callback) => {
-              if (payload.isAdmin) {
-                Groups.join("administrators", uid, (err) => {
-                  if (err) {
-                    callback(err);
-                  }
-                  callback(null, {
-                    uid: uid,
-                  });
-                });
-              } else {
-                Groups.leave("administrators", uid, (err) => {
-                  if (err) {
-                    callback(err);
-                  }
-                  callback(null);
-                });
-              }
-            },
             (callback) => {
               if (payload.joinGroups) {
                 for (let i = 0; i < payload.joinGroups.length; i++) {
@@ -467,7 +463,7 @@
       callback(new Error("invalid keycloak configuration"));
       return;
     }
-    "id|email|isAdmin".split("|").forEach((key) => {
+    "id|email|fullname".split("|").forEach((key) => {
       if (!plugin.tokenMapper[key]) {
         formattedErrMessage = format(errorMessage, key);
         winston.error(formattedErrMessage);
@@ -480,9 +476,9 @@
         settings["client-role-to-group-mapper"]
       );
       plugin.allRoleGroups = [];
-      for (const client in plugin.clientRoleToGroupMapper) {
-        if (plugin.clientRoleToGroupMapper.hasOwnProperty(client)) {
-          const roles = plugin.clientRoleToGroupMapper[client];
+      for (const clientRole in plugin.clientRoleToGroupMapper) {
+        if (plugin.clientRoleToGroupMapper.hasOwnProperty(clientRole)) {
+          const roles = plugin.clientRoleToGroupMapper[clientRole];
           plugin.allRoleGroups = plugin.allRoleGroups.concat(roles);
         }
       }
