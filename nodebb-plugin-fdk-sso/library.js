@@ -220,10 +220,10 @@
         profile[key] = userData.id_token.content[plugin.tokenMapper[key]];
       }
     }
-    if (plugin.clientRoleToGroupMapper) {
-      profile.joinGroups = [];
-      profile.leaveGroups = [];
 
+    profile.joinGroups = ["fdk-community-users"];
+    profile.leaveGroups = [];
+    if (plugin.clientRoleToGroupMapper) {
       const authorities = Object.keys(plugin.clientRoleToGroupMapper);
       for (let i = 0; i < authorities.length; i++) {
         const authority = authorities[i];
@@ -231,10 +231,11 @@
           profile.joinGroups = profile.joinGroups.concat(plugin.clientRoleToGroupMapper[authority]);
         }
       }
-      profile.leaveGroups = plugin.allRoleGroups.filter((role) => {
-        return profile.joinGroups.indexOf(role) == -1;
-      });
     }
+    profile.leaveGroups = plugin.allRoleGroups.filter((role) => {
+      return profile.joinGroups.indexOf(role) == -1;
+    });
+
     callback(null, profile);
   };
 
