@@ -6,11 +6,11 @@
           [[fdk:footer.searchCatalogsTitle]]
         </h6>
       </li>
-      <li><a href="https://data.norge.no/search-all">[[fdk:footer.searchAllCatalogs]]</a></li>
-      <li><a href="https://data.norge.no/datasets">[[fdk:footer.searchDatasets]]</a></li>
-      <li><a href="https://data.norge.no/apis">[[fdk:footer.searchDataservices]]</a></li>
-      <li><a href="https://data.norge.no/concepts">[[fdk:footer.searchConcepts]]</a></li>
-      <li><a href="https://data.norge.no/informationmodels">[[fdk:footer.searchInformationModels]]</a></li>
+      <li><a href="/env/search-all">[[fdk:footer.searchAllCatalogs]]</a></li>
+      <li><a href="/env/datasets">[[fdk:footer.searchDatasets]]</a></li>
+      <li><a href="/env/apis">[[fdk:footer.searchDataservices]]</a></li>
+      <li><a href="/env/concepts">[[fdk:footer.searchConcepts]]</a></li>
+      <li><a href="/env/informationmodels">[[fdk:footer.searchInformationModels]]</a></li>
     </ul>
     <ul>
       <li class="footer-title">
@@ -18,12 +18,12 @@
           [[fdk:footer.aboutFdkTitle]]
         </h6>
       </li>
-      <li><a href="https://data.norge.no/guidance">[[fdk:footer.guidance]]</a></li>
-      <li><a href="https://data.norge.no/reports">[[fdk:footer.reports]]</a></li>
-      <li><a href="https://data.norge.no/organizations">[[fdk:footer.organizations]]</a></li>
-      <li><a href="https://data.norge.no/about">[[fdk:footer.aboutFDK]]</a></li>
-      <li><a href="https://data.norge.no/about-registration">[[fdk:footer.guideToRegister]]</a></li>
-      <li><a href="https://data.norge.no/news-archive">[[fdk:footer.news]]</a></li>
+      <li><a href="/env/guidance">[[fdk:footer.guidance]]</a></li>
+      <li><a href="/env/reports">[[fdk:footer.reports]]</a></li>
+      <li><a href="/env/organizations">[[fdk:footer.organizations]]</a></li>
+      <li><a href="/env/about">[[fdk:footer.aboutFDK]]</a></li>
+      <li><a href="/env/about-registration">[[fdk:footer.guideToRegister]]</a></li>
+      <li><a href="/env/news-archive">[[fdk:footer.news]]</a></li>
     </ul>
     <ul>
       <li class="footer-title">

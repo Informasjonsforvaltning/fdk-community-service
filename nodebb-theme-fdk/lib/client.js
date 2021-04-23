@@ -63,24 +63,34 @@ $(document).ready(function() {
 		toggleSplash(location.pathname)
 	})(window.history);
 
-	function setHomeLink() {
-		const environment = getEnvironment();
-		var href = "";
-		switch (environment) {
-			case "demo":
-				href = "https://demo.fellesdatakatalog.digdir.no/";
-				break;
-			case "prod":
-				href = "https://data.norge.no/";
-				break;
-			case "staging":
-			default:
-				href = "https://www.staging.fellesdatakatalog.digdir.no/";
-				break;
+	function setLinkEnvironments() {
+		var anchors = document.getElementsByTagName("a");
+
+		for (var i = 0; i < anchors.length; i++) {
+			var envIndex = anchors[i].href.indexOf("/env/");
+			if (envIndex !== -1) {
+				const environment = getEnvironment();
+				const path = anchors[i].href.substring(envIndex + "/env/".length);
+				var href = "";
+				switch (environment) {
+					case "demo":
+						href = "https://demo.fellesdatakatalog.digdir.no/" + path;
+						break;
+					case "prod":
+						href = "https://data.norge.no/" + path;
+						break;
+					case "staging":
+					default:
+						href = "https://www.staging.fellesdatakatalog.digdir.no/" + path;
+						break;
+				}
+				anchors[i].href = href
+
+			}
 		}
-		document.getElementById("fdk-logo-link").href = href;
 	}
 
-	setHomeLink();
+	setLinkEnvironments();
 });
+
 
