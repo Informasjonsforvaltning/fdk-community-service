@@ -57,19 +57,21 @@
 		<!-- IMPORT partials/topic/deleted-message.tpl -->
 		{{{ end }}}
 
-		<ul component="topic" class="posts" data-tid="{tid}" data-cid="{cid}">
-			{{{each posts}}}
-				<li component="post" class="{{{ if posts.deleted }}}deleted{{{ end }}} {{{ if posts.selfPost }}}self-post{{{ end }}} {{{ if posts.topicOwnerPost }}}topic-owner-post{{{ end }}}" <!-- IMPORT partials/data/topic.tpl -->>
-					<a component="post/anchor" data-index="{posts.index}" id="{posts.index}"></a>
+		<div class="posts">
+			<ul component="topic" data-tid="{tid}" data-cid="{cid}">
+				{{{each posts}}}
+					<li component="post" class="{{{ if posts.deleted }}}deleted{{{ end }}} {{{ if posts.selfPost }}}self-post{{{ end }}} {{{ if posts.topicOwnerPost }}}topic-owner-post{{{ end }}}" <!-- IMPORT partials/data/topic.tpl -->>
+						<a component="post/anchor" data-index="{posts.index}" id="{posts.index}"></a>
 
-					<meta itemprop="datePublished" content="{posts.timestampISO}">
-					<meta itemprop="dateModified" content="{posts.editedISO}">
+						<meta itemprop="datePublished" content="{posts.timestampISO}">
+						<meta itemprop="dateModified" content="{posts.editedISO}">
 
-					<!-- IMPORT partials/topic/post.tpl -->
-				</li>
-			{{{end}}}
-				<!-- IMPORT partials/topic/reply-button.tpl -->
-		</ul>
+						<!-- IMPORT partials/topic/post.tpl -->
+					</li>
+				{{{end}}}
+			</ul>
+			<!-- IMPORT partials/topic/reply-button.tpl -->
+		</div>
 
 		<!-- IF config.enableQuickReply -->
 		<!-- IMPORT partials/topic/quickreply.tpl -->
