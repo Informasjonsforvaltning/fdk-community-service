@@ -67,14 +67,21 @@
     align-items: center;
   }
 
-  .notifications {
-    display: none;
-  }
-
   > .container >.hidden-xs {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
+  }
+
+  .notifications {
+    height: 100%;
+
+    > a {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
   }
 
   i {
