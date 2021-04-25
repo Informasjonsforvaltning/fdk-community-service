@@ -1,13 +1,30 @@
 @import './colours.less';
 
-.btn-primary {
+a.btn-primary, .btn-primary {
   color: @NEUTRAL-N0;
   background-color: @NEUTRAL-60;
   border-color: @NEUTRAL-70;
+  border-radius: 5px;
+
+  &:visited {
+    color: @NEUTRAL-N0;
+    background-color: @NEUTRAL-60;
+    border-color: @NEUTRAL-70;
+  }
+
+  &.active, &.focus, &:active, &:focus, &:hover, .open > .dropdown-toggle.btn-primary {
+    color: @NEUTRAL-N0;
+    background-color: @NEUTRAL-70;
+    border-color: @NEUTRAL-70;
+  }
 }
 
-.btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open > .dropdown-toggle.btn-primary {
+.open > .dropdown-toggle.btn-primary {
   color: @NEUTRAL-N0;
   background-color: @NEUTRAL-70;
   border-color: @NEUTRAL-70;
+}
+
+.btn {
+  border-radius: 5px;
 }
