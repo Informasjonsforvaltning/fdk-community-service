@@ -43,10 +43,9 @@
     <div class="fdk-splash container" id="fdk-splash">
       <img src="/plugins/nodebb-theme-fdk/images/illustration-community.svg" alt="Community illustrasjon" />
       <div class="fdk-welcome">
-        <h1>Community</h1>
-        <h4>Velkommen til felles datakatalogs community! Det er en fornøyelse at du har funnet frem til oss. </h4>
-        <p>Velkommen til felles datakatalogs community! Det er en fornøyelse at du har funnet frem til oss. Her kan du stille spørsmål om alt du måtte lure på om Felles datakatalog og informasjonsforvaltning, videre kan du delta i diskusjoner, vise frem prosjektene dine, knytte nye kontakter og finne nye samarbeid for utvikling og innovasjon. Forumet er åpent for alle, men for å skrive innlegg må du først registrere deg.
-Formålet med forumet er å legge til rette for at data skal bli en verdiskapende ressurs for hele samfunnet – bli med og bidra til økt kunnskap, åpenhet og innovasjon.</p>
+        <h1>[[fdk:welcome.header]]</h1>
+        <h4>[[fdk:welcome.ingress]]</h4>
+        <p>[[fdk:welcome.paragraph]]</p>
       </div>
     </div>
 		<div class="container" id="content">

@@ -1,0 +1,39 @@
+{
+  "welcome": {
+    "header": "Community",
+    "ingress": "Velkommen til Felles datakatalogs community! Det er en fornøyelse at du har funnet frem til oss.",
+    "paragraph": "Her kan du stille spørsmål om alt du måtte lure på om Felles datakatalog og informasjonsforvaltning, videre kan du delta i diskusjoner, vise frem prosjektene dine, knytte nye kontakter og finne nye samarbeid for utvikling og innovasjon. Forumet er åpent for alle, men for å skrive innlegg må du først registrere deg. Formålet med forumet er å legge til rette for at data skal bli en verdiskapende ressurs for hele samfunnet – bli med og bidra til økt kunnskap, åpenhet og innovasjon."
+  },
+  "header": {
+    "about": "Om Felles datakatalog",
+    "organizations": "Virksomheter",
+    "reports": "Rapporter",
+    "community": "Community",
+    "publishing": "Publisere"
+  },
+  "footer": {
+    "searchCatalogsTitle": "Søk i kataloger",
+    "searchAllCatalogs": "Søk i alle kataloger",
+    "searchDatasets": "Søk i datasett",
+    "searchDataservices": "Søk i API-er",
+    "searchConcepts": "Søk i begreper",
+    "searchInformationModels": "Søk i informasjonsmodeller",
+
+    "aboutFdkTitle": "Om Felles datakatalog",
+    "guidance": "Veiledere og standarder",
+    "reports": "Rapporter",
+    "organizations": "Virksomheter",
+    "aboutFDK": "Om Felles datakatalog",
+    "guideToRegister": "Hjelp til å registrere",
+    "news": "Aktuelt",
+
+    "aboutSiteTitle": "Om nettstedet",
+    "footerText": "Digitaliseringsdirektoratet forvalter Felles datakatalog.",
+    "privacyText": "Personvernerklæring",
+    "informationCookies": "Informasjonskapsler",
+
+    "contactTitle": "Kontakt",
+    "mail": "fellesdatakatalog@digdir.no",
+    "twitter": "Felles datakatalog på Twitter"
+  }
+}
