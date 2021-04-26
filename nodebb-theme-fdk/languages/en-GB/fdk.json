@@ -1,0 +1,39 @@
+{
+  "welcome": {
+    "header": "Community",
+    "ingress": "Welcome to the Felles datakatalog community! We're happy to see you here.",
+    "paragraph": "Here, you can ask questions about anything related to Felles datakatalog and information management, participate in discussions, showcase your work, make new connections, and discover new projects for development and innovation. The community is open, but you must register a user before writing posts and creating new topics. The purpose of this community is to facilitate value creation through data for the whole of society - join and contribute to increasing knowledge, openness, and innovation."
+  },
+  "header": {
+    "about": "About",
+    "organizations": "Organizations",
+    "reports": "Reports",
+    "community": "Community",
+    "publishing": "Publish"
+  },
+  "footer": {
+    "searchCatalogsTitle": "Catalog search",
+    "searchAllCatalogs": "Search all catalogs",
+    "searchDatasets": "Search datasets",
+    "searchDataservices": "Search data services",
+    "searchConcepts": "Search concepts",
+    "searchInformationModels": "Search information models",
+
+    "aboutFdkTitle": "About Felles datakatalog",
+    "guidance": "Guides and standards",
+    "reports": "Reports",
+    "organizations": "Organizations",
+    "aboutFDK": "About Felles datakatalog",
+    "guideToRegister": "Guide to register data",
+    "news": "News",
+
+    "aboutSiteTitle": "About this site",
+    "footerText": "Felles Datakatalog is managed by the Norwegian Digitalisation Agency.",
+    "privacyText": "Privacy statement",
+    "informationCookies": "Cookies",
+
+    "contactTitle": "Contact",
+    "mail": "fellesdatakatalog@digdir.no",
+    "twitter": "Felles datakatalog on Twitter"
+  }
+}

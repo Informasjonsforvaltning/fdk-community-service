@@ -18,5 +18,7 @@
 	},
 	"staticDirs": {
 		"images": "static/images"
-	}
+	},
+	"languages": "languages",
+	"defaultLang": "nb"
 }
