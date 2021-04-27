@@ -1,6 +1,8 @@
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle pull-left" id="mobile-menu">
-					<span component="notifications/icon" class="notification-icon fa fa-fw fa-bell-o unread-count" data-content="{unreadCount.notification}"></span>
+					<span component="notifications/icon" class="fa unread-count" data-content="{unreadCount.notification}">
+						<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-community-notifications-md.svg" alt="Varslinger"/>
+					</span>
 					<i class="fa fa-lg fa-fw fa-bars"></i>
 				</button>
 				<button type="button" class="navbar-toggle hidden" id="mobile-chats">
@@ -31,7 +33,9 @@
 				<ul id="logged-in-menu" class="nav navbar-nav navbar-right">
 					<li class="notifications dropdown text-center hidden-xs" component="notifications">
 						<a href="{relative_path}/notifications" title="[[global:header.notifications]]" class="dropdown-toggle" data-toggle="dropdown" id="notif_dropdown" data-ajaxify="false" role="button">
-							<i component="notifications/icon" class="fa fa-fw fa-bell-o unread-count" data-content="{unreadCount.notification}"></i>
+							<i component="notifications/icon" class="fa unread-count" data-content="{unreadCount.notification}">
+								<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-community-notifications-md.svg" alt="Varslinger"/>
+							</i>
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="notif_dropdown">
 							<li>
