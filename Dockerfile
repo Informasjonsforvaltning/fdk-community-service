@@ -8,3 +8,5 @@ CMD node ./nodebb activate nodebb-plugin-fdk-sso ; \
     node ./nodebb reset -t nodebb-theme-fdk ; \
     node ./nodebb build ;  \
     node ./nodebb start
+
+WORKDIR config
