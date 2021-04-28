@@ -60,7 +60,7 @@
 		<div class="posts">
 			<ul component="topic" data-tid="{tid}" data-cid="{cid}">
 				{{{each posts}}}
-					<li component="post" class="{{{ if posts.deleted }}}deleted{{{ end }}} {{{ if posts.selfPost }}}self-post{{{ end }}} {{{ if posts.topicOwnerPost }}}topic-owner-post{{{ end }}}" <!-- IMPORT partials/data/topic.tpl -->>
+					<li component="post" class="post {{{if !posts.toPid }}} {{{ if !posts.index }}}first-post{{{ end }}} {{{end}}} {{{ if posts.deleted }}}deleted{{{ end }}} {{{ if posts.selfPost }}}self-post{{{ end }}} {{{ if posts.topicOwnerPost }}}topic-owner-post{{{ end }}}" <!-- IMPORT partials/data/topic.tpl -->>
 						<a component="post/anchor" data-index="{posts.index}" id="{posts.index}"></a>
 
 						<meta itemprop="datePublished" content="{posts.timestampISO}">
