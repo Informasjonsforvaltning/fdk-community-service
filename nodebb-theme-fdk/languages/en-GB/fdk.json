@@ -35,5 +35,8 @@
     "contactTitle": "Contact",
     "mail": "fellesdatakatalog@digdir.no",
     "twitter": "Felles datakatalog on Twitter"
+  },
+  "post": {
+    "reply": "Reply to"
   }
 }
