@@ -149,15 +149,9 @@
 				<!-- ELSE -->
 				<ul id="logged-out-menu" class="nav navbar-nav navbar-right">
 					<li>
-						<a href="#" onClick="registerUser()">
-							<i class="fa fa-pencil fa-fw hidden-sm hidden-md hidden-lg"></i>
-							<span>[[global:register]]</span>
-						</a>
-					</li>
-					<li>
-						<a href="{relative_path}/login">
-							<i class="fa fa-sign-in fa-fw hidden-sm hidden-md hidden-lg"></i>
-							<span>[[global:login]]</span>
+						<a href="{relative_path}/login" class="login-link">
+							<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-community-login-md.svg" alt="Varslinger"/>
+							<span>[[fdk:navbar.login]]</span>
 						</a>
 					</li>
 				</ul>
@@ -217,7 +211,7 @@
 					<li>
 						<a href="{relative_path}/login">
 							<i class="fa fa-sign-in fa-fw hidden-sm hidden-md hidden-lg"></i>
-							<span>[[global:login]]</span>
+							<span>[[fdk:navbar.login]]</span>
 						</a>
 					</li>
 				</ul>

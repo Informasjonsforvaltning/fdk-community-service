@@ -38,5 +38,8 @@
   },
   "post": {
     "reply": "Reply to"
+  },
+  "navbar": {
+    "login": "Log in/ Register"
   }
 }
