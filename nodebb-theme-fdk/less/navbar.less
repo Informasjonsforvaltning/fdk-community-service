@@ -82,6 +82,12 @@
     justify-content: space-between;
   }
 
+  .fa-bell-o, .fa-bell {
+    &::before {
+      content: none;
+    }
+  }
+
   .notifications {
     height: 100%;
 
@@ -91,14 +97,7 @@
       flex-direction: column;
       justify-content: center;
     }
-
-    .fa-bell-o, .fa-bell {
-      &::before {
-        content: none;
-      }
-    }
   }
-
 
   i {
     text-decoration: none;
