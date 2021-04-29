@@ -38,5 +38,8 @@
   },
   "post": {
     "reply": "Svar til"
+  },
+  "navbar": {
+    "login": "Logg inn / Registrer"
   }
 }
