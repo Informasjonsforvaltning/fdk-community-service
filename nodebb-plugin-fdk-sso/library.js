@@ -241,17 +241,21 @@
 
   plugin.login = (payload, callback) => {
 
-    const username = payload.email.replace(/@.*/, '');
     plugin.getUidByOAuthid(payload.id, (err, uid) => {
       if (err) {
         callback(err);
         return;
       }
       if (uid !== null) {
+        winston.info(
+          `[fdk-sso] Updating existing user with uid:${uid}`
+        );
+
         async.parallel(
           [
-            (callback) => {
+            (cb) => {
               if (payload.joinGroups) {
+                winston.info(`[fdk-sso] join groups for uid:${uid}`);
                 for (let i = 0; i < payload.joinGroups.length; i++) {
                   const group = payload.joinGroups[i];
                   Groups.join(group, uid, (err) => {
@@ -264,6 +268,7 @@
                 }
               }
               if (payload.leaveGroups) {
+                winston.info(`[fdk-sso] leave groups for uid:${uid}`);
                 for (let i = 0; i < payload.leaveGroups.length; i++) {
                   const group = payload.leaveGroups[i];
                   Groups.leave(group, uid, (err) => {
@@ -275,29 +280,23 @@
                   });
                 }
               }
-              callback(null);
+              cb(null);
             },
-            (callback) => {
-              User.getUserField(uid, "username", (err, oldUsername) => {
-                if (err) {
-                  return callback(err);
-                }
-                if (oldUsername === username) {
-                  return callback(null, "Username not changed");
-                }
-                User.updateProfile(
+            (cb) => {
+              winston.info(`[fdk-sso] update profile for uid:${uid}`);
+              User.updateProfile(
+                uid,
+                {
                   uid,
-                  {
-                    uid,
-                    username,
-                    email: payload.email,
-                    fullname: payload.fullname
-                  }
-                );
-              });
+                  email: payload.email,
+                  fullname: payload.fullname
+                }
+              );
+              cb(null);
+              winston.info(`[fdk-sso] profile updated for uid:${uid}`);
             },
           ],
-          (err, result) => {
+          (err) => {
             if (err) {
               return winston.error(`[fdk-sso] ${err}`);
             }
@@ -306,87 +305,85 @@
         );
       } else {
         // New User
-        const success = (uid) => {
-          // Save provider-specific information to the user
-          User.setUserField(uid, plugin.name + "Id", payload.id);
-          db.setObjectField(plugin.name + "Id:uid", payload.id, uid);
-
-          if (
-            payload.hasOwnProperty("facebook_id") &&
-            typeof payload["facebook_id"] !== "undefined"
-          ) {
-            payload.picture =
-              "https://graph.facebook.com/v2.8/" +
-              payload["facebook_id"] +
-              "/picture?type=large";
-          }
-
-          if (payload.picture) {
-            User.setUserField(uid, "uploadedpicture", payload.picture);
-            User.setUserField(uid, "picture", payload.picture);
-          }
-
-          if (payload.joinGroups) {
-            for (let i = 0; i < payload.joinGroups.length; i++) {
-              const group = payload.joinGroups[i];
-              Groups.join(group, uid, (err) => {
-                if (err) {
-                  winston.info(
-                    `[fdk-sso] uid:${uid} unable to join ${group} on login. err: ${err}`
-                  );
-                }
-              });
-            }
-          }
-          if (payload.leaveGroups) {
-            for (let i = 0; i < payload.leaveGroups.length; i++) {
-              const group = payload.leaveGroups[i];
-              Groups.leave(group, uid, (err) => {
-                if (err) {
-                  winston.info(
-                    `[fdk-sso] uid:${uid} unable to leave ${group} on login. err: ${err}`
-                  );
-                }
-              });
-            }
-          }
-          callback(null, { uid: uid });
-        };
-
-        User.getUidByEmail(payload.email, (err, uid) => {
-          if (err) {
-            callback(err);
-            return;
-          }
-
-          if (!uid) {
-            User.create(
-              {
-                username: username,
-                email: payload.email
-              },
-              (err, uid) => {
-                if (err) {
-                  callback(err);
-                  return;
-                }
-
-                User.updateProfile(
-                  uid,
-                  {
-                    uid,
-                    fullname: payload.fullname
-                  }
-                );
-                success(uid);
-              }
-            );
-          } else {
-            success(uid); // Existing account -- merge
-          }
-        });
+        winston.info("[fdk-sso] create user");
+        plugin.createUser(payload, callback);
       }
     });
+  };
+
+  plugin.createUser = async (payload, callback) => {
+    const success = (uid) => {
+      // Save provider-specific information to the user
+      User.setUserField(uid, plugin.name + "Id", payload.id);
+      db.setObjectField(plugin.name + "Id:uid", payload.id, uid);
+
+      if (
+        payload.hasOwnProperty("facebook_id") &&
+        typeof payload["facebook_id"] !== "undefined"
+      ) {
+        payload.picture =
+          "https://graph.facebook.com/v2.8/" +
+          payload["facebook_id"] +
+          "/picture?type=large";
+      }
+
+      if (payload.picture) {
+        User.setUserField(uid, "uploadedpicture", payload.picture);
+        User.setUserField(uid, "picture", payload.picture);
+      }
+
+      if (payload.joinGroups) {
+        for (let i = 0; i < payload.joinGroups.length; i++) {
+          const group = payload.joinGroups[i];
+          Groups.join(group, uid, (err) => {
+            if (err) {
+              winston.info(
+                `[fdk-sso] uid:${uid} unable to join ${group} on login. err: ${err}`
+              );
+            }
+          });
+        }
+      }
+      if (payload.leaveGroups) {
+        for (let i = 0; i < payload.leaveGroups.length; i++) {
+          const group = payload.leaveGroups[i];
+          Groups.leave(group, uid, (err) => {
+            if (err) {
+              winston.info(
+                `[fdk-sso] uid:${uid} unable to leave ${group} on login. err: ${err}`
+              );
+            }
+          });
+        }
+      }
+      callback(null, { uid: uid });
+    };
+
+    const { email, fullname } = payload;
+
+    try {
+      let uid = await User.getUidByEmail(email);
+      if (!uid) {
+        let username = email.replace(/@.*/, '');
+        let existingUid;
+        let counter = 0;
+        do {
+          username = counter > 0 ? `${username}-${counter}` : username;
+          existingUid = await User.getUidByUsername(username);
+          counter++;
+        } while (existingUid);
+
+        uid = await User.create({ username, email });
+
+        User.updateProfile(uid, { uid, fullname });
+        success(uid);
+      } else {
+        success(uid); // Existing account -- merge
+      }
+    } catch(err) {
+      callback(err);
+      return;
+    }
   };
 
   plugin.getUidByOAuthid = (keycloakId, callback) => {
