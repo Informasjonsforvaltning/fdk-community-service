@@ -41,5 +41,10 @@
   },
   "navbar": {
     "login": "Log in/ Register"
+  },
+  "user": {
+    "edit": {
+      "jobDescription" : "Your business / occupation"
+    }
   }
 }
