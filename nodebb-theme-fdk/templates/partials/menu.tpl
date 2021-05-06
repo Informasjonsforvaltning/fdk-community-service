@@ -36,6 +36,7 @@
 							<i component="notifications/icon" class="fa unread-count" data-content="{unreadCount.notification}">
 								<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-community-notifications-md.svg" alt="Varslinger"/>
 							</i>
+							<span class="navbar-button-title">[[global:header.notifications]]</span>
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="notif_dropdown">
 							<li>
