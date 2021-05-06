@@ -41,5 +41,10 @@
   },
   "navbar": {
     "login": "Logg inn / Registrer"
+  },
+  "user": {
+    "edit": {
+      "jobDescription" : "Din virksomhet / stillingstittel"
+    }
   }
 }
