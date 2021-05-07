@@ -110,10 +110,12 @@
           display: none;
         }
 
-        &[component="post"].highlight:not(.first-post) {
+        &[component="post"].highlight {
           border-color: transparent;
           box-shadow: none;
-          background-color: @NEUTRAL-30;
+          &:not(.first-post){
+            background-color: @NEUTRAL-30;
+          }
         }
       }
 

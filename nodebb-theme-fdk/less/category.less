@@ -40,7 +40,7 @@
   }
 }
 
-.topic-list > li {
+.topic-list > li.category-item {
   display: flex;
   justify-content: space-between;
   padding: 0px;
@@ -94,5 +94,9 @@
         background-color: @NEUTRAL-70;
       }
     }
+  }
+
+  &.highlight {
+    background-color: @NEUTRAL-30;
   }
 }
