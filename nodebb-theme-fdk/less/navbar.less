@@ -4,7 +4,6 @@
   background-color: @NEUTRAL-60;
   color: @NEUTRAL-N0;
   display: flex;
-  flex-direction: row-reverse;
   justify-content: space-between;
   padding: 0;
   border-radius: 5px;
@@ -18,6 +17,8 @@
   }
 
   .navbar-nav {
+    display: flex;
+
     > .open > a {
       background-color: @NEUTRAL-70;
 
@@ -39,6 +40,10 @@
       text-decoration: none;
       color: @NEUTRAL-N0;
       width: 75px;
+
+      @media (max-width: 992px) {
+        width: 70px;
+      }
     }
 
     > li > a, .navigation-link {
@@ -75,14 +80,23 @@
     align-items: center;
   }
 
-  .logged-out-menu > li {
+  .logged-out-menu, .logged-in-menu{
     display: flex;
-    align-items: center;
+    flex: 1 1 auto;
+    justify-content: end;
+    min-width: 200px;
+
+    &::before,::after {
+      content: none !important;
+    }
+
+    & > li {
+      display: flex;
+    }
   }
 
   > .container >.hidden-xs {
     display: flex;
-    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
   }
@@ -112,6 +126,67 @@
   .fa-bell-o, .fa-bell {
     &::before {
       content: none !important;
+    }
+  }
+
+  .fdk-search {
+    justify-content: end;
+    flex: 1 1 auto;
+    min-width: 50px;
+
+    > form {
+      flex: 1 1 auto;
+      min-width: 50px;
+      @media (max-width: 992px) {
+        flex: 0 1 auto;
+      }
+    }
+
+    .fdk-search-fields {
+      display: flex;
+      flex: 1 1 auto;
+      min-width: 50px;
+
+      > button.btn-default {
+        border-radius: 0px 5px 5px 0px;
+
+        @media (max-width: 992px) {
+          border-radius: 5px;
+        }
+      }
+
+      > .form-group {
+        display: flex;
+        flex: 1 1 auto;
+        align-items: center;
+        border: 1px solid white;
+        border-right: none;
+        border-radius: 5px 0px 0px 5px;
+        min-width: 100px;
+
+        @media (max-width: 992px) {
+          display: none;
+        }
+
+        > a {
+          margin-right: 5px;
+          margin-left: 5px;
+        }
+
+        > input {
+          flex: 1 1 auto;
+          background-color: transparent;
+          border: none;
+          outline: none;
+          color: white;
+          color: @NEUTRAL-N0;
+          min-width: 100px;
+
+          &:focus {
+            box-shadow: none;
+          }
+        }
+      }
     }
   }
 }
