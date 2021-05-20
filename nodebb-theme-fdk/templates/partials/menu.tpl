@@ -27,10 +27,69 @@
 			</div>
 
 			<div id="nav-dropdown" class="hidden-xs">
+
 				<!-- IF !maintenanceHeader -->
+				<ul id="main-nav" class="nav navbar-nav">
+					{{{each navigation}}}
+					<!-- IF function.displayMenuItem, @index -->
+					<li class="{navigation.class}">
+						<a class="navigation-link" href="{navigation.route}" title="{navigation.title}" <!-- IF navigation.id -->id="{navigation.id}"<!-- ENDIF navigation.id --><!-- IF navigation.properties.targetBlank --> target="_blank"<!-- ENDIF navigation.properties.targetBlank -->>
+                            <!-- IF resolvePathIconSrc(navigation.route) -->
+                            <img class="navbar-fdk-icon" src="{resolvePathIconSrc(navigation.route)}" />
+                            <!-- ELSE -->
+                            <i class='fa fa-fw {navigation.iconClass}' data-content='{navigation.content}'></i>
+                            <!-- END -->
+                            <!-- IF navigation.text -->
+                            <span class="navbar-button-title">{navigation.text}</span>
+                            <!-- ENDIF navigation.text -->
+						</a>
+					</li>
+					<!-- ENDIF function.displayMenuItem -->
+					{{{end}}}
+				</ul>
+
+				<!-- ELSE -->
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="{relative_path}/login">
+							<i class="fa fa-sign-in fa-fw hidden-sm hidden-md hidden-lg"></i>
+							<span>[[fdk:navbar.login]]</span>
+						</a>
+					</li>
+				</ul>
+				<!-- ENDIF !maintenanceHeader -->
 				<!-- IF config.loggedIn -->
 
-				<ul id="logged-in-menu" class="nav navbar-nav navbar-right">
+				<ul id="logged-in-menu" class="nav navbar-nav navbar-right logged-in-menu">
+				<!-- IF config.searchEnabled -->
+					<li class="fdk-search">
+						<form id="search-form" class="navbar-form navbar-right hidden-xs" role="search" method="GET">
+							<div id="fdk-search-fields" class="fdk-search-fields">
+								<div class="form-group">
+									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="query" value="">
+									<a href="/search">
+										<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-settings-md.svg" alt="Lenkeikon"/>
+									</a>
+								</div>
+								<button type="submit" class="btn btn-default">[[global:search]]</button>
+							</div>
+						</form>
+						<div id="quick-search-container" class="quick-search-container hidden">
+							<div class="checkbox filter-category">
+								<label>
+									<input type="checkbox" checked><span class="name"></span>
+								</label>
+							</div>
+							<div class="text-center loading-indicator"><i class="fa fa-spinner fa-spin"></i></div>
+							<div class="quick-search-results-container"></div>
+						</div>
+					</li>
+					<li class="visible-xs" id="search-menu">
+						<a href="{relative_path}/search">
+							<i class="fa fa-search fa-fw"></i> [[global:search]]
+						</a>
+					</li>
+				<!-- ENDIF config.searchEnabled -->
 					<li class="notifications dropdown text-center hidden-xs" component="notifications">
 						<a href="{relative_path}/notifications" title="[[global:header.notifications]]" class="dropdown-toggle" data-toggle="dropdown" id="notif_dropdown" data-ajaxify="false" role="button">
 							<i component="notifications/icon" class="fa unread-count" data-content="{unreadCount.notification}">
@@ -157,64 +216,4 @@
 					</li>
 				</ul>
 				<!-- ENDIF config.loggedIn -->
-				<!-- IF config.searchEnabled -->
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<form id="search-form" class="navbar-form navbar-right hidden-xs" role="search" method="GET">
-							<button id="search-button" type="button" class="btn btn-link"><i class="fa fa-search fa-fw" title="[[global:header.search]]"></i></button>
-							<div class="hidden" id="search-fields">
-								<div class="form-group">
-									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="query" value="">
-									<a href="#"><i class="fa fa-gears fa-fw advanced-search-link"></i></a>
-								</div>
-								<button type="submit" class="btn btn-default hide">[[global:search]]</button>
-							</div>
-						</form>
-						<div id="quick-search-container" class="quick-search-container hidden">
-							<div class="checkbox filter-category">
-								<label>
-									<input type="checkbox" checked><span class="name"></span>
-								</label>
-							</div>
-							<div class="text-center loading-indicator"><i class="fa fa-spinner fa-spin"></i></div>
-							<div class="quick-search-results-container"></div>
-						</div>
-					</li>
-					<li class="visible-xs" id="search-menu">
-						<a href="{relative_path}/search">
-							<i class="fa fa-search fa-fw"></i> [[global:search]]
-						</a>
-					</li>
-				</ul>
-				<!-- ENDIF config.searchEnabled -->
-
-				<ul id="main-nav" class="nav navbar-nav">
-					{{{each navigation}}}
-					<!-- IF function.displayMenuItem, @index -->
-					<li class="{navigation.class}">
-						<a class="navigation-link" href="{navigation.route}" title="{navigation.title}" <!-- IF navigation.id -->id="{navigation.id}"<!-- ENDIF navigation.id --><!-- IF navigation.properties.targetBlank --> target="_blank"<!-- ENDIF navigation.properties.targetBlank -->>
-                            <!-- IF resolvePathIconSrc(navigation.route) -->
-                            <img class="navbar-fdk-icon" src="{resolvePathIconSrc(navigation.route)}" />
-                            <!-- ELSE -->
-                            <i class='fa fa-fw {navigation.iconClass}' data-content='{navigation.content}'></i>
-                            <!-- END -->
-                            <!-- IF navigation.text -->
-                            <span class="navbar-button-title">{navigation.text}</span>
-                            <!-- ENDIF navigation.text -->
-						</a>
-					</li>
-					<!-- ENDIF function.displayMenuItem -->
-					{{{end}}}
-				</ul>
-
-				<!-- ELSE -->
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a href="{relative_path}/login">
-							<i class="fa fa-sign-in fa-fw hidden-sm hidden-md hidden-lg"></i>
-							<span>[[fdk:navbar.login]]</span>
-						</a>
-					</li>
-				</ul>
-				<!-- ENDIF !maintenanceHeader -->
 			</div>
