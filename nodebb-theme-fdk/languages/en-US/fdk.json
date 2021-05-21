@@ -13,7 +13,7 @@
   },
   "navigation": {
     "calendar": "Calendar",
-    "recent": "Recent" 
+    "recent": "Recent"
   },
   "footer": {
     "searchCatalogsTitle": "Catalog search",
@@ -50,5 +50,8 @@
     "edit": {
       "jobDescription" : "Your business / occupation"
     }
+  },
+  "registration": {
+    "consent": "To complete your registration, you must accept the conditions below."
   }
 }
