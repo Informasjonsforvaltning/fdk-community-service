@@ -11,6 +11,10 @@
     "community": "Community",
     "publishing": "Publish"
   },
+  "navigation": {
+    "calendar": "Calendar",
+    "recent": "Recent" 
+  },
   "footer": {
     "searchCatalogsTitle": "Catalog search",
     "searchAllCatalogs": "Search all catalogs",

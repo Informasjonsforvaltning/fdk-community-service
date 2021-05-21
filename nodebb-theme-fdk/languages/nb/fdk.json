@@ -11,6 +11,10 @@
     "community": "Community",
     "publishing": "Publisere"
   },
+  "navigation": {
+    "calendar": "Kalender",
+    "recent": "Siste" 
+  },
   "footer": {
     "searchCatalogsTitle": "Søk i kataloger",
     "searchAllCatalogs": "Søk i alle kataloger",
