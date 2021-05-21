@@ -173,6 +173,12 @@
 									<i class="fa fa-fw fa-gear"></i> <span>[[user:settings]]</span>
 								</a>
 							</li>
+							<li>
+								<a href="{relative_path}/user/{user.userslug}/consent">
+									<i class="fa fa-fw fa-thumbs-o-up"></i> <span>[[user:consent.title]]</span>
+								</a>
+							</li>
+
 							<!-- IF showModMenu -->
 							<li role="presentation" class="divider"></li>
 							<li class="dropdown-header">[[pages:moderator-tools]]</li>
