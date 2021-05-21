@@ -13,7 +13,7 @@
   },
   "navigation": {
     "calendar": "Kalender",
-    "recent": "Siste" 
+    "recent": "Siste"
   },
   "footer": {
     "searchCatalogsTitle": "Søk i kataloger",
@@ -50,5 +50,8 @@
     "edit": {
       "jobDescription" : "Din virksomhet / stillingstittel"
     }
+  },
+  "registration": {
+    "consent": "For å fullføre registreringen din må du godta vilkårene under."
   }
 }
