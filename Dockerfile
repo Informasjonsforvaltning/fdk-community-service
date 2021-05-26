@@ -3,6 +3,8 @@ FROM nodebb/docker:latest-v1.17.x
 COPY nodebb-theme-fdk ./nodebb-theme-fdk
 COPY nodebb-plugin-fdk-sso ./nodebb-plugin-fdk-sso
 
+COPY detail.js ./public/src/client/flags/detail.js
+
 RUN npm install \
     ./nodebb-theme-fdk \
     ./nodebb-plugin-fdk-sso \
