@@ -1,6 +1,6 @@
 {
   "register": "Registrer",
-  "cancel_registration": "Avbrytt registreringen",
+  "cancel_registration": "Avbryt registreringen",
   "help.email": "Som standard, holdes din e-post skjult for offentligheten.",
   "help.username_restrictions": "Et unikt brukernavn mellom %1 og %2 tegn. Andre kan nevne deg med @<span id='yourUsername'>brukernavn</span>.",
   "help.minimum_password_length": "Ditt passord må være minst %1 tegn.",
@@ -29,4 +29,3 @@
   "invite.error-invite-only": "Brukerregistrering er deaktivert. Du må bli invitert av en eksisterende bruker for å få tilgang til forumet.",
   "invite.error-invalid-data": "Registrerte data samsvarer ikke med våre vilkår. Kontakt en administrator for mer informasjon."
 }
-
