@@ -1,8 +1,8 @@
 {
   "welcome": {
-    "header": "Community",
-    "ingress": "Welcome to the Felles datakatalog community! We're happy to see you here.",
-    "paragraph": "Here, you can ask questions about anything related to Felles datakatalog and information management, participate in discussions, showcase your work, make new connections, and discover new projects for development and innovation. The community is open, but you must register a user before writing posts and creating new topics. The purpose of this community is to facilitate value creation through data for the whole of society - join and contribute to increasing knowledge, openness, and innovation."
+    "header": "Datalandsbyen",
+    "ingress": "Welcome to the online forum Datalandsbyen! We are glad you have found us.",
+    "paragraph": "Here you can ask questions about anything you might be wondering about datasets, APIs, concepts, information models and information management, further you can participate in discussions, showcase your projects, make new contacts, and find new collaborations. The online forum is open to everyone, but to write posts you must first register. The purpose of the forum is to facilitate that data will be a value-creating resource for the whole society - join and contribute to increased knowledge, openness, and innovation."
   },
   "header": {
     "about": "About",
