@@ -73,7 +73,7 @@
   "change_password_success": "Passordet ditt ble oppdatert!",
   "confirm_password": "Bekreft passord",
   "password": "Passord",
-  "username_taken_workaround": "Brukernavnet du ønsket er opptatt, så vi har endret ditt litt. Du er nå kjent som <strong>%1</string>",
+  "username_taken_workaround": "Brukernavnet du ønsket er opptatt, så vi har endret det litt. Du er nå kjent som <strong>%1</string>",
   "password_same_as_username": "Ditt passord er det samme som ditt brukernavn, vennligst velg et annet passord.",
   "password_same_as_email": "Your password is the same as your email, please select another password.",
   "weak_password": "Weak password.",
