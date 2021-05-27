@@ -1,8 +1,8 @@
 {
   "welcome": {
-    "header": "Data Community",
-    "ingress": "Welcome to the online forum Data Community! We are glad you have found us.",
-    "paragraph": "Here you can ask questions about anything you might be wondering about datasets, APIs, concepts, information models and information management, further you can participate in discussions, showcase your projects, make new contacts, and find new collaborations. The online forum is open to everyone, but to write posts you must first register. The purpose of the forum is to facilitate that data will be a value-creating resource for the whole society - join and contribute to increased knowledge, openness, and innovation."
+    "header": "Datalandsbyen",
+    "ingress": "Welcome to the online forum Datalandsbyen! We are glad you have found us.",
+    "paragraph": "Here you can ask questions about anything you might be wondering about datasets, APIs, concepts, information models and information management, further you can participate in discussions, showcase your projects, make new contacts, and find new collaborations. The online forum is open to everyone, but to write posts you must first register. The purpose of the forum is to facilitate that data will be a value-creating resource for the whole society - join and contribute to increased knowledge, openness, and innovation. A constructive and factual dialogue is encouraged in the online forum."
   },
   "header": {
     "about": "About",
