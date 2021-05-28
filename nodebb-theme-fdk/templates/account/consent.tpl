@@ -2,6 +2,20 @@
 	<!-- IMPORT partials/account/header.tpl -->
 	<h2>[[user:consent.title]]</h2>
 	<p class="lead">[[user:consent.lead]]</p>
+    <!-- IF gdpr_consent -->
+  <div class="alert alert-success consent-check">
+    [[user:consent.terms]]
+    <i class="fa fa-check pull-right fa-3x"></i>
+  </div>
+  <!-- ELSE -->
+  <div class="alert alert-warning consent-check">
+    [[user:consent.not_received]]
+    <br /><br />
+    <div class="text-center">
+      <button class="btn btn-warning" data-action="consent">[[user:consent.give]]</button>
+    </div>
+  </div>
+  <!-- END -->
 	<p>[[user:consent.intro]]</p>
 
 	<hr />
@@ -9,12 +23,12 @@
 	<div class="row">
 		<div class="col-sm-6">
 			<!-- IF gdpr_consent -->
-			<div class="alert alert-success">
-				<i class="fa fa-check pull-right fa-3x"></i>
+			<div class="alert alert-success consent-check">
 				[[user:consent.received]]
+				<i class="fa fa-check pull-right fa-3x"></i>
 			</div>
 			<!-- ELSE -->
-			<div class="alert alert-warning">
+			<div class="alert alert-warning consent-check">
 				[[user:consent.not_received]]
 				<br /><br />
 				<div class="text-center">
