@@ -74,7 +74,10 @@ Strategy.prototype.cleanUrl = function (req) {
 
 Strategy.prototype.getRedirectURL = function (req) {
   var host = req.hostname;
-  var headerHost = req.headers.host.split(":");
+  if (req.headers["x-forwarded-host"]) {
+    host = req.headers["x-forwarded-host"];
+  }
+  var headerHost = host.split(":");
   var port = headerHost[1] || "";
   var protocol = req.protocol;
   if (req.headers["x-forwarded-proto"] === "https") {
