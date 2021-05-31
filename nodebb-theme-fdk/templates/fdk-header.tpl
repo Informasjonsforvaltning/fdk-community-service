@@ -8,7 +8,17 @@
     <nav class="fdk-links">
       <a href="/env/about">[[fdk:header.about]]</a>
       <a href="/env/organizations">[[fdk:header.organizations]]</a>
-      <a href="/env/reports">[[fdk:header.reports]]</a>
+      <div class="fdk-tools" onMouseOver="toggleDropdown('fdk-tools-dropdown')" onMouseOut="toggleDropdown('fdk-tools-dropdown')">
+        [[fdk:header.tools.tools]]
+        <ul class="fdk-tools-dropdown" id="fdk-tools-dropdown">
+          <li>
+            <a href="/env/reports">[[fdk:header.tools.reports]]</a>
+          </li>
+          <li>
+            <a href="/env/sparql">[[fdk:header.tools.sparql]]</a>
+          </li>
+        </ul>
+      </div>
       <a class="active" href="/">[[fdk:header.community]]</a>
       <a href="/env/publishing">[[fdk:header.publishing]] <img class="fdk-text-icon" src="/plugins/nodebb-theme-fdk/images/icon-external-link-xs.svg" alt="Åpne"></a>
     </nav>
@@ -22,7 +32,10 @@
           <a href="/env/organizations">[[fdk:header.organizations]]</a>
         </li>
         <li>
-          <a href="/env/reports">[[fdk:header.reports]]</a>
+          <a href="/env/reports">[[fdk:header.tools.reports]]</a>
+        </li>
+        <li>
+          <a href="/env/sparql">[[fdk:header.tools.sparql]]</a>
         </li>
         <li>
           <a class="active" href="/">[[fdk:header.community]]</a>

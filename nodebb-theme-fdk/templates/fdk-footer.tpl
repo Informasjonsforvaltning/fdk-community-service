@@ -20,6 +20,7 @@
       </li>
       <li><a href="/env/guidance">[[fdk:footer.guidance]]</a></li>
       <li><a href="/env/reports">[[fdk:footer.reports]]</a></li>
+      <li><a href="/env/sparql">[[fdk:footer.sparql]]</a></li>
       <li><a href="/env/organizations">[[fdk:footer.organizations]]</a></li>
       <li><a href="/env/about">[[fdk:footer.aboutFDK]]</a></li>
       <li><a href="/env/about-registration">[[fdk:footer.guideToRegister]]</a></li>
