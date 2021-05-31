@@ -7,8 +7,11 @@
   "header": {
     "about": "Om Felles datakatalog",
     "organizations": "Virksomheter",
-    "reports": "Rapporter",
-    "community": "Community",
+    "tools": {
+      "tools": "Verktøy",
+      "reports":"Rapporter",
+      "sparql": "SPARQL-spørring"},
+    "community": "Datalandsbyen",
     "publishing": "Publisere"
   },
   "navigation": {
@@ -26,6 +29,7 @@
     "aboutFdkTitle": "Om Felles datakatalog",
     "guidance": "Veiledere og standarder",
     "reports": "Rapporter",
+    "sparql": "SPARQL-spørring",
     "organizations": "Virksomheter",
     "aboutFDK": "Om Felles datakatalog",
     "guideToRegister": "Hjelp til å registrere",
