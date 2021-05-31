@@ -27,6 +27,7 @@
 }
 
 .fdk-links {
+  display: flex;
   font-size: 16px;
   @media(max-width: 1000px){
     display: none;
@@ -39,6 +40,27 @@
 
   a:hover {
     text-decoration: underline;
+  }
+
+  > .fdk-tools {
+      font-size: 16px;
+      margin-left: 10px;
+
+
+    > .fdk-tools-dropdown {
+      display: none;
+      position: absolute;
+      list-style: none;
+      background-color: @NEUTRAL-N0;
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 1;
+      box-shadow: 2px 5px 6px rgba(0, 0, 0, 0.15);
+
+      > li {
+        margin-bottom: 5px;
+      }
+    }
   }
 }
 
