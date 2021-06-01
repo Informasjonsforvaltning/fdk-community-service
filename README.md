@@ -10,3 +10,7 @@ docker-compose up -d
 ### Local admin
 Username: **admin**<br/>
 Password: **MyPassword**
+
+### Environment variables
+API_TOKEN: API Token used to access default API.<br>
+API_TOKEN_WRITE: API Token used to access write API.
