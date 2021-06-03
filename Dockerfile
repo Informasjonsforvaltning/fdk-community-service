@@ -6,7 +6,10 @@ COPY nodebb-plugin-fdk-sso ./nodebb-plugin-fdk-sso
 COPY ./nodebb-patch/detail.js ./public/src/client/flags/detail.js
 COPY ./nodebb-patch/username.js ./public/src/client/account/edit/username.js
 
-RUN apt-get update && apt-get -y install cron jq
+RUN apt-get update && apt-get -y install cron jq ssmtp
+
+COPY setup-ssmtp.sh /
+RUN chmod 770 /setup-ssmtp.sh && /setup-ssmtp.sh
 
 RUN npm install \
     ./nodebb-theme-fdk \
