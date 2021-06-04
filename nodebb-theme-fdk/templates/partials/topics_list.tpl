@@ -1,7 +1,7 @@
 <ul component="category" class="topic-list" itemscope itemtype="http://www.schema.org/ItemList" data-nextstart="{nextStart}" data-set="{set}">
 	<meta itemprop="itemListOrder" content="descending">
 	{{{each topics}}}
-	<li component="category/topic" class="row clearfix category-item {function.generateTopicClass}" <!-- IMPORT partials/data/category.tpl -->>
+	<li component="category/topic" class="row clearfix category-item {function.generateTopicClass} <!-- IF !privileges.isAdminOrMod -->deleted-no-display<!-- ENDIF !privileges.isAdminOrMod -->" <!-- IMPORT partials/data/category.tpl -->>
 		<a id="{../index}" data-index="{../index}" component="topic/anchor"></a>
 		<meta itemprop="name" content="{function.stripTags, title}">
 
