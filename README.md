@@ -7,7 +7,11 @@ The local instance is presetup. Start containers with docker-compose and open ht
 docker-compose up -d
 ```
 
-### Environment variables
+### Local admin
+Username: **admin**<br/>
+Password: **MyPassword**
+
+## Environment variables
 - `API_TOKEN` - API Token used to access default API.
 - `API_TOKEN_WRITE` - API Token used to access write API.
 - `SSMTP_SERVER` - The mail server (where the mail is sent to)
@@ -18,11 +22,7 @@ docker-compose up -d
 - `SSMTP_USER` - Username
 - `SSMTP_PASS` - Password
 
-### Local admin
-Username: **admin**<br/>
-Password: **MyPassword**
-
-### Example SMTP config
+## Example SMTP config
 - SSMTP_SERVER=outlook.com
 - SSMTP_PORT=25
 - SSMTP_TLS=true
