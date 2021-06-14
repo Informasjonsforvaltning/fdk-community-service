@@ -31,7 +31,7 @@ for row in $(echo "${users}" | jq -r '.[] | @base64'); do
 		echo ""
 	fi
 
-  echo "$ts - Verifying if user with uid $uid has approved gdpr consent: $diff_joindate hours"
+  echo "$ts - Verifying if user with uid $uid has approved gdpr consent..."
   echo "$ts - User with uid $uid joined: $diff_joindate hours ago"
   # Remove if user did not consent and joined more than one hour ago
 	if [ $diff_joindate -gt 1 ]
