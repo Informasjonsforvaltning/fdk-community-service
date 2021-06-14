@@ -9,6 +9,8 @@ echo "0 * * * * /run.sh >> /var/log/cron.log 2>&1
 crontab scheduler.txt
 cron -f &
 
+/setup-ssmtp.sh
+
 node ./nodebb activate nodebb-plugin-fdk-sso
 node ./nodebb activate nodebb-plugin-calendar
 node ./nodebb activate nodebb-plugin-dbsearch
