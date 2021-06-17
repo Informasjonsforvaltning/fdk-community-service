@@ -5,7 +5,7 @@ echo "Community Docker container has been started"
 /setup-ssmtp.sh
 
 # Setup a cron schedule (every hour)
-echo "* * * * * API_TOKEN=$API_TOKEN API_TOKEN_WRITE=$API_TOKEN_WRITE /run.sh >> /var/log/cron.log 2>&1
+echo "0 * * * * API_TOKEN=$API_TOKEN API_TOKEN_WRITE=$API_TOKEN_WRITE /run.sh >> /usr/src/app/files/log/cron.log 2>&1
 # This extra line makes it a valid cron" > scheduler.txt
 
 crontab scheduler.txt
