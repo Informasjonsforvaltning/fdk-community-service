@@ -31,7 +31,7 @@ for row in $(echo "${users}" | jq -r '.[] | @base64'); do
   echo "$ts - Verifying if user with uid $uid has approved gdpr consent..."
   echo "$ts - User with uid $uid joined: $diff_joindate hours ago"
   # Remove if user did not consent and joined more than one hour ago
-	if [ $diff_joindate -gt 1 ];
+	if [ $diff_joindate -ge 1 ];
 	then
 		gdpr_consent=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug/consent" | jq '.gdpr_consent')
 		if [ "false" = "$gdpr_consent" ];
