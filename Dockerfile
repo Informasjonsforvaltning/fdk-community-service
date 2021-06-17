@@ -18,6 +18,8 @@ RUN npm install \
     nodebb-plugin-gdpr \
     nodebb-plugin-write-api
 
+RUN mkdir -p /usr/src/app/files/log
+
 ADD run.sh /run.sh
 ADD startup.sh /startup.sh
 RUN chmod +x /run.sh /startup.sh
