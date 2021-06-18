@@ -19,6 +19,9 @@
 	<!-- IF useCustomCSS -->
 	<style>{{customCSS}}</style>
 	<!-- END -->
+
+	<!--[if IE]><link rel="shortcut icon" href="/assets/uploads/system/favicon.ico"><![endif]-->
+    <link rel="icon" type="image/png" href="/assets/uploads/system/favicon.ico">
 </head>
 
 <body class="{bodyClass} skin-<!-- IF bootswatchSkin -->{bootswatchSkin}<!-- ELSE -->noskin<!-- END -->">
