@@ -21,12 +21,17 @@ sendUserDeletedEmail() {
     mail="${mail/@@EMAIL@@/$email}"
     mail="${mail/@@NAME@@/$name}"
 
-    echo $mail | sendmail $to
-    touch $flagFile
+    if [ "true" = "$TEST_MODE" ];
+    then
+      echo $mail | sendmail $TEST_EMAIL
+    else
+      echo $mail | sendmail $to
+      touch $flagFile
+    fi
   fi
 }
 
-sendDeleteUserInTenDaysEmail() {
+sendDeleteUserInXDaysEmail() {
   uid=$1
   flagFile="$FILES_DIR/mail/delete-10days-$uid"
 
@@ -45,13 +50,23 @@ sendDeleteUserInTenDaysEmail() {
     mail="${mail/@@EMAIL@@/$email}"
     mail="${mail/@@NAME@@/$name}"
 
-    echo $mail | sendmail $to
-    touch $flagFile
+    if [ "true" = "$TEST_MODE" ];
+    then
+      echo $mail | sendmail $TEST_EMAIL
+    else
+      echo $mail | sendmail $to
+      touch $flagFile
+    fi
   fi
 }
 
 ts=`date +%Y/%m/%d-%H:%M:%S`
 
+
+if [ "true" = "$TEST_MODE" ];
+then
+  echo "$ts - #### RUNNING IN TEST MODE ####"
+fi
 echo "$ts - Removing inactive users or users without consent"
 
 users=$(curl -s http://localhost:4567/api/users | jq '.users')
@@ -59,6 +74,14 @@ for row in $(echo "${users}" | jq -r '.[] | @base64'); do
   _jq() {
        echo ${row} | base64 --decode | jq -r ${1}
   }
+
+  max_days_offline=365
+  notify_days=7
+  if [ "true" = "$TEST_MODE" ];
+  then
+    max_days_offline=3
+    notify_days=1
+  fi
 
 	uid=$(_jq '.uid')
 	userslug=$(_jq '.userslug')
@@ -72,19 +95,22 @@ for row in $(echo "${users}" | jq -r '.[] | @base64'); do
   echo "$ts - Verifying if user with uid $uid has been inactive too long..."
   echo "$ts - User with uid $uid was last online: $diff_lastonline days ago"
   # Remove user if not active more than one year
-  if [ $diff_lastonline -gt 365 ];
+  if [ $diff_lastonline -gt $max_days_offline ];
 	then
 		echo "$ts - Removing inactive user with uid $uid (not online for $diff days)"
-		curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v2/users/$uid"
-		echo ""
+		if [ "true" != "$TEST_MODE" ];
+		then
+      curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v2/users/$uid"
+      echo ""
+    fi
 
 		sendUserDeletedEmail "$uid" "$userslug" "$displayname"
 	fi
 
 	# Send email if users are going to removed in exactly 10 days
-	if [ $diff_lastonline -ge 358 ]
+	if [ $diff_lastonline -ge ($max_days_offline-$notify_days) ]
 	then
-	  sendDeleteUserInTenDaysEmail "$uid" "$userslug" "$displayname"
+	  sendDeleteUserInXDaysEmail "$uid" "$userslug" "$displayname"
   fi
 
   echo "$ts - Verifying if user with uid $uid has approved gdpr consent..."
@@ -96,8 +122,11 @@ for row in $(echo "${users}" | jq -r '.[] | @base64'); do
 		if [ "false" = "$gdpr_consent" ];
 		then
 			echo "$ts - Removing user without gdpr consent with uid $uid"
-      curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v2/users/$uid"
-      echo ""
+      if [ "true" != "$TEST_MODE" ];
+		  then
+        curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v2/users/$uid"
+        echo ""
+      fi
     else
       echo "$ts - User with uid $uid has approved gdpr consent"
 		fi
