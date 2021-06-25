@@ -4,45 +4,21 @@
     "ingress": "Welcome to the online forum Datalandsbyen! We are glad you have found us.",
     "paragraph": "Here you can ask questions about anything you might be wondering about datasets, APIs, concepts, information models and information management, further you can participate in discussions, showcase your projects, make new contacts, and find new collaborations. The online forum is open to everyone, but to write posts you must first register. The purpose of the forum is to facilitate that data will be a value-creating resource for the whole society - join and contribute to increased knowledge, openness, and innovation. A constructive and factual dialogue is encouraged in the online forum."
   },
-  "header": {
-    "about": "About",
-    "organizations": "Organizations",
-    "tools": {
-      "tools": "Tools",
-      "reports":"Reports",
-      "sparql": "SPARQL query"},
-    "community": "Data Community",
-    "publishing": "Publish"
-  },
   "navigation": {
     "calendar": "Calendar",
     "recent": "Recent"
   },
   "footer": {
-    "searchCatalogsTitle": "Catalog search",
-    "searchAllCatalogs": "Search all catalogs",
-    "searchDatasets": "Search datasets",
-    "searchDataservices": "Search data services",
-    "searchConcepts": "Search concepts",
-    "searchInformationModels": "Search information models",
-
-    "aboutFdkTitle": "About Felles datakatalog",
-    "guidance": "Guides and standards",
-    "reports": "Reports",
-    "sparql": "SPARQL query",
-    "organizations": "Organizations",
-    "aboutFDK": "About Felles datakatalog",
-    "guideToRegister": "Guide to register data",
-    "news": "News",
-
+    "partners": "Our partners",
+    "fdk": "Felles datakatalog",
+    "datafabrikken": "Datafabrikken",
+    "transportPortal": "Transportportal",
     "aboutSiteTitle": "About this site",
-    "footerText": "Felles Datakatalog is managed by the Norwegian Digitalisation Agency.",
+    "footerText": "Datalandsbyen is managed by the Norwegian Digitalisation Agency.",
     "privacyText": "Privacy statement",
     "informationCookies": "Cookies",
-
     "contactTitle": "Contact",
-    "mail": "fellesdatakatalog@digdir.no",
-    "twitter": "Felles datakatalog on Twitter"
+    "mail": "fellesdatakatalog@digdir.no"
   },
   "post": {
     "reply": "Reply to"

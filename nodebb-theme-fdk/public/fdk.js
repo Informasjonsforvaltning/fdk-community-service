@@ -1,2 +1,2 @@
-console.log('FDK theme loaded');
+console.log('Datalandsbyen theme loaded');
 

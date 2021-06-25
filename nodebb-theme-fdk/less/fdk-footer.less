@@ -13,23 +13,15 @@
     color: @NEUTRAL-N0;
   }
 
-  .footer-illustration {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    height: 75%;
-    z-index: 0;
-
-    @media (max-width: 1200px) {
-      display: none;
-    }
-  }
-
   a {
     color: @NEUTRAL-N0;
     text-decoration: none;
     border-bottom: 1px solid;
     margin-bottom: 5px;
+  }
+
+  a#fdk-logo-link {
+    border-bottom: 0;
   }
 }
 
@@ -41,6 +33,7 @@
 
   > ul {
     list-style: none;
+    max-width: 300px;
 
     > li {
       margin-bottom: 5px;

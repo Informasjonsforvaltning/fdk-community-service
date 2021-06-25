@@ -17,6 +17,7 @@ RUN npm install \
     nodebb-plugin-calendar \
     nodebb-plugin-gdpr \
     nodebb-plugin-write-api
+RUN npm audit fix
 
 ADD run.sh /run.sh
 ADD startup.sh /startup.sh
