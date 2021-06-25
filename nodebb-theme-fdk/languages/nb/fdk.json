@@ -4,45 +4,21 @@
     "ingress": "Velkommen til nettforumet Datalandsbyen! Vi er glade for at du har funnet frem til oss.",
     "paragraph": "Her kan du stille spørsmål om alt du måtte lure på om datasett, API-er, begreper, informasjonsmodeller og informasjonsforvaltning, videre kan du delta i diskusjoner, vise frem prosjektene dine, knytte nye kontakter og finne nye samarbeid. Nettforumet er åpent for alle, men for å skrive innlegg må du først registrere deg. Formålet med forumet er å legge til rette for at data skal bli en verdiskapende ressurs for hele samfunnet – bli med og bidra til økt kunnskap, åpenhet og innovasjon. Vi oppfordrer til en konstruktiv og saklig dialog i nettforumet."
   },
-  "header": {
-    "about": "Om Felles datakatalog",
-    "organizations": "Virksomheter",
-    "tools": {
-      "tools": "Verktøy",
-      "reports":"Rapporter",
-      "sparql": "SPARQL-spørring"},
-    "community": "Datalandsbyen",
-    "publishing": "Publisere"
-  },
   "navigation": {
     "calendar": "Kalender",
     "recent": "Siste"
   },
   "footer": {
-    "searchCatalogsTitle": "Søk i kataloger",
-    "searchAllCatalogs": "Søk i alle kataloger",
-    "searchDatasets": "Søk i datasett",
-    "searchDataservices": "Søk i API-er",
-    "searchConcepts": "Søk i begreper",
-    "searchInformationModels": "Søk i informasjonsmodeller",
-
-    "aboutFdkTitle": "Om Felles datakatalog",
-    "guidance": "Veiledere og standarder",
-    "reports": "Rapporter",
-    "sparql": "SPARQL-spørring",
-    "organizations": "Virksomheter",
-    "aboutFDK": "Om Felles datakatalog",
-    "guideToRegister": "Hjelp til å registrere",
-    "news": "Aktuelt",
-
+    "partners": "Våre partnere",
+    "fdk": "Felles datakatalog",
+    "datafabrikken": "Datafabrikken",
+    "transportPortal": "Transportportal",
     "aboutSiteTitle": "Om nettstedet",
-    "footerText": "Digitaliseringsdirektoratet forvalter Felles datakatalog.",
+    "footerText": "Digitaliseringsdirektoratet forvalter datalandsbyen.",
     "privacyText": "Personvernerklæring",
     "informationCookies": "Informasjonskapsler",
-
     "contactTitle": "Kontakt",
-    "mail": "fellesdatakatalog@digdir.no",
-    "twitter": "Felles datakatalog på Twitter"
+    "mail": "fellesdatakatalog@digdir.no"
   },
   "post": {
     "reply": "Svar til"
