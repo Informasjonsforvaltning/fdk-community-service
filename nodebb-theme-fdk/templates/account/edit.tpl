@@ -66,6 +66,22 @@
 					</div>
 					<!-- ENDIF !disableSignatures -->
 					<!-- ENDIF allowSignature -->
+					<div class="form-group">
+						<label for="groupTitle">[[user:grouptitle]]</label>
+
+						<select class="form-control" id="groupTitle" name="groupTitle" <!-- IF allowMultipleBadges --> size="{groupSelectSize}" multiple<!-- ENDIF allowMultipleBadges -->>
+							<option value="">[[user:no-group-title]]</option>
+							{{{each groups}}}
+							<!-- IF groups.userTitleEnabled -->
+							<option value="{groups.displayName}" <!-- IF groups.selected -->selected<!-- ENDIF groups.selected -->>{groups.userTitle}</option>
+							<!-- ENDIF groups.userTitleEnabled -->
+							{{{end}}}
+						</select>
+						<!-- IF allowMultipleBadges -->
+						<span>[[user:group-order-help]]</span>
+						<i role="button" component="group/order/up" class="fa fa-chevron-up"></i> <i role="button" component="group/order/down" class="fa fa-chevron-down"></i>
+						<!-- ENDIF -->
+					</div>
 
 					<a id="submitBtn" href="#" class="btn btn-primary">[[global:save_changes]]</a>
 				</form>
