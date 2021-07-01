@@ -97,7 +97,7 @@ for row in $(echo "${users}" | jq -r '.[] | @base64'); do
   # Remove user if not active more than one year
   if [ $diff_lastonline -gt $max_days_offline ];
 	then
-		echo "$ts - Removing inactive user with uid $uid (not online for $diff days)"
+		echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days)"
 		if [ "true" != "$TEST_MODE" ];
 		then
       curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v2/users/$uid"
@@ -108,7 +108,7 @@ for row in $(echo "${users}" | jq -r '.[] | @base64'); do
 	fi
 
 	# Send email if users are going to removed in exactly 10 days
-	if [ $diff_lastonline -ge ($max_days_offline-$notify_days) ]
+	if [ $diff_lastonline -ge $((max_days_offline - notify_days)) ];
 	then
 	  sendDeleteUserInXDaysEmail "$uid" "$userslug" "$displayname"
   fi
