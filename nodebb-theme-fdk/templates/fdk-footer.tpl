@@ -35,7 +35,7 @@
           [[fdk:footer.contactTitle]]
         </h6>
       </li>
-      <li><span><img class="fdk-text-icon" src="/plugins/nodebb-theme-fdk/images/icon-envelope-sm.svg" alt="Lenkeikon"/><a href="fellesdatakatalog@digdir.no">[[fdk:footer.mail]]</a></span></li>
+      <li><span><img class="fdk-text-icon" src="/plugins/nodebb-theme-fdk/images/icon-envelope-sm.svg" alt="Lenkeikon"/><a href="mailto:fellesdatakatalog@digdir.no">[[fdk:footer.mail]]</a></span></li>
     </ul>
   </div>
 </div>
