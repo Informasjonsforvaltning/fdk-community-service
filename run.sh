@@ -23,10 +23,10 @@ sendUserDeletedEmail() {
     if [ "true" = "$TEST_MODE" ];
     then
       mail="${mail/@@EMAIL@@/$TEST_EMAIL}"
-      echo $mail | sendmail -t
+      echo $mail | /usr/sbin/sendmail -t
     else
       mail="${mail/@@EMAIL@@/$email}"
-      echo $mail | sendmail -t
+      echo $mail | /usr/sbin/sendmail -t
       touch $flagFile
     fi
   fi
@@ -53,10 +53,10 @@ sendDeleteUserInXDaysEmail() {
     if [ "true" = "$TEST_MODE" ];
     then
       mail="${mail/@@EMAIL@@/$TEST_EMAIL}"
-      echo $mail | sendmail -t
+      echo $mail | /usr/sbin/sendmail -t
     else
       mail="${mail/@@EMAIL@@/$email}"
-      echo $mail | sendmail -t
+      echo $mail | /usr/sbin/sendmail -t
       touch $flagFile
     fi
   fi
