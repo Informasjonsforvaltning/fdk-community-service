@@ -18,14 +18,15 @@ sendUserDeletedEmail() {
     mail=$(cat /mail-template-deleted.html)
     mail="${mail/@@BASE_URL@@/$BASE_URL}"
     mail="${mail/@@UID@@/$uid}"
-    mail="${mail/@@EMAIL@@/$email}"
     mail="${mail/@@NAME@@/$name}"
 
     if [ "true" = "$TEST_MODE" ];
     then
-      echo $mail | sendmail $TEST_EMAIL
+      mail="${mail/@@EMAIL@@/$TEST_EMAIL}"
+      echo $mail | sendmail -t
     else
-      echo $mail | sendmail $to
+      mail="${mail/@@EMAIL@@/$email}"
+      echo $mail | sendmail -t
       touch $flagFile
     fi
   fi
@@ -47,14 +48,15 @@ sendDeleteUserInXDaysEmail() {
     mail=$(cat /mail-template-delete-7days.html)
     mail="${mail/@@BASE_URL@@/$BASE_URL}"
     mail="${mail/@@UID@@/$uid}"
-    mail="${mail/@@EMAIL@@/$email}"
     mail="${mail/@@NAME@@/$name}"
 
     if [ "true" = "$TEST_MODE" ];
     then
-      echo $mail | sendmail $TEST_EMAIL
+      mail="${mail/@@EMAIL@@/$TEST_EMAIL}"
+      echo $mail | sendmail -t
     else
-      echo $mail | sendmail $to
+      mail="${mail/@@EMAIL@@/$email}"
+      echo $mail | sendmail -t
       touch $flagFile
     fi
   fi
