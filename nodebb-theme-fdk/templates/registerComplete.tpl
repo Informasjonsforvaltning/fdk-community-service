@@ -44,8 +44,6 @@
 		</div>
 	</div>
 </form>
-<form class="consent-form" role="form" method="post" action="{config.relative_path}/register/abort">
-	<p class="text-center">
-		<button class="btn btn-link btn-register">[[register:cancel_registration]]</button>
-	</p>
-</form>
+<p class="text-center">
+	<button class="btn btn-link btn-register" onclick="abortRegistration()">[[register:cancel_registration]]</button>
+</p>

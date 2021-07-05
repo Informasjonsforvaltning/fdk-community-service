@@ -92,3 +92,15 @@ $(document).ready(function() {
 
 	setLinkEnvironments();
 });
+
+function toggleDropdown(id) {
+	document.getElementById(id).classList.toggle("show");
+}
+
+function abortRegistration() {
+	const { app } = window;
+	console.log("abort registration")
+	fetch( "/register/abort", {
+		method: 'POST',
+	}).then( () => app.logout('/') );
+}

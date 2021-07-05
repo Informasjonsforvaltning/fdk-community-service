@@ -11,9 +11,6 @@
 		var app = {
 			user: JSON.parse('{{userJSON}}')
 		};
-    function toggleDropdown(id) {
-      document.getElementById(id).classList.toggle("show");
-    }
 	</script>
 
 	<!-- IF useCustomHTML -->
