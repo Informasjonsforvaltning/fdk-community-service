@@ -1,0 +1,22 @@
+{
+  "name": "nodebb-plugin-consent",
+  "version": "1.0.0",
+  "description": "NodeBB plugin for displaying the FDK conent page",
+  "main": "library.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Informasjonsforvaltning/fdk-community-service.git"
+  },
+  "author": "Mats J. Skaslien",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Informasjonsforvaltning/fdk-community-service/issues"
+  },
+  "homepage": "https://github.com/Informasjonsforvaltning/fdk-community-service#readme"
+}

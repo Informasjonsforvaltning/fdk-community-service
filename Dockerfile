@@ -2,6 +2,8 @@ FROM nodebb/docker:latest-v1.17.x
 
 COPY nodebb-theme-fdk ./nodebb-theme-fdk
 COPY nodebb-plugin-fdk-sso ./nodebb-plugin-fdk-sso
+COPY nodebb-plugin-consent ./nodebb-plugin-consent
+
 
 COPY ./nodebb-patch/detail.js ./public/src/client/flags/detail.js
 COPY ./nodebb-patch/username.js ./public/src/client/account/edit/username.js
@@ -14,6 +16,7 @@ RUN chmod 770 /setup-ssmtp.sh && /setup-ssmtp.sh
 RUN npm install \
     ./nodebb-theme-fdk \
     ./nodebb-plugin-fdk-sso \
+    ./nodebb-plugin-consent \
     nodebb-plugin-calendar \
     nodebb-plugin-gdpr \
     nodebb-plugin-write-api
