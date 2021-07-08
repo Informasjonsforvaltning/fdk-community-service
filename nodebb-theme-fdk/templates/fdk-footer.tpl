@@ -26,6 +26,7 @@
         </h6>
       </li>
       <li>[[fdk:footer.footerText]]</li>
+      <li><a href="/consent">[[user:consent.title]] </a></li>
       <li><a href="https://www.digdir.no/om-oss/personvernerklaering/706">[[fdk:footer.privacyText]] <img class="fdk-text-icon" src="/plugins/nodebb-theme-fdk/images/icon-external-link-xs-negative.svg" alt="Åpne"></a></li>
       <li><a href="https://www.digdir.no/om-oss/informasjonskapsler/707">[[fdk:footer.informationCookies]] <img class="fdk-text-icon" src="/plugins/nodebb-theme-fdk/images/icon-external-link-xs-negative.svg" alt="Åpne"></a></li>
     </ul>
