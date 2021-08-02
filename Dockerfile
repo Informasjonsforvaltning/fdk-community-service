@@ -1,4 +1,4 @@
-FROM nodebb/docker:latest-v1.17.x
+FROM nodebb/docker:v1.17.1
 
 COPY nodebb-theme-fdk ./nodebb-theme-fdk
 COPY nodebb-plugin-fdk-sso ./nodebb-plugin-fdk-sso
