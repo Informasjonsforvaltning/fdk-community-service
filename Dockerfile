@@ -18,6 +18,7 @@ RUN npm install \
     ./nodebb-plugin-fdk-sso \
     nodebb-plugin-calendar \
     nodebb-plugin-gdpr \
+    nodebb-plugin-google-analytics \
     nodebb-plugin-write-api
 RUN npm audit fix
 
