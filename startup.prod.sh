@@ -15,6 +15,7 @@ node ./nodebb activate nodebb-plugin-fdk-sso
 node ./nodebb activate nodebb-plugin-calendar
 node ./nodebb activate nodebb-plugin-dbsearch
 node ./nodebb activate nodebb-plugin-gdpr
+node ./nodebb activate nodebb-plugin-google-analytics
 node ./nodebb activate nodebb-plugin-write-api
 node ./nodebb reset -t nodebb-theme-fdk
 node ./nodebb build
