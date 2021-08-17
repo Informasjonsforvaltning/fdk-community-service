@@ -1,5 +1,5 @@
 {
-  "name": "nodebb-plugin-consent",
+  "name": "nodebb-plugin-fdk-consent",
   "version": "1.0.0",
   "description": "NodeBB plugin for displaying the FDK conent page",
   "main": "library.js",
