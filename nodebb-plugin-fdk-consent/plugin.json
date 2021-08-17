@@ -1,5 +1,5 @@
 {
-    "id": "nodebb-plugin-consent",
+    "id": "nodebb-plugin-fdk-consent",
     "name": "NodeBB FDK consent",
     "description": "NodeBB Plugin for displaying the FDK consent page.",
     "url": "https://github.com/Informasjonsforvaltning/fdk-community-service",
