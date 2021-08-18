@@ -1,4 +1,4 @@
-FROM nodebb/docker:latest-v1.17.x
+FROM nodebb/docker:v1.17.1
 
 COPY nodebb-theme-fdk ./nodebb-theme-fdk
 COPY nodebb-plugin-fdk-sso ./nodebb-plugin-fdk-sso
@@ -20,6 +20,7 @@ RUN npm install \
     nodebb-plugin-gdpr \
     nodebb-plugin-google-analytics \
     nodebb-plugin-write-api
+RUN npm audit fix
 
 RUN mkdir -p /usr/src/app/files/log
 
