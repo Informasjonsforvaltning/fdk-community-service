@@ -149,5 +149,26 @@ module.exports = function () {
 			});
 		});
 
+    app.route('/admin/:tid')
+		.post(apiMiddleware.requireAdmin, apiMiddleware.validateTid, function (req, res) {
+			if (!utils.checkRequired(['content', 'uid'], req, res)) {
+				return false;
+			}
+
+			var payload = {
+				tid: req.params.tid,
+				uid: req.body.uid,
+				req: utils.buildReqObject(req),	// For IP recording
+				content: req.body.content,
+				timestamp: req.body.timestamp,
+			};
+
+			if (req.body.toPid) { payload.toPid = req.body.toPid; }
+
+			Topics.reply(payload, function (err, returnData) {
+				errorHandler.handle(err, res, returnData);
+			});
+		})
+
 	return app;
 };

@@ -25,6 +25,8 @@ RUN npm install \
     nodebb-plugin-write-api
 RUN npm audit fix
 
+COPY ./nodebb-patch/write-api-patch.js ./node_modules/nodebb-plugin-write-api/routes/v2/posts.js
+
 RUN mkdir -p /usr/src/app/files/log
 
 ADD run.sh /run.sh
