@@ -2,15 +2,18 @@
 
 echo "Setting up msmtp"
 
-cat > ~/.msmtprc << EOL
+cat > /etc/msmtprc << EOL
 # Set default values for all following accounts.
 defaults
-port 25
+port $SMTP_PORT
 tls on
+tls_starttls on
+tls_certcheck off
 
 account default
 auth off
-host $SMTP_SERVER:$SMTP_PORT
+host $SMTP_SERVER
 domain $SMTP_HOSTNAME
+from datalandsbyen@norge.no
 add_missing_date_header on
 EOL
