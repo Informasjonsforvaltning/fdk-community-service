@@ -39,6 +39,7 @@ Strategy.prototype.authenticate = function (req, options) {
     .catch(() => {
       if (req.query.auth_callback) {
         var sessionId = req.session ? req.session.id : undefined;
+        var state = req.session ? req.session.id : undefined;
         this.getGrantFromCode(req, req.query.code, sessionId).then((grant) => {
           if (req.session) {
             req.session[Strategy.SESSION_KEY] = grant.__raw;

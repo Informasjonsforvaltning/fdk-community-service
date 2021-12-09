@@ -189,6 +189,7 @@
         icon: "fa-user",
         scope: (plugin.settings.scope || "").split(","),
         successUrl: "/",
+        checkState: false
       });
     } else {
       winston.error(
