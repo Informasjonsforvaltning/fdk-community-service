@@ -2,7 +2,7 @@
 
 echo "Community Docker container has been started"
 
-/setup-ssmtp.sh
+/setup-msmtp.sh
 
 # Setup a cron schedule (every hour)
 echo "*/5 * * * * TEST_MODE=$TEST_MODE TEST_EMAIL=$TEST_EMAIL API_TOKEN=$API_TOKEN API_TOKEN_WRITE=$API_TOKEN_WRITE BASE_URL='https://community.staging.fellesdatakatalog.digdir.no' /run.sh >> /usr/src/app/files/log/cron.log 2>&1
