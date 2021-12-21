@@ -17,8 +17,6 @@ COPY ./nodebb-patch/username.js ./public/src/client/account/edit/username.js
 COPY mail-template-delete-7days.html /
 COPY mail-template-deleted.html /
 
-COPY setup-msmtp.sh /
-
 RUN chown 1000:1000 -R \
     ./nodebb-theme-fdk \
     ./nodebb-plugin-fdk-sso \
@@ -28,7 +26,8 @@ RUN chown 1000:1000 -R \
 
 COPY run.sh /run.sh
 COPY startup.sh /startup.sh
-RUN chmod +x /run.sh /startup.sh
+COPY setup-msmtp.sh /
+RUN chmod +x /run.sh /startup.sh /setup-msmtp.sh
 
 USER 1000
 RUN npm install \
