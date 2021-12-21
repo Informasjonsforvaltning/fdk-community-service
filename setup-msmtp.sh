@@ -2,7 +2,7 @@
 
 echo "Setting up msmtp"
 
-cat > /etc/msmtprc << EOL
+cat > ~/.msmtprc << EOL
 # Set default values for all following accounts.
 defaults
 port $SMTP_PORT
