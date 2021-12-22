@@ -29,3 +29,4 @@ Password: **MyPassword**
 - SSMTP_HOSTNAME=datalandsbyen.norge.no
 - SSMTP_USER=
 - SSMTP_PASS=
+
