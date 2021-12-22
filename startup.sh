@@ -19,5 +19,6 @@ node ./nodebb activate nodebb-plugin-gdpr
 node ./nodebb activate nodebb-plugin-google-analytics
 node ./nodebb activate nodebb-plugin-write-api
 node ./nodebb reset -t nodebb-theme-fdk
-node ./nodebb build
-node ./nodebb start
+
+su node -c "node ./nodebb build"
+su node -c "node ./nodebb start"
