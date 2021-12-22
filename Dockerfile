@@ -5,7 +5,7 @@ USER root
 RUN apt-get update && \
     apt-get -y install cron jq msmtp && \
     apt-get -y remove exim4-base exim4-config exim4-daemon-light && \
-    ln -s /usr/bin/msmtp /usr/bin/sendmail
+    ln -s /usr/bin/msmtp /usr/sbin/sendmail
 
 COPY nodebb-theme-fdk ./nodebb-theme-fdk
 COPY nodebb-plugin-fdk-sso ./nodebb-plugin-fdk-sso
@@ -42,5 +42,6 @@ RUN npm install \
 
 RUN mkdir -p /usr/src/app/files/log
 
+USER root
 CMD /startup.sh
 
