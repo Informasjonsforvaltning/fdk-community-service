@@ -214,6 +214,35 @@
 				</ul>
 				<!-- ELSE -->
 				<ul id="logged-out-menu" class="nav navbar-nav navbar-right">
+					<!-- IF config.searchEnabled -->
+					<li class="fdk-search">
+						<form id="search-form" class="navbar-form navbar-right hidden-xs" role="search" method="GET">
+							<div id="fdk-search-fields" class="fdk-search-fields">
+								<div class="form-group">
+									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="query" value="">
+									<a href="/search">
+										<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-settings-md.svg" alt="Lenkeikon"/>
+									</a>
+								</div>
+								<button type="submit" class="btn btn-default">[[global:search]]</button>
+							</div>
+						</form>
+						<div id="quick-search-container" class="quick-search-container hidden">
+							<div class="checkbox filter-category">
+								<label>
+									<input type="checkbox" checked><span class="name"></span>
+								</label>
+							</div>
+							<div class="text-center loading-indicator"><i class="fa fa-spinner fa-spin"></i></div>
+							<div class="quick-search-results-container"></div>
+						</div>
+					</li>
+					<li class="visible-xs" id="search-menu">
+						<a href="{relative_path}/search">
+							<i class="fa fa-search fa-fw"></i> [[global:search]]
+						</a>
+					</li>
+				<!-- ENDIF config.searchEnabled -->
 					<li>
 						<a href="{relative_path}/login" class="login-link">
 							<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-community-login-md.svg" alt="Varslinger"/>
