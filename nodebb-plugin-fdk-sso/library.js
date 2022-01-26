@@ -374,9 +374,11 @@
           counter++;
         } while (existingUid);
 
-        uid = await User.create({ username, email });
-
-        User.updateProfile(uid, { uid, fullname });
+        uid = await User.getUidByEmail(email);
+        if (!uid) {
+          uid = await User.create({ username, email });
+          User.updateProfile(uid, { uid, fullname });
+        }
         success(uid);
       } else {
         success(uid); // Existing account -- merge
