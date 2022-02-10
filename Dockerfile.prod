@@ -1,4 +1,4 @@
-FROM nodebb/docker:1.19
+FROM nodebb/docker:1.19.1
 
 USER root
 
