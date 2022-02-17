@@ -306,32 +306,17 @@
         );
       } else {
         // New User
-        winston.info("[fdk-sso] create user");
-        plugin.createUser(payload, callback);
+        winston.info("[fdk-sso] fetch or create user");
+        plugin.fetchOrCreateUser(payload, callback);
       }
     });
   };
 
-  plugin.createUser = async (payload, callback) => {
+  plugin.fetchOrCreateUser = async (payload, callback) => {
     const success = (uid) => {
       // Save provider-specific information to the user
       User.setUserField(uid, plugin.name + "Id", payload.id);
       db.setObjectField(plugin.name + "Id:uid", payload.id, uid);
-
-      if (
-        payload.hasOwnProperty("facebook_id") &&
-        typeof payload["facebook_id"] !== "undefined"
-      ) {
-        payload.picture =
-          "https://graph.facebook.com/v2.8/" +
-          payload["facebook_id"] +
-          "/picture?type=large";
-      }
-
-      if (payload.picture) {
-        User.setUserField(uid, "uploadedpicture", payload.picture);
-        User.setUserField(uid, "picture", payload.picture);
-      }
 
       if (payload.joinGroups) {
         for (let i = 0; i < payload.joinGroups.length; i++) {
@@ -361,21 +346,25 @@
     };
 
     const { email, fullname } = payload;
+    const usernameByEmail = email.replace(/@.*/, '');
 
     try {
       let uid = await User.getUidByEmail(email);
       if (!uid) {
-        let username = email.replace(/@.*/, '');
+        winston.info(`[fdk-sso] User with email not found, generating username`);
+        let username;
         let existingUid;
         let counter = 0;
+
         do {
-          username = counter > 0 ? `${username}-${counter}` : username;
+          username = counter > 0 ? `${usernameByEmail}-${counter}` : usernameByEmail;
           existingUid = await User.getUidByUsername(username);
           counter++;
         } while (existingUid);
 
         uid = await User.getUidByEmail(email);
         if (!uid) {
+          winston.info(`[fdk-sso] Create new user`);
           uid = await User.create({ username, email });
           User.updateProfile(uid, { uid, fullname });
         }
