@@ -1,0 +1,14 @@
+{
+    "globals": {
+        "$": true,
+        "jQuery": true,
+        "app": true,
+        "socket": true,
+        "config": true,
+        "ajaxify": true,
+        "bootbox": true
+    },
+    "env": {
+        "browser": true
+    }
+}

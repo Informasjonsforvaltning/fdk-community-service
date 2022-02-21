@@ -11,6 +11,7 @@ echo "0 * * * * TEST_MODE=$TEST_MODE TEST_EMAIL=$TEST_EMAIL API_TOKEN=$API_TOKEN
 crontab scheduler.txt
 cron -f &
 
+node ./nodebb activate nodebb-plugin-fdk-resource-link
 node ./nodebb activate nodebb-plugin-fdk-consent
 node ./nodebb activate nodebb-plugin-fdk-sso
 node ./nodebb activate nodebb-plugin-calendar

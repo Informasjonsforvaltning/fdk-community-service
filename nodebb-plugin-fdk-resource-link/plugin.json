@@ -1,0 +1,19 @@
+{
+  "library": ".",
+  "staticDirs": {
+    "bundles": "build/bundles/"
+  },
+  "hooks": [
+    { "hook": "static:app.load", "method": "init" },
+    { "hook": "filter:composer.formatting", "method": "composerFormatting", "priority": 4 }
+  ],
+  "templates": "public/templates",
+  "languages": "public/languages",
+  "defaultLang": "nb",
+  "less": [
+    "public/style.less"
+  ],
+  "scripts": [
+    "build/bundles/client.js"
+  ]
+}
