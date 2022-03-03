@@ -345,10 +345,15 @@
       callback(null, { uid: uid });
     };
 
-    const { email, fullname } = payload;
-    const usernameByEmail = email.replace(/@.*/, '');
-
     try {
+      const { email, fullname } = payload;
+
+      if(!email) {
+        throw new Error('No required email in payload');
+      }
+
+      const usernameByEmail = email.replace(/@.*/, '');
+      
       let uid = await User.getUidByEmail(email);
       if (!uid) {
         winston.info(`[fdk-sso] User with email not found, generating username`);
