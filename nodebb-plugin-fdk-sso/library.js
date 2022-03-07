@@ -371,7 +371,8 @@
         if (!uid) {
           winston.info(`[fdk-sso] Create new user`);
           uid = await User.create({ username, email });
-          User.updateProfile(uid, { uid, fullname });
+          await User.email.confirmByUid( uid );
+          await User.updateProfile(uid, { uid, fullname });
         }
         success(uid);
       } else {
