@@ -8,7 +8,7 @@ RUN cd nodebb-plugin-fdk-resource-link && \
     npm run build-production
 
 
-FROM nodebb/docker:1.19.3
+FROM nodebb/docker:2.0.0
 
 USER root
 
