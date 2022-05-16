@@ -54,6 +54,6 @@
     "socket.io-client": "^4.4.1"
   },
   "nbbpm": {
-    "compatibility": "~1.17 || ~1.18"
+    "compatibility": "^2.0.0"
   }
 }
