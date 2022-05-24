@@ -10,11 +10,11 @@
 		"./lib/client.js",
 		"../nodebb-theme-persona/public/persona.js",
 		"../nodebb-theme-persona/public/modules/autohidingnavbar.js",
-		"../nodebb-theme-persona/public/modules/quickreply.js",
 		"./public/fdk.js"
 	],
 	"modules": {
-		"pulling.js": "node_modules/pulling/build/pulling-drawer.js"
+		"persona/quickreply.js": "../nodebb-theme-persona/public/modules/quickreply.js",
+		"../admin/themes/library.js": "static/lib/admin.js"
 	},
 	"staticDirs": {
 		"images": "static/images"

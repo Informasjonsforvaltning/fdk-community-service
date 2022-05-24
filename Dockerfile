@@ -1,4 +1,4 @@
-FROM node:14.19-alpine AS builder
+FROM node:18-alpine3.14 AS builder
 RUN npm install -g typescript
 
 COPY nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link
@@ -8,7 +8,7 @@ RUN cd nodebb-plugin-fdk-resource-link && \
     npm run build-production
 
 
-FROM nodebb/docker:1.19.3
+FROM nodebb/docker:2.0.0
 
 USER root
 
@@ -51,7 +51,7 @@ RUN npm install \
     ./nodebb-plugin-fdk-sso \
     ./nodebb-plugin-fdk-consent \
     ./nodebb-plugin-fdk-resource-link \
-    nodebb-plugin-calendar \
+    nodebb-plugin-calendar@latest \
     nodebb-plugin-gdpr \
     nodebb-plugin-google-analytics \
     nodebb-plugin-write-api && \

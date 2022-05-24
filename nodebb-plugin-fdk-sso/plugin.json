@@ -25,11 +25,9 @@
     "staticDirs": {
         "static": "./static"
     },
-    "scripts": [
-        "static/lib/main.js"
-    ],
-    "acpScripts": [
-        "static/lib/admin.js"
-    ],
+    "modules": {
+		"../admin/plugins/2factor.js": "./static/lib/admin.js",
+        "../admin/plugins/fdk-sso.js": "static/lib/main.js"
+	},
     "templates": "static/templates"
 }
