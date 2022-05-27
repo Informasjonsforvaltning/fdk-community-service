@@ -54,8 +54,7 @@ RUN npm install \
     nodebb-plugin-calendar@latest \
     nodebb-plugin-gdpr \
     nodebb-plugin-google-analytics \
-    nodebb-plugin-write-api && \
-    npm audit fix --audit-level=high
+    nodebb-plugin-write-api
 
 RUN mkdir -p /usr/src/app/files/log
 
