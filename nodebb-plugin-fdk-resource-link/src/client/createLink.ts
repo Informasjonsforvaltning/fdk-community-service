@@ -1,11 +1,12 @@
+import $ from 'jquery'
+
 export interface CreateLink {
   (data: string, callback: (link: string | null) => void): void;
 }
 
 const createLinkFactory = (): CreateLink => {
   const modal = $('#plugin-fdk-resource-link-editor').modal({
-    backdrop: false,
-    show: false,
+    backdrop: false
   });
   const inputs = {
     value: modal.find('#plugin-fdk-resource-link-editor-value'),

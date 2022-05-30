@@ -1,6 +1,7 @@
 import Benchpress from 'benchpress';
 import { translate } from 'translator';
 import formatting from 'composer/formatting';
+import $ from 'jquery'
 
 import createLinkFactory, { CreateLink } from './createLink';
 

@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import './locationHistory';
 
 // eslint-disable-next-line camelcase, no-undef
