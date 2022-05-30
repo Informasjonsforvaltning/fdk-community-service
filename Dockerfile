@@ -1,4 +1,4 @@
-FROM node:14.19-alpine AS builder
+FROM node:16.15.0-alpine3.15 AS builder
 RUN npm install -g typescript
 
 COPY nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link
@@ -8,7 +8,7 @@ RUN cd nodebb-plugin-fdk-resource-link && \
     npm run build-production
 
 
-FROM nodebb/docker:1.19.3
+FROM nodebb/docker:2.0.1
 
 USER root
 
@@ -55,15 +55,9 @@ RUN npm install \
     ./nodebb-plugin-fdk-sso \
     ./nodebb-plugin-fdk-consent \
     ./nodebb-plugin-fdk-resource-link \
-    nodebb-plugin-calendar@1.1.3 \
+    nodebb-plugin-calendar@latest \
     nodebb-plugin-gdpr \
-    nodebb-plugin-google-analytics \
-    nodebb-plugin-write-api
-
-# Commenting out audit fix.
-# This solution is temporary. NodeBB should be upgraded as soon as
-# nodebb-plugin-calendar compatibility for NodeBB ^2.0.0 is fixed.
-# RUN npm audit fix --audit-level=high
+    nodebb-plugin-google-analytics
 
 RUN mkdir -p /usr/src/app/files/log
 

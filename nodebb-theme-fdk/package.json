@@ -2,7 +2,7 @@
   "name": "nodebb-theme-fdk",
   "version": "0.1.0",
   "description": "Custom theming for the FDK community forum",
-  "main": "theme.less",
+  "main": "./lib/theme.js",
   "keywords": [],
   "license": "MIT",
   "repository": {
