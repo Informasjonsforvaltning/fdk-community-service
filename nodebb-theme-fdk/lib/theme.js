@@ -1,8 +1,10 @@
 
 "use strict";
-import { registerHelper } from 'benchpressjs';
+const Benchpress = require('benchpressjs');
 
-export async function defineWidgetAreas(areas) {
+var Theme = module.exports;
+
+Theme.defineWidgetAreas = async function(areas) {
 	return areas.concat([
 		{
 			'name': 'MOTD',
@@ -25,9 +27,9 @@ export async function defineWidgetAreas(areas) {
 			'location': 'footer'
 		}
 	]);
-}
+};
 
-registerHelper('resolvePathIconSrc', (route) => {
+Benchpress.registerHelper('resolvePathIconSrc', (route) => {
 	var routeName = route.match(/;.*/)[0].substring(1);
 	if (["categories", "groups", "popular", "recent", "tags", "users"].includes(routeName)) {
 		return `/plugins/nodebb-theme-fdk/images/icon-community-${routeName}-md.svg`;
