@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 interface Data {
   url: string | null,
 }
