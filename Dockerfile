@@ -1,4 +1,4 @@
-FROM node:16.15.0-alpine3.15 AS builder
+FROM node:18-alpine3.14 AS builder
 RUN npm install -g typescript
 
 COPY nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link

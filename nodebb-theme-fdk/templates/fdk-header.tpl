@@ -2,7 +2,7 @@
   <div class="fdk-container container">
     <div class="fdk-logo">
       <a id="fdk-logo-link" href="/">
-        <img src="/plugins/nodebb-theme-fdk/images/datalandsbyen-logo.svg" alt="Datalandsbyen Logo">
+        <img src="/assets/plugins/nodebb-theme-fdk/images/datalandsbyen-logo.svg" alt="Datalandsbyen Logo">
       </a>
     </div>
   </div>
