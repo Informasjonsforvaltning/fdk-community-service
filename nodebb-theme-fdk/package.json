@@ -2,7 +2,7 @@
   "name": "nodebb-theme-fdk",
   "version": "0.1.0",
   "description": "Custom theming for the FDK community forum",
-  "main": "./lib/theme.js",
+  "main": "lib/theme.js",
   "keywords": [],
   "license": "MIT",
   "repository": {
@@ -43,5 +43,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": ""
+  "author": "",
+  "nbbpm": {
+    "compatibility": "^2.0.0",
+    "index": false
+  }
 }

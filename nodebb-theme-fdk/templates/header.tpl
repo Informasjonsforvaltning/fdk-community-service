@@ -41,7 +41,7 @@
 			</div>
 		</nav>
     <div class="fdk-splash container" id="fdk-splash">
-      <img src="/plugins/nodebb-theme-fdk/images/illustration-community.svg" alt="Community illustrasjon" />
+      <img src="/assets/plugins/nodebb-theme-fdk/images/illustration-community.svg" alt="Community illustrasjon" />
       <div class="fdk-welcome">
         <h1>[[fdk:welcome.header]]</h1>
         <h4>[[fdk:welcome.ingress]]</h4>

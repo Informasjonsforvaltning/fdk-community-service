@@ -1,7 +1,7 @@
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle pull-left" id="mobile-menu">
 					<span component="notifications/icon" class="fa unread-count" data-content="{unreadCount.notification}">
-						<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-community-notifications-md.svg" alt="Varslinger"/>
+						<img class="navbar-fdk-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-community-notifications-md.svg" alt="Varslinger"/>
 					</span>
 					<i class="fa fa-lg fa-fw fa-bars"></i>
 				</button>
@@ -68,7 +68,7 @@
 								<div class="form-group">
 									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="query" value="">
 									<a href="/search">
-										<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-settings-md.svg" alt="Lenkeikon"/>
+										<img class="navbar-fdk-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-settings-md.svg" alt="Lenkeikon"/>
 									</a>
 								</div>
 								<button type="submit" class="btn btn-default">[[global:search]]</button>
@@ -93,7 +93,7 @@
 					<li class="notifications dropdown text-center hidden-xs" component="notifications">
 						<a href="{relative_path}/notifications" title="[[global:header.notifications]]" class="dropdown-toggle" data-toggle="dropdown" id="notif_dropdown" data-ajaxify="false" role="button">
 							<i component="notifications/icon" class="fa unread-count" data-content="{unreadCount.notification}">
-								<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-community-notifications-md.svg" alt="Varslinger"/>
+								<img class="navbar-fdk-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-community-notifications-md.svg" alt="Varslinger"/>
 							</i>
 							<span class="navbar-button-title">[[global:header.notifications]]</span>
 						</a>
@@ -221,7 +221,7 @@
 								<div class="form-group">
 									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="query" value="">
 									<a href="/search">
-										<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-settings-md.svg" alt="Lenkeikon"/>
+										<img class="navbar-fdk-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-settings-md.svg" alt="Lenkeikon"/>
 									</a>
 								</div>
 								<button type="submit" class="btn btn-default">[[global:search]]</button>
@@ -245,7 +245,7 @@
 				<!-- ENDIF config.searchEnabled -->
 					<li>
 						<a href="{relative_path}/login" class="login-link">
-							<img class="navbar-fdk-icon" src="/plugins/nodebb-theme-fdk/images/icon-community-login-md.svg" alt="Varslinger"/>
+							<img class="navbar-fdk-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-community-login-md.svg" alt="Varslinger"/>
 							<span>[[fdk:navbar.login]]</span>
 						</a>
 					</li>
