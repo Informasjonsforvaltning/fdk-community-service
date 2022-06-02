@@ -1,6 +1,6 @@
 <noscript><div class="dropdown" component="category-selector"></noscript>
 <label component="category/post" for="category-dropdown-check" class="btn btn-primary" id="new_topic" role="button">
-	<img class="fdk-text-icon" src="/plugins/nodebb-theme-fdk/images/icon-add-circle-sm.svg" alt="Add">
+	<img class="fdk-text-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-add-circle-sm.svg" alt="Add">
   [[category:new_topic_button]]
 </label>
 <noscript>

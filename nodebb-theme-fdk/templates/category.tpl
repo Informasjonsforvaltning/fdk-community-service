@@ -13,7 +13,7 @@
 		<div class="row topic-list-header clearfix">
 			<!-- IF privileges.topics:create -->
 			<a href="{config.relative_path}/compose?cid={cid}" component="category/post" id="new_topic" class="btn btn-primary" data-ajaxify="false" role="button">
-        <img class="fdk-text-icon" src="/plugins/nodebb-theme-fdk/images/icon-add-circle-sm.svg" alt="Add">
+        <img class="fdk-text-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-add-circle-sm.svg" alt="Add">
         [[category:new_topic_button]]
       </a>
 			<!-- ELSE -->
