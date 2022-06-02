@@ -1,5 +1,4 @@
 {
-  "library": ".",
   "staticDirs": {
     "bundles": "build/bundles/"
   },

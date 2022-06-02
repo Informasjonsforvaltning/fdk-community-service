@@ -57,7 +57,12 @@ RUN npm install \
     ./nodebb-plugin-fdk-resource-link \
     nodebb-plugin-calendar@latest \
     nodebb-plugin-gdpr \
-    nodebb-plugin-google-analytics
+    nodebb-plugin-google-analytics && \
+    npm uninstall \
+        nodebb-plugin-emoji \
+        nodebb-plugin-emoji-android \
+        node_modules/multer && \
+    npm audit fix --audit-level=high
 
 RUN mkdir -p /usr/src/app/files/log
 
