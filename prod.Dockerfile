@@ -15,7 +15,7 @@ USER root
 RUN apt-get update && \
     apt-get -y install cron jq msmtp && \
     apt-get -y remove exim4-base exim4-config exim4-daemon-light && \
-    ln -s /usr/bin/msmtp /usr/sbin/sendmail
+    ln -s /usr/bin/msmtp /usr/sbin/sendmail 
 
 COPY nodebb-theme-fdk ./nodebb-theme-fdk
 COPY nodebb-plugin-fdk-sso ./nodebb-plugin-fdk-sso
@@ -41,21 +41,29 @@ RUN chown 1000:1000 -R \
     ./public/src/client/account/edit/username.js
 
 COPY run.sh /run.sh
-COPY startup.prod.sh /startup.sh
+COPY startup.sh /startup.sh
 COPY setup-msmtp.sh /
 RUN chmod +x /run.sh /startup.sh /setup-msmtp.sh
 
 USER 1000
+
+# Using specific version of calender. 
+# This solution is temporary. NodeBB should be upgraded as soon as
+# nodebb-plugin-calendar compatibility for NodeBB ^2.0.0 is fixed.
 RUN npm install \
     ./nodebb-theme-fdk \
     ./nodebb-plugin-fdk-sso \
     ./nodebb-plugin-fdk-consent \
     ./nodebb-plugin-fdk-resource-link \
-    nodebb-plugin-calendar \
+    nodebb-plugin-calendar@1.1.3 \
     nodebb-plugin-gdpr \
     nodebb-plugin-google-analytics \
-    nodebb-plugin-write-api && \
-    npm audit fix --audit-level=high
+    nodebb-plugin-write-api
+
+# Commenting out audit fix.
+# This solution is temporary. NodeBB should be upgraded as soon as
+# nodebb-plugin-calendar compatibility for NodeBB ^2.0.0 is fixed.
+# RUN npm audit fix --audit-level=high
 
 RUN mkdir -p /usr/src/app/files/log
 
