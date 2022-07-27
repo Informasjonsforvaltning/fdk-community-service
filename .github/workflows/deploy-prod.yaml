@@ -18,6 +18,9 @@ jobs:
       environment: prod
       cluster: digdir-fdk-prod
       dockerfile: prod.Dockerfile
+      snapshot_disk: fdk-prod-community-service
+      snapshot_name: autodeploy-prod-community-service
+      snapshot_zone: europe-north1-a
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GCP_SA_DIGDIR_FDK_GCR_KEY: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_KEY }}
