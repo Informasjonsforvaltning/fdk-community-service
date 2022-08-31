@@ -29,3 +29,21 @@ Password: **MyPassword**
 - SSMTP_HOSTNAME=datalandsbyen.norge.no
 - SSMTP_USER=
 - SSMTP_PASS=
+
+## Running tests
+Start your local instance
+```
+docker-compose up -d
+```
+
+Open Cypress interactively and run tests
+```
+cd e2e
+npm run cypress:open
+```
+
+Run tests and store results in Cypress dasboard
+```
+cd e2e
+npm run cypress:run
+```
