@@ -1,4 +1,4 @@
-FROM node:18-alpine3.14 AS builder
+FROM node:18-alpine3.16 AS builder
 RUN npm install -g typescript
 
 COPY nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link
@@ -8,7 +8,7 @@ RUN cd nodebb-plugin-fdk-resource-link && \
     npm run build-production
 
 
-FROM nodebb/docker:2.0.1
+FROM nodebb/docker:2.4.5
 
 USER root
 
@@ -47,15 +47,12 @@ RUN chmod +x /run.sh /startup.sh /setup-msmtp.sh
 
 USER 1000
 
-# Using specific version of calender. 
-# This solution is temporary. NodeBB should be upgraded as soon as
-# nodebb-plugin-calendar compatibility for NodeBB ^2.0.0 is fixed.
 RUN npm install \
     ./nodebb-theme-fdk \
     ./nodebb-plugin-fdk-sso \
     ./nodebb-plugin-fdk-consent \
     ./nodebb-plugin-fdk-resource-link \
-    nodebb-plugin-calendar@latest \
+    nodebb-plugin-calendar \
     nodebb-plugin-gdpr \
     nodebb-plugin-google-analytics && \
     npm uninstall \
