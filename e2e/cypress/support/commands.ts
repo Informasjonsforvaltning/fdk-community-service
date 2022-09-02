@@ -6,3 +6,14 @@ Cypress.Commands.add('typeAndRetry', (textField, text) => {
     ($ssnField) => $ssnField.val() == text,
   ).should('have.value', text)
 })
+
+
+Cypress.Commands.add('elementExists', (selector, callbackSuccess, callbackFail) => {
+  cy.get('body').then(($body) => {
+    if ($body.find(selector).length) {
+      callbackSuccess()
+    } else {
+      callbackFail()
+    }
+  })
+})
