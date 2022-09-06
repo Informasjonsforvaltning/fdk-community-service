@@ -10,8 +10,9 @@ Cypress.Commands.add('typeAndRetry', (textField, text) => {
 
 Cypress.Commands.add('elementExists', (selector, callbackSuccess, callbackFail) => {
   cy.get('body').then(($body) => {
-    if ($body.find(selector).length) {
-      callbackSuccess()
+    const el = $body.find(selector);
+    if (el.length) {
+      callbackSuccess(el)
     } else {
       callbackFail()
     }
