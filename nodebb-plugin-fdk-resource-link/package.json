@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/Informasjonsforvaltning/fdk-community-service#readme",
   "devDependencies": {
+    "@types/bootstrap": "^3.4.0",
     "@types/express": "^4.17.13",
     "@types/nconf": "^0.10.2",
     "@types/node": "^17.0.35",
@@ -46,11 +47,7 @@
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2"
   },
-  "dependencies": {
-    "@types/bootstrap": "^5.1.12",
-    "@types/jquery": "^3.5.14",
-    "chalk": "^5.0.1",
-    "socket.io-client": "^4.4.1",
+  "dependencies": {    
     "source-map-support": "^0.5.21",
     "validator": "^13.7.0"
   },

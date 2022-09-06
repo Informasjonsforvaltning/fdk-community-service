@@ -6,7 +6,8 @@ export interface CreateLink {
 
 const createLinkFactory = (): CreateLink => {
   const modal = $('#plugin-fdk-resource-link-editor').modal({
-    backdrop: false
+    backdrop: false,
+    show: false
   });
   const inputs = {
     value: modal.find('#plugin-fdk-resource-link-editor-value'),
