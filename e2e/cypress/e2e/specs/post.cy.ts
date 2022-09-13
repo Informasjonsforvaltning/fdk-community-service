@@ -16,7 +16,7 @@ describe('Datalandsbyen', function() {
       cy.visit('http://localhost:4567/category/2/general-discussion');
 
       cy.get('#new_topic').click();
-      cy.wait(1000)
+      cy.wait(2000)
       cy.elementExists("#plugin-fdk-resource-link-editor", ($modal: any) => {
         const display = $modal.css("display");
         if(display === 'none') {
