@@ -63,10 +63,10 @@
 				<ul id="logged-in-menu" class="nav navbar-nav navbar-right logged-in-menu">
 				<!-- IF config.searchEnabled -->
 					<li class="fdk-search">
-						<form id="search-form" class="navbar-form navbar-right hidden-xs" role="search" method="GET">
+						<form id="search-form" class="navbar-form navbar-right hidden-xs" role="search" method="GET" action="{relative_path}/search">
 							<div id="fdk-search-fields" class="fdk-search-fields">
 								<div class="form-group">
-									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="query" value="">
+									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="term" value="">
 									<a href="/search">
 										<img class="navbar-fdk-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-settings-md.svg" alt="Lenkeikon"/>
 									</a>
@@ -216,10 +216,10 @@
 				<ul id="logged-out-menu" class="nav navbar-nav navbar-right">
 					<!-- IF config.searchEnabled -->
 					<li class="fdk-search">
-						<form id="search-form" class="navbar-form navbar-right hidden-xs" role="search" method="GET">
+						<form id="search-form" class="navbar-form navbar-right hidden-xs" role="search" method="GET" action="{relative_path}/search">
 							<div id="fdk-search-fields" class="fdk-search-fields">
 								<div class="form-group">
-									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="query" value="">
+									<input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="term" value="">
 									<a href="/search">
 										<img class="navbar-fdk-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-settings-md.svg" alt="Lenkeikon"/>
 									</a>
