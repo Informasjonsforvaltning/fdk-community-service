@@ -13,6 +13,7 @@ FROM nodebb/docker:2.5.7
 USER root
 
 RUN apt-get update && \
+    apt-get -y upgrade && \
     apt-get -y install cron jq msmtp && \
     apt-get -y remove exim4-base exim4-config exim4-daemon-light && \
     ln -s /usr/bin/msmtp /usr/sbin/sendmail 
