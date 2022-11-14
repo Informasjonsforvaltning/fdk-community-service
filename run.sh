@@ -109,7 +109,7 @@ while [ $current_page -le $page_count ]; do
       echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days)"
       if [ "true" != "$TEST_MODE" ];
       then
-        curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account"
+        curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
         echo ""
       fi
 
@@ -133,7 +133,7 @@ while [ $current_page -le $page_count ]; do
         echo "$ts - Removing user without gdpr consent with uid $uid"
         if [ "true" != "$TEST_MODE" ];
         then
-          curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account"
+          curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
           echo ""
         fi
       else
