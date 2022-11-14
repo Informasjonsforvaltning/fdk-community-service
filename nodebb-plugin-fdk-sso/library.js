@@ -7,6 +7,9 @@
   const nconf = require.main.require("nconf");
   const format = require("util").format;
 
+  const URL = require('url')
+  const fetch = require("node-fetch");
+
   const User = require.main.require("./src/user");
   const Groups = require.main.require("./src/groups");
   const db = require.main.require("./src/database");
@@ -64,15 +67,44 @@
     });
   };
 
-  plugin.logout = (data, callback) => {
-    const req = data.req;
-    if (req.session) {
-      delete req.session[Strategy.SESSION_KEY];
+  plugin._keycloakLogout = (req) => {
+    const parsedRequest = URL.parse(req.url, true); 
+    let idTokenHint = null
+    if (req.kauth.grant) {
+      idTokenHint = req.kauth.grant.id_token.token
+      req.kauth.grant.unstore(req, response)
+      delete req.kauth.grant
     }
+
+    const queryParams = parsedRequest.query
+    let redirectUrl = queryParams && queryParams.redirect_url
+    if (!redirectUrl) {
+      const host = req.hostname
+      const headerHost = req.headers.host.split(':')
+      const port = headerHost[1] || ''
+      redirectUrl = req.protocol + '://' + host + (port === '' ? '' : ':' + port) + '/'
+    }
+    const keycloakLogoutUrl = plugin.strategy.logoutUrl(redirectUrl, idTokenHint)
+    console.log(keycloakLogoutUrl);
+    fetch(keycloakLogoutUrl);
+  }
+
+  plugin.logout = (data, callback) => {
+    const {req: {res}} = data;
+
+    console.log(req.cookies[Strategy.TOKEN_KEY]);
+
+    if (res.cookies) {
+      res.clearCookie(Strategy.TOKEN_KEY);
+    }  
+    
+    //plugin._keycloakLogout(req);
+
     callback();
   };
 
   plugin.adminLogout = (request, response) => {
+    console.log("adminLogout", "1");
     const doLogout = (data, callback) => {
       if (typeof data !== "string" || data.indexOf(".") < 0) {
         return callback(new Error("invalid payload"));
@@ -141,20 +173,26 @@
         return callback(new Error("User logout unsucessful."));
       }
     }
+    console.log("adminLogout", "2");
 
     let reqData = "";
     request.on("data", (d) => {
       reqData += d.toString();
     });
 
+    console.log("adminLogout", "3");
+
     request.on("end", () => {
-      return doLogout(reqData, (err, result) => {
+      return doLogout(reqData, (err, result) => {        
         if (err) {
           return response.send(err.message);
         }
+        
         response.send(result);
       });
     });
+
+    console.log("adminLogout", "4");
   };
 
   plugin.getStrategy = (strategies, callback) => {
@@ -532,15 +570,15 @@
   };
 
   plugin.getClientConfig = (config, next) => {
-    if (plugin.keycloakConfig) {
-      config.keycloak = {
-        logoutUrl:
-          plugin.keycloakConfig["auth-server-url"] +
-          "/realms/" +
-          plugin.keycloakConfig["realm"] +
-          "/protocol/openid-connect/logout",
-      };
-    }
+    // if (plugin.keycloakConfig) {
+    //   config.keycloak = {
+    //     logoutUrl:
+    //       plugin.keycloakConfig["auth-server-url"] +
+    //       "/realms/" +
+    //       plugin.keycloakConfig["realm"] +
+    //       "/protocol/openid-connect/logout",
+    //   };
+    // }
     next(null, config);
   };
 

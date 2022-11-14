@@ -14,10 +14,11 @@ function Strategy(options, verify) {
   this.verify = verify;
 }
 
-Strategy.SESSION_KEY = "keycloak-token";
+Strategy.TOKEN_KEY = "keycloak-token";
 
 Strategy.prototype.authenticate = function (req, options) {
   var self = this;
+
   if (req.query && req.query.error) {
     return this.fail(req.query.error);
   }
@@ -38,12 +39,17 @@ Strategy.prototype.authenticate = function (req, options) {
     })
     .catch(() => {
       if (req.query.auth_callback) {
-        var sessionId = req.session ? req.session.id : undefined;
-        var state = req.session ? req.session.id : undefined;
+        const {res} = req;
+        console.log('getGrant 1');
+        const sessionId = req.session ? req.session.id : undefined;
         this.getGrantFromCode(req, req.query.code, sessionId).then((grant) => {
-          if (req.session) {
-            req.session[Strategy.SESSION_KEY] = grant.__raw;
+          console.log('getGrant 2');
+          if (res.cookie) {
+            res.setHeader('Set-Cookie', [
+              `${Strategy.TOKEN_KEY}=${grant.__raw}; HttpOnly; Max-Age=${60000 * 1};`,
+            ])
           }
+          console.log('getGrant 3');
           self.redirect(self.cleanUrl(req));
         });
       } else {
@@ -112,7 +118,7 @@ Strategy.prototype.getRedirectURL = function (req) {
 };
 
 Strategy.prototype.getGrant = async function (req) {
-  var grantData = req.session[Strategy.SESSION_KEY];
+  var grantData = req.cookies[Strategy.TOKEN_KEY];
   if (typeof grantData === "string") {
     grantData = JSON.parse(grantData);
   }
@@ -126,6 +132,7 @@ Strategy.prototype.getGrant = async function (req) {
 };
 
 Strategy.prototype.loginUrl = Keycloak.prototype.loginUrl;
+Strategy.prototype.logoutUrl = Keycloak.prototype.logoutUrl;
 
 exports = module.exports = Strategy;
 exports.Strategy = Strategy;

@@ -1,30 +1,31 @@
 <form role="form" id="fdk-sso-settings">
 	<div class="row">
-		<div class="col-sm-2 col-xs-12 settings-header">FDK Single Sign-On Settings</div>
-		<div class="col-sm-10 col-xs-12">
-			<div class="form-group">
-  				<label>Keycloak OIDC JSON</label>
-  				<textarea class="form-control" rows="10" data-key="keycloak-config"></textarea>
+		<div class="col-sm-2 col-12 settings-header">FDK Single Sign-On Settings</div>
+		<div class="col-sm-10 col-12">
+			<div class="mb-3">
+  				<label class="form-label" for="keycloak-config">Keycloak OIDC JSON</label>
+  				<textarea class="form-control" rows="10" id="keycloak-config" name="keycloak-config"></textarea>
 			</div>
-			<div class="form-group">
-  				<label>Valid redirect hostnames. Seperate with comma (,)</label>
-  				<textarea class="form-control" rows="1" data-key="valid-redirects"></textarea>
+			<div class="mb-3">
+  				<label class="form-label" for="valid-redirects">Valid redirect hostnames. Seperate with comma (,)</label>
+  				<input type="text" class="form-control" id="valid-redirects" name="valid-redirects"></input>
+
 			</div>
-			<div class="form-group">
-				<label>Callback URL</label>
-				<textarea class="form-control" rows="1" data-key="callback-url"></textarea>
+			<div class="mb-3">
+				<label class="form-label" for="callback-url">Callback URL</label>
+				<input type="text" class="form-control" id="callback-url" name="callback-url"></input>
 			</div>
-			<div class="form-group">
-				<label>Admin URL</label>
-				<textarea class="form-control" rows="1" data-key="admin-url"></textarea>
+			<div class="mb-3">
+				<label class="form-label" for="admin-url">Admin URL</label>				
+				<input type="text" class="form-control" id="admin-url" name="admin-url"></input>
 			</div>
-			<div class="form-group">
-  				<label>Token mapping</label>
-  				<textarea class="form-control" rows="8" data-key="token-mapper"></textarea>
+			<div class="mb-3">
+  				<label class="form-label" for="token-mapper">Token mapping</label>
+  				<textarea class="form-control" rows="8" id="token-mapper" name="token-mapper"></textarea>
 			</div>
-			<div class="form-group">
-  				<label>Client role to group mapping. Format JSON.</label>
-  				<textarea class="form-control" rows="8" data-key="client-role-to-group-mapper"></textarea>
+			<div class="mb-3">
+  				<label class="form-label" for="client-role-to-group-mapper">Client role to group mapping. Format JSON.</label>
+  				<textarea class="form-control" rows="8" id="client-role-to-group-mapper" name="client-role-to-group-mapper"></textarea>
 			</div>
 		</div>
 	</div>

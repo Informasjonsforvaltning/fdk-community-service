@@ -29,7 +29,7 @@
         "static/lib/main.js"
     ],
     "modules": {
-        "../admin/plugins/persona.js": "static/lib/admin.js"
+        "../admin/plugins/fdk-sso.js": "static/lib/admin.js"
     },
     "templates": "static/templates"
 }

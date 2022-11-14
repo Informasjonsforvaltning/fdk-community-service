@@ -1,22 +1,18 @@
 'use strict';
 /* globals $, define, socket */
 
-define('admin/plugins/fdk-sso', ['settings'], function(Settings) {
+define('admin/plugins/fdk-sso', ['settings'], function(settings) {
+  var ACP = {};
 
-    var ACP = {};
+	ACP.init = function () {
+		settings.load('fdk-sso', $('#fdk-sso-settings'), function () {});
+		$('#save').on('click', saveSettings);
+	};
 
-    ACP.init = function() {
+	function saveSettings() {
+		settings.save('fdk-sso', $('#fdk-sso-settings')); // pass in a function in the 3rd parameter to override the default success/failure handler
+	}
 
-        var wrapper = $('#fdk-sso-settings');
-        Settings.sync('fdk-sso', wrapper);
+	return ACP;  
 
-        $('#save').on('click', function() {
-            event.preventDefault();
-            Settings.persist('fdk-sso', wrapper, function() {
-                socket.emit('admin.settings.syncSsoKeycloak');
-            });
-        });
-    };
-
-    return ACP;
 });
