@@ -39,12 +39,12 @@ Strategy.prototype.authenticate = function (req, options) {
     })
     .catch(() => {
       if (req.query.auth_callback) {
-        const {response: res} = req;
-        console.log('getGrant 1', req, res);
+        const {res} = req;
+        console.log('getGrant 1', res);
         const sessionId = req.session ? req.session.id : undefined;
         this.getGrantFromCode(req, req.query.code, sessionId).then((grant) => {
           console.log('getGrant 2');
-          if (res.cookie) {
+          if (res) {
             res.setHeader('Set-Cookie', [
               `${Strategy.TOKEN_KEY}=${grant.__raw}; HttpOnly; Max-Age=${60000 * 1};`,
             ])
