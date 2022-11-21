@@ -39,8 +39,8 @@ Strategy.prototype.authenticate = function (req, options) {
     })
     .catch(() => {
       if (req.query.auth_callback) {
-        const {res} = req;
-        console.log('getGrant 1');
+        const {response: res} = req;
+        console.log('getGrant 1', res);
         const sessionId = req.session ? req.session.id : undefined;
         this.getGrantFromCode(req, req.query.code, sessionId).then((grant) => {
           console.log('getGrant 2');
