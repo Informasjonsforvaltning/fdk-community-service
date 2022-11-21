@@ -44,10 +44,8 @@ Strategy.prototype.authenticate = function (req, options) {
         const sessionId = req.session ? req.session.id : undefined;
         this.getGrantFromCode(req, req.query.code, sessionId).then((grant) => {
           console.log('getGrant 2');
-          if (res) {
-            res.setHeader('Set-Cookie', [
-              `${Strategy.TOKEN_KEY}=${grant.__raw}; HttpOnly; Max-Age=${60000 * 1};`,
-            ])
+          if (res) {            
+            res.cookie(Strategy.TOKEN_KEY, grant.__raw, { maxAge: 60000, httpOnly: true, secure: true });
           }
           console.log('getGrant 3');
           self.redirect(self.cleanUrl(req));
