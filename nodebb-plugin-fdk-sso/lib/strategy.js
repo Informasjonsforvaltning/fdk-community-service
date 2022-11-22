@@ -1,4 +1,5 @@
 var GrantManager = require("keycloak-connect/middleware/auth-utils/grant-manager"),
+  Token = require("keycloak-connect/middleware/auth-utils/token"),
   Config = require("keycloak-connect/middleware/auth-utils/config"),
   Keycloak = require("keycloak-connect"),
   uuid = require("uuid"),
@@ -62,15 +63,16 @@ Strategy.prototype.getGrantFromCode = function (req, code, sessionId) {
 };
 
 Strategy.prototype.cleanUrl = function (req) {
-  var urlObj = {
+  var urlParts = {
     pathname: req.path,
     query: req.query,
   };
-  delete urlObj.query.code;
-  delete urlObj.query.auth_callback;
-  delete urlObj.query.state;
+  delete urlParts.query.code;
+  delete urlParts.query.auth_callback;
+  delete urlParts.query.state;
+  delete urlParts.query.session_state
 
-  return URLUtil.format(urlObj);
+  return URLUtil.format(urlParts);
 };
 
 Strategy.prototype.getRedirectURL = function (req) {
@@ -117,6 +119,7 @@ Strategy.prototype.getGrant = async function (req) {
     grantData = JSON.parse(grantData);
   }
   if (grantData && !grantData.error) {
+
     const grant = await this.grantManager.createGrant(
       JSON.stringify(grantData)
     );
@@ -125,7 +128,9 @@ Strategy.prototype.getGrant = async function (req) {
   return Promise.reject();
 };
 
+Strategy.prototype.getToken = (rawToken) => new Token(rawToken);
 Strategy.prototype.loginUrl = Keycloak.prototype.loginUrl;
+Strategy.prototype.logoutUrl = Keycloak.prototype.logoutUrl;
 
 exports = module.exports = Strategy;
 exports.Strategy = Strategy;
