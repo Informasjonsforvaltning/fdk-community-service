@@ -6,6 +6,7 @@
   const async = require.main.require("async");
   const nconf = require.main.require("nconf");
   const format = require("util").format;
+  const URLUtil = require("url");
 
   const User = require.main.require("./src/user");
   const Groups = require.main.require("./src/groups");
@@ -21,8 +22,10 @@
 
   const plugin = {
     ready: false,
-    name: "fdk-sso",
+    name: "fdk-sso"
   };
+
+  const ID_TOKEN = 'id_token';
 
   SocketAdmin.settings.syncSsoKeycloak = () => {
     if (settings) {
@@ -31,11 +34,23 @@
       });
     }
   };
-  let settings;
-  plugin.init = (params, callback) => {
-    const router = params.router,
-      hostMiddleware = params.middleware;
 
+  let settings;
+
+  plugin.attachGrant = (req, res, next) => {
+    const grantData = req.session[Strategy.SESSION_KEY];
+    const isCookieSet = res.getHeader('Set-Cookie');
+    if(!(req.cookies?.[Strategy.SESSION_KEY] || isCookieSet) && grantData) {    
+      const grant = JSON.parse(grantData);
+      res.setHeader('Set-Cookie', `${ID_TOKEN}=${grant.id_token}; HttpOnly=true; Path=/; Max-Age=3600;`);
+    }
+    
+    next();  
+  }
+
+  plugin.init = ({app, router, middleware: hostMiddleware}, callback) => {
+    app.use(plugin.attachGrant);
+    
     router.get(
       "/admin/plugins/fdk-sso",
       hostMiddleware.admin.buildHeader,
@@ -64,13 +79,42 @@
     });
   };
 
-  plugin.logout = (data, callback) => {
-    const req = data.req;
+  plugin.prepareKeycloakLogout = (req) => {
+    const parsedRequest = URLUtil.parse(req.url, true); 
+    
+    const idTokenRaw = req.cookies[ID_TOKEN];
+    winston.info("[fdk-sso] keycloak logging out");  
+
+    req.res.clearCookie(ID_TOKEN);
+    const queryParams = parsedRequest.query
+    let redirectUrl = queryParams && queryParams.redirect_url
+    if (!redirectUrl) {
+      const host = req.hostname
+      const headerHost = req.headers.host.split(':')
+      const port = headerHost[1] || ''
+      redirectUrl = req.protocol + '://' + host + (port === '' ? '' : ':' + port) + '/'
+    }
+
+    const {token: idTokenHint} = plugin.strategy.getToken(idTokenRaw);
+    plugin.keycloakLogoutUrl = plugin.strategy.logoutUrl(redirectUrl, idTokenHint) + 
+      '&client_id=fdk-community-service';
+  }
+
+  plugin.staticLoggedOut = ({req}, callback) => {
+    plugin.prepareKeycloakLogout(req);
+
     if (req.session) {
       delete req.session[Strategy.SESSION_KEY];
     }
+    
     callback();
-  };
+  }
+
+  plugin.filterLogout = (payload, callback) => {
+    payload.next = plugin.keycloakLogoutUrl;
+
+    callback();
+  }
 
   plugin.adminLogout = (request, response) => {
     const doLogout = (data, callback) => {
@@ -181,6 +225,7 @@
           });
         }
       );
+
       passport.use(plugin.name, plugin.strategy);
       strategies.push({
         name: plugin.name,
