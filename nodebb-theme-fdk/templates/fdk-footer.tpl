@@ -29,6 +29,7 @@
       <li><a href="/consent">[[user:consent.title]] </a></li>
       <li><a href="https://www.digdir.no/om-oss/personvernerklaering/706">[[fdk:footer.privacyText]] <img class="fdk-text-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-external-link-xs-negative.svg" alt="Åpne"></a></li>
       <li><a href="https://www.digdir.no/om-oss/informasjonskapsler/707">[[fdk:footer.informationCookies]] <img class="fdk-text-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-external-link-xs-negative.svg" alt="Åpne"></a></li>
+      <li><a href="https://uustatus.no/nn/erklaringer/publisert/8f11ea66-0e7e-4023-a34e-3537e871d2df">[[fdk:footer.accessibility]] <img class="fdk-text-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-external-link-xs-negative.svg" alt="Åpne"></a></li>
     </ul>
     <ul>
       <li class="footer-title">
