@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="{relative_path}/assets/client<!-- IF bootswatchSkin -->-{bootswatchSkin}<!-- END -->.css?{config.cache-buster}" />
 	{{{each linkTags}}}{function.buildLinkTag}{{{end}}}
 
+	<script async src=https://siteimproveanalytics.com/js/siteanalyze_6255470.js></script>
 	<script>
 		var config = JSON.parse('{{configJSON}}');
 		var app = {
