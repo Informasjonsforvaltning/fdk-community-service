@@ -1,4 +1,4 @@
-FROM node:18-alpine3.16 AS builder
+FROM node:lts AS builder
 RUN npm install -g typescript
 
 COPY nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link
@@ -8,7 +8,7 @@ RUN cd nodebb-plugin-fdk-resource-link && \
     npm run build-production
 
 
-FROM nodebb/docker:2.8.6
+FROM ghcr.io/nodebb/nodebb:2.8.16
 
 USER root
 
