@@ -7,6 +7,13 @@
 	{{{each linkTags}}}{function.buildLinkTag}{{{end}}}
 
 	<script async src=https://siteimproveanalytics.com/js/siteanalyze_6255470.js></script>
+	<script type="text/javascript"> 
+		window._monsido = window._monsido || { 
+			token: "0Z9PGVSqxJ97MyDeYg5hVQ", 
+			heatmap: { enabled: true, }, 
+		}; 
+	</script> 
+	<script type="text/javascript" async src="https://app-script.monsido.com/v2/monsido-script.js" crossorigin="anonymous"></script>
 	<script>
 		var config = JSON.parse('{{configJSON}}');
 		var app = {
