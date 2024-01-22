@@ -8,7 +8,7 @@ RUN cd nodebb-plugin-fdk-resource-link && \
     npm run build-production
 
 
-FROM ghcr.io/nodebb/nodebb:2.8.16
+FROM ghcr.io/nodebb/nodebb:2.8.17
 
 USER root
 
@@ -55,7 +55,7 @@ RUN npm install \
     ./nodebb-plugin-fdk-resource-link \
     nodebb-plugin-calendar \
     nodebb-plugin-gdpr \
-    nodebb-plugin-google-analytics && \
+    nodebb-plugin-google-analytics --loglevel verbose && \
     npm uninstall \
         nodebb-plugin-emoji \
         nodebb-plugin-emoji-android \

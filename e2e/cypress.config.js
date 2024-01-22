@@ -4,6 +4,7 @@ module.exports = defineConfig({
   projectId: 'hv9u5g',
   viewportWidth: 1200,
   viewportHeight: 800,
+  chromeWebSecurity: false,
   fixturesFolder: 'cypress/e2e/fixtures',
   e2e: {
     setupNodeEvents(on, config) {},

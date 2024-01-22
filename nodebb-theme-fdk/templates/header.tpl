@@ -10,10 +10,22 @@
 	<script type="text/javascript"> 
 		window._monsido = window._monsido || { 
 			token: "0Z9PGVSqxJ97MyDeYg5hVQ", 
-			heatmap: { enabled: true, }, 
+			statistics: { 
+				enabled: true, 
+				cookieLessTracking: false, 
+				documentTracking: { 
+					enabled: false, 
+					documentCls: "monsido_download", 
+					documentIgnoreCls: "monsido_ignore_download", 
+					documentExt: ["pdf","doc","ppt","docx","pptx"], 
+				}, 
+			}, 
+			heatmap: { 
+				enabled: false, 
+			},
 		}; 
 	</script> 
-	<script type="text/javascript" async src="https://app-script.monsido.com/v2/monsido-script.js" crossorigin="anonymous"></script>
+	<script type="text/javascript" async src="https://app-script.monsido.com/v2/monsido-script.js"></script>
 	<script>
 		var config = JSON.parse('{{configJSON}}');
 		var app = {
