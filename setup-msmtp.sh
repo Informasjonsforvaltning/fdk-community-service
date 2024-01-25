@@ -9,6 +9,7 @@ port $SMTP_PORT
 tls on
 tls_starttls on
 tls_certcheck off
+tls_trust_file $SMTP_CA
 
 account default
 auth off
