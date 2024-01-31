@@ -9,7 +9,7 @@ sendUserDeletedEmail() {
   mkdir -p "$FILES_DIR/mail"
 
   if [ ! -f "$flagFile" ]; then
-    echo "$ts - Sending email to user with uid $uid"
+    echo "$ts - Sending deleted email to user with uid $uid"
 
     userslug=$2
     name=$3
@@ -34,31 +34,25 @@ sendUserDeletedEmail() {
 
 sendDeleteUserInXDaysEmail() {
   uid=$1
-  flagFile="$FILES_DIR/mail/delete-10days-$uid"
+  
+  echo "$ts - Sending notification email to user with uid $uid"
 
-  mkdir -p "$FILES_DIR/mail"
+  userslug=$2
+  name=$3
+  email=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug" | jq '.email')
 
-  if [ ! -f "$flagFile" ]; then
-    echo "$ts - Sending email to user with uid $uid"
+  mail=$(cat /mail-template-delete-7days.html)
+  mail="${mail//@@BASE_URL@@/$BASE_URL}"
+  mail="${mail//@@UID@@/$uid}"
+  mail="${mail//@@NAME@@/$name}"
+  mail="${mail//@@USERSLUG@@/$userslug}"
+  mail="${mail//@@EMAIL@@/$email}"
 
-    userslug=$2
-    name=$3
-    email=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug" | jq '.email')
-
-    mail=$(cat /mail-template-delete-7days.html)
-    mail="${mail//@@BASE_URL@@/$BASE_URL}"
-    mail="${mail//@@UID@@/$uid}"
-    mail="${mail//@@NAME@@/$name}"
-    mail="${mail//@@USERSLUG@@/$userslug}"
-    mail="${mail//@@EMAIL@@/$email}"
-
-    if [ "true" = "$TEST_MODE" ];
-    then
-      echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL
-    else
-      echo "$mail" | /usr/sbin/sendmail $email
-      touch $flagFile
-    fi
+  if [ "true" = "$TEST_MODE" ];
+  then
+    echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL
+  else
+    echo "$mail" | /usr/sbin/sendmail $email
   fi
 }
 
@@ -97,29 +91,68 @@ while [ $current_page -le $page_count ]; do
     fullname=$(_jq '.fullname')
     lastonline=$(_jq '.lastonline')
     joindate=$(_jq '.joindate')
+    lastonline=$(_jq '.lastonline')
+
+    notifyfile="$FILES_DIR/mail/delete-notify-$uid"
+    notifydate=$(date +%s%N | cut -b1-13)
+
+    if [ "true" = "$TEST_MODE" ];
+    then
+      notifyfile="$FILES_DIR/mail/delete-notify-$uid-test"
+    fi
+    
+    if [ -f "$notifyfile" ]; 
+    then
+      notifydate=$(cat "$notifyfile")
+    fi
 
     diff_lastonline=$((($(date +%s%N | cut -b1-13) - lastonline)/(60*60*24*1000)))
     diff_joindate=$((($(date +%s%N | cut -b1-13) - joindate)/(60*60*1000)))
+    diff_notify=$((($(date +%s%N | cut -b1-13) - notifydate)/(60*60*24*1000)))
 
     echo "$ts - Verifying if user with uid $uid has been inactive too long..."
     echo "$ts - User with uid $uid was last online: $diff_lastonline days ago"
-    # Remove user if not active more than one year
+    # Remove user if not active more than one year and is 7 days after notification
     if [ $diff_lastonline -gt $max_days_offline ];
     then
-      echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days)"
-      if [ "true" != "$TEST_MODE" ];
+      if [ -f "$notifyfile" ] && [ $diff_notify -ge $notify_days ];
       then
-        curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
-        echo ""
-      fi
+        echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days and notified $diff_notify days ago)"
+        if [ "true" != "$TEST_MODE" ];
+        then
+          curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
+          echo ""
+        fi
 
-      sendUserDeletedEmail "$uid" "$userslug" "$fullname"
+        sendUserDeletedEmail "$uid" "$userslug" "$fullname"
+      else
+        if [ ! -f "$notifyfile" ];
+        then
+          echo "$ts - User with uid $uid has not been notified yet. Not removing user."
+        else
+          remaining_days=$((notify_days - diff_notify))
+          echo "$ts - Notification for user with uid $uid sent $diff_notify days ago. Deleting user in $remaining_days days."
+        fi        
+      fi      
     fi
 
-    # Send email if users are going to removed in exactly 10 days
+    # Send email if users are going to removed in exactly 7 days
     if [ $diff_lastonline -ge $((max_days_offline - notify_days)) ];
     then
-      sendDeleteUserInXDaysEmail "$uid" "$userslug" "$fullname"
+      # If user has not been notified before, send a notification
+      if [ ! -f "$notifyfile" ];
+      then
+        echo "$(date +%s%N | cut -b1-13)" > $notifyfile
+        sendDeleteUserInXDaysEmail "$uid" "$userslug" "$fullname"
+      else
+        # If use has been notified before, send a notification again of last notification was more than 
+        # 365 days ago
+        if [ $diff_notify -ge $((notify_days + max_days_offline)) ];
+        then
+          echo "$(date +%s%N | cut -b1-13)" > $notifyfile
+          sendDeleteUserInXDaysEmail "$uid" "$userslug" "$fullname"
+        fi
+      fi 
     fi
 
     echo "$ts - Verifying if user with uid $uid has approved gdpr consent..."
