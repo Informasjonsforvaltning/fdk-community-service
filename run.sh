@@ -13,7 +13,7 @@ sendUserDeletedEmail() {
 
     userslug=$2
     name=$3
-    email=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug" | jq '.email')
+    email=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid" | jq -r '.response.email')
 
     mail=$(cat /mail-template-deleted.html)
     mail="${mail//@@BASE_URL@@/$BASE_URL}"
@@ -39,7 +39,7 @@ sendDeleteUserInXDaysEmail() {
 
   userslug=$2
   name=$3
-  email=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug" | jq '.email')
+  email=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid" | jq -r '.response.email')
 
   mail=$(cat /mail-template-delete-7days.html)
   mail="${mail//@@BASE_URL@@/$BASE_URL}"
@@ -160,7 +160,7 @@ while [ $current_page -le $page_count ]; do
     # Remove if user did not consent and joined more than one hour ago
     if [ $diff_joindate -ge 1 ];
     then
-      gdpr_consent=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug/consent" | jq '.gdpr_consent')
+      gdpr_consent=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug/consent" | jq -r '.gdpr_consent')
       if [ "false" = "$gdpr_consent" ];
       then
         echo "$ts - Removing user without gdpr consent with uid $uid"
