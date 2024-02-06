@@ -3,7 +3,7 @@
 FILES_DIR="/usr/src/app/files"
 
 sendUserDeletedEmail() {
-  uid=$1
+  uid="$1"
   flagFile="$FILES_DIR/mail/deleted-$uid"
 
   mkdir -p "$FILES_DIR/mail"
@@ -11,9 +11,11 @@ sendUserDeletedEmail() {
   if [ ! -f "$flagFile" ]; then
     echo "$ts - Sending deleted email to user with uid $uid"
 
-    userslug=$2
-    name=$3
-    email=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid" | jq -r '.response.email')
+    userslug="$2"
+    
+    details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid?_uid=$TOKEN_UID" | jq -r '.response')
+    email=$(echo "${details}" | jq -r '.email')
+    name=$(echo "${details}" | jq -r '.fullname')
 
     mail=$(cat /mail-template-deleted.html)
     mail="${mail//@@BASE_URL@@/$BASE_URL}"
@@ -33,13 +35,15 @@ sendUserDeletedEmail() {
 }
 
 sendDeleteUserInXDaysEmail() {
-  uid=$1
+  uid="$1"
   
   echo "$ts - Sending notification email to user with uid $uid"
 
-  userslug=$2
-  name=$3
-  email=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid" | jq -r '.response.email')
+  userslug="$2"
+
+  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid?_uid=$TOKEN_UID" | jq -r '.response')
+  email=$(echo "${details}" | jq -r '.email')
+  name=$(echo "${details}" | jq -r '.fullname')
 
   mail=$(cat /mail-template-delete-7days.html)
   mail="${mail//@@BASE_URL@@/$BASE_URL}"
@@ -88,8 +92,6 @@ while [ $current_page -le $page_count ]; do
 
     uid=$(_jq '.uid')
     userslug=$(_jq '.userslug')
-    fullname=$(_jq '.fullname')
-    lastonline=$(_jq '.lastonline')
     joindate=$(_jq '.joindate')
     lastonline=$(_jq '.lastonline')
 
@@ -124,7 +126,7 @@ while [ $current_page -le $page_count ]; do
           echo ""
         fi
 
-        sendUserDeletedEmail "$uid" "$userslug" "$fullname"
+        sendUserDeletedEmail "$uid" "$userslug"
       else
         if [ ! -f "$notifyfile" ];
         then
@@ -143,14 +145,15 @@ while [ $current_page -le $page_count ]; do
       if [ ! -f "$notifyfile" ];
       then
         echo "$(date +%s%N | cut -b1-13)" > $notifyfile
-        sendDeleteUserInXDaysEmail "$uid" "$userslug" "$fullname"
+        sendDeleteUserInXDaysEmail "$uid" "$userslug"
+
       else
         # If use has been notified before, send a notification again of last notification was more than 
         # 365 days ago
         if [ $diff_notify -ge $((notify_days + max_days_offline)) ];
         then
           echo "$(date +%s%N | cut -b1-13)" > $notifyfile
-          sendDeleteUserInXDaysEmail "$uid" "$userslug" "$fullname"
+          sendDeleteUserInXDaysEmail "$uid" "$userslug"
         fi
       fi 
     fi
