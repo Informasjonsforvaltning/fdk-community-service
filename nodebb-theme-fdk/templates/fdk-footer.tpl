@@ -16,7 +16,6 @@
         </h6>
       </li>
       <li><a href="https://data.norge.no">[[fdk:footer.fdk]] <img class="fdk-text-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-external-link-xs-negative.svg" alt="Åpne"></a></li>
-      <li><a href="https://datafabrikken.norge.no">[[fdk:footer.datafabrikken]] <img class="fdk-text-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-external-link-xs-negative.svg" alt="Åpne"></a></li>
       <li><a href="https://transportportal.no">[[fdk:footer.transportPortal]] <img class="fdk-text-icon" src="/assets/plugins/nodebb-theme-fdk/images/icon-external-link-xs-negative.svg" alt="Åpne"></a></li>
     </ul>
     <ul>
