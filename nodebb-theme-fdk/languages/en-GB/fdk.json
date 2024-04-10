@@ -11,7 +11,6 @@
   "footer": {
     "partners": "Our partners",
     "fdk": "Felles datakatalog",
-    "datafabrikken": "Datafabrikken",
     "transportPortal": "Transportportal",
     "aboutSiteTitle": "About this site",
     "footerText": "Datalandsbyen is managed by the Norwegian Digitalisation Agency.",
@@ -29,7 +28,7 @@
   },
   "user": {
     "edit": {
-      "jobDescription" : "Your business / occupation"
+      "jobDescription": "Your business / occupation"
     }
   },
   "registration": {
