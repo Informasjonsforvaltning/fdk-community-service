@@ -54,8 +54,7 @@ RUN npm install \
     ./nodebb-plugin-fdk-consent \
     ./nodebb-plugin-fdk-resource-link \
     nodebb-plugin-calendar \
-    nodebb-plugin-gdpr \
-    nodebb-plugin-google-analytics
+    nodebb-plugin-gdpr
 
 RUN mkdir -p /usr/src/app/files/log
 

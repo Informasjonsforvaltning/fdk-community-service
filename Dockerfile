@@ -55,7 +55,7 @@ RUN npm install \
     ./nodebb-plugin-fdk-resource-link \
     nodebb-plugin-calendar \
     nodebb-plugin-gdpr \
-    nodebb-plugin-google-analytics --loglevel verbose && \
+    --loglevel verbose && \
     npm uninstall \
         nodebb-plugin-emoji \
         nodebb-plugin-emoji-android \
