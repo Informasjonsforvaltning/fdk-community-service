@@ -8,7 +8,7 @@ RUN cd nodebb-plugin-fdk-resource-link && \
     npm run build-production
 
 
-FROM ghcr.io/nodebb/nodebb:2.8.17
+FROM ghcr.io/nodebb/nodebb:2.8
 
 USER root
 
