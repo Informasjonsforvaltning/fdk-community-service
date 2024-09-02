@@ -16,7 +16,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: docker-compose up
+          start: docker compose up
           wait-on: 'http://localhost:4567'
           wait-on-timeout: 600
           working-directory: e2e
