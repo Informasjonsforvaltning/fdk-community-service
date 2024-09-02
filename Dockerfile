@@ -64,7 +64,7 @@ RUN npm uninstall \
         nodebb-plugin-emoji-android \
         node_modules/multer
 
-RUN npm audit fix; exit 0
+RUN npm audit fix || exit 0
 
 RUN mkdir -p /usr/src/app/files/log
 
