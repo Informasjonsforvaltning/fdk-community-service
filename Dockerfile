@@ -8,7 +8,7 @@ RUN cd nodebb-plugin-fdk-resource-link && \
     npm run build-production
 
 
-FROM ghcr.io/nodebb/nodebb:2.8
+FROM ghcr.io/nodebb/nodebb:2.8.17
 
 USER root
 
@@ -17,6 +17,8 @@ RUN apt-get update && \
     apt-get -y install cron jq msmtp && \
     apt-get -y remove exim4-base exim4-config exim4-daemon-light && \
     ln -s /usr/bin/msmtp /usr/sbin/sendmail 
+
+RUN npm install -g n && n lts
 
 COPY nodebb-theme-fdk ./nodebb-theme-fdk
 COPY nodebb-plugin-fdk-sso ./nodebb-plugin-fdk-sso
@@ -65,4 +67,3 @@ RUN mkdir -p /usr/src/app/files/log
 
 USER root
 CMD /startup.sh
-
