@@ -1,0 +1,59 @@
+{
+  "name": "nodebb-plugin-sso-oauth2-multiple",
+  "version": "1.4.2",
+  "description": "NodeBB Multiple OAuth2 SSO",
+  "main": "library.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NodeBB/nodebb-plugin-sso-oauth2-multiple"
+  },
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "oauth",
+    "oauth2",
+    "sso",
+    "single sign on",
+    "login",
+    "registration"
+  ],
+  "author": {
+    "name": "Julian Lam",
+    "email": "julian@nodebb.org"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NodeBB/nodebb-plugin-sso-oauth2-multiple/issues"
+  },
+  "readme": "",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "async": "^3.2.0",
+    "eslint": "9.x",
+    "node-fetch": "^2",
+    "passport-oauth": "~1.0.0"
+  },
+  "nbbpm": {
+    "compatibility": "^3.3.0"
+  },
+  "devDependencies": {
+    "@commitlint/config-angular": "17.6.7",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-config-nodebb": "0.2.1",
+    "eslint-plugin-import": "2.x",
+    "husky": "9.1.5",
+    "lint-staged": "15.2.10"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
