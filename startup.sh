@@ -12,13 +12,8 @@ crontab scheduler.txt
 cron -f &
 
 node ./nodebb activate nodebb-plugin-fdk-resource-link
-node ./nodebb activate nodebb-plugin-fdk-consent
-node ./nodebb activate nodebb-plugin-fdk-sso
-node ./nodebb activate nodebb-plugin-calendar
 node ./nodebb activate nodebb-plugin-dbsearch
-node ./nodebb activate nodebb-plugin-gdpr
-node ./nodebb activate nodebb-plugin-google-analytics
-node ./nodebb reset -t nodebb-theme-fdk
+node ./nodebb activate nodebb-plugin-sso-oauth2-multiple
 
 su node -c "node ./nodebb build"
 su node -c "node ./nodebb start"
