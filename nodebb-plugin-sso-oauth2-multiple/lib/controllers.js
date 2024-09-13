@@ -98,24 +98,3 @@ Controllers.deleteStrategy = async (req, res) => {
 	const strategies = await main.listStrategies();
 	helpers.formatApiResponse(200, res, { strategies });
 };
-
-Controllers.logout = async (req, res) => {
-	function sleep(ms) {
-		return new Promise(resolve => setTimeout(resolve, ms));
-	}
-
-	let retry = 0;
-	let logoutUrl = null;
-	while(logoutUrl === null) {
-		logoutUrl = await db.getObjectField('oauth2-multiple:logouturl-by-ip', req.ip);
-		
-		retry++;
-		await sleep(500);
-		if(retry >= 60){
-			break;
-		}
-	}
- 
-	await db.deleteObjectField('oauth2-multiple:logouturl-by-ip', req.ip);
-	res.redirect(logoutUrl ?? '/');
-};

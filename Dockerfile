@@ -19,13 +19,14 @@ RUN apt-get update && \
     ln -s /usr/bin/msmtp /usr/sbin/sendmail 
 
 #COPY nodebb-plugin-fdk-consent ./nodebb-plugin-fdk-consent
-COPY nodebb-plugin-sso-oauth2-multiple ./nodebb-plugin-sso-oauth2-multiple
+COPY ./nodebb-plugin-sso-oauth2-multiple ./nodebb-plugin-sso-oauth2-multiple
 COPY --from=builder nodebb-plugin-fdk-resource-link/public ./nodebb-plugin-fdk-resource-link/public
 COPY --from=builder nodebb-plugin-fdk-resource-link/build ./nodebb-plugin-fdk-resource-link/build
 COPY --from=builder nodebb-plugin-fdk-resource-link/package.json ./nodebb-plugin-fdk-resource-link/package.json
 COPY --from=builder nodebb-plugin-fdk-resource-link/plugin.json ./nodebb-plugin-fdk-resource-link/plugin.json
 COPY --from=builder nodebb-plugin-fdk-resource-link/LICENSE ./nodebb-plugin-fdk-resource-link/LICENSE
 
+COPY ./nodebb-patch/controllers/authentication.js ./src/controllers/authentication.js
 #COPY ./nodebb-patch/detail.js ./public/src/client/flags/detail.js
 #COPY ./nodebb-patch/username.js ./public/src/client/account/edit/username.js
 
