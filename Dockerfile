@@ -35,10 +35,12 @@ RUN chown 1000:1000 -R \
     ./nodebb-plugin-sso-oauth2-multiple
 
 COPY nodebb/config.json /opt/config
-COPY run.sh /run.sh
-COPY startup.sh /startup.sh
-COPY setup-msmtp.sh /
-RUN chmod +x /run.sh /startup.sh /setup-msmtp.sh
+COPY send-emails.sh /usr/local/bin
+COPY startup.sh /usr/local/bin
+COPY setup-msmtp.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/send-emails.sh \
+    /usr/local/bin/startup.sh \
+    /usr/local/bin/setup-msmtp.sh
 
 RUN npm install \
     ./nodebb-plugin-sso-oauth2-multiple \
