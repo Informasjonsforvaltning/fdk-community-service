@@ -48,4 +48,4 @@ RUN npm audit fix; exit 0
     
 RUN mkdir -p /usr/src/app/files/log
 
-CMD /startup.sh
+ENTRYPOINT ["tini", "--", "startup.sh"]
