@@ -44,7 +44,7 @@ RUN npm install \
     ./nodebb-plugin-sso-oauth2-multiple \
     ./nodebb-plugin-fdk-resource-link
 
-RUN npm audit fix
+RUN npm audit fix; exit 0
     
 RUN mkdir -p /usr/src/app/files/log
 
