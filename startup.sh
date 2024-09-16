@@ -14,6 +14,6 @@ cron -f &
 node ./nodebb activate nodebb-plugin-fdk-resource-link
 node ./nodebb activate nodebb-plugin-dbsearch
 node ./nodebb activate nodebb-plugin-sso-oauth2-multiple
+node ./nodebb build
 
-su node -c "node ./nodebb build"
 su node -c "node ./nodebb start"

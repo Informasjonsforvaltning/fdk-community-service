@@ -18,7 +18,6 @@ RUN apt-get update && \
     apt-get -y remove exim4-base exim4-config exim4-daemon-light && \
     ln -s /usr/bin/msmtp /usr/sbin/sendmail 
 
-#COPY nodebb-plugin-fdk-consent ./nodebb-plugin-fdk-consent
 COPY ./nodebb-plugin-sso-oauth2-multiple ./nodebb-plugin-sso-oauth2-multiple
 COPY --from=builder nodebb-plugin-fdk-resource-link/public ./nodebb-plugin-fdk-resource-link/public
 COPY --from=builder nodebb-plugin-fdk-resource-link/build ./nodebb-plugin-fdk-resource-link/build
@@ -27,8 +26,6 @@ COPY --from=builder nodebb-plugin-fdk-resource-link/plugin.json ./nodebb-plugin-
 COPY --from=builder nodebb-plugin-fdk-resource-link/LICENSE ./nodebb-plugin-fdk-resource-link/LICENSE
 
 COPY ./nodebb-patch/controllers/authentication.js ./src/controllers/authentication.js
-#COPY ./nodebb-patch/detail.js ./public/src/client/flags/detail.js
-#COPY ./nodebb-patch/username.js ./public/src/client/account/edit/username.js
 
 COPY mail-template-delete-7days.html /
 COPY mail-template-deleted.html /
@@ -46,6 +43,8 @@ RUN chmod +x /run.sh /startup.sh /setup-msmtp.sh
 RUN npm install \
     ./nodebb-plugin-sso-oauth2-multiple \
     ./nodebb-plugin-fdk-resource-link
+
+RUN npm audit fix
     
 RUN mkdir -p /usr/src/app/files/log
 
