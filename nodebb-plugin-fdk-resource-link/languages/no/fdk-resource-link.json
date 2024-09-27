@@ -1,0 +1,15 @@
+{
+    "title": "Data.norge.no lenke generator",
+    "cancel": "Avbryt",
+    "createLink": "Opprett lenke",
+    "type": "Type",
+    "typePlaceholder": "Velg type...",
+    "dataset": "Datasett",
+    "dataservice": "Datatjeneste",
+    "informationModel": "Informasjonsmodell",
+    "concept": "Begrep",
+    "service": "Tjeneste",
+    "event": "Hendelse",
+    "search": "Søk",
+    "searchPlaceholder": "Søk, for eksempel trafikkdata..."
+}

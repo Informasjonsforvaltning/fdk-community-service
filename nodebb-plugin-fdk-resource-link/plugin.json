@@ -1,18 +1,20 @@
 {
-  "staticDirs": {
-    "bundles": "build/bundles/"
-  },
-  "hooks": [
-    { "hook": "static:app.load", "method": "init" },
-    { "hook": "filter:composer.formatting", "method": "composerFormatting", "priority": 4 }
-  ],
-  "templates": "public/templates",
-  "languages": "public/languages",
-  "defaultLang": "nb",
-  "less": [
-    "public/style.less"
-  ],
-  "scripts": [
-    "build/bundles/client.js"
-  ]
+    "id": "fdk-resource-link",
+    "url": "",
+    "name": "FDK Resource Link",
+    "description": "Adds a button to Composer that allows the user to add links to resources on data.norge.no.",
+    "library": "library.js",
+    "templates": "static/templates",
+    "languages": "languages",
+    "defaultLang": "en",
+    "hooks": [                
+        { "hook": "static:app.load", "method": "init"}
+    ],
+    "scripts": [
+		"static/lib/main.js"
+	],
+    "scss": [
+		"scss/global.scss"
+	],
+    "compatibility": "~3.x.x"
 }
