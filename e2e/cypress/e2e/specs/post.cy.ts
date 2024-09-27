@@ -17,19 +17,11 @@ describe('Datalandsbyen', function() {
 
       cy.get('#new_topic').click();
       cy.wait(2000)
-      cy.elementExists("#plugin-fdk-resource-link-editor", ($modal: any) => {
-        const display = $modal.css("display");
-        if(display === 'none') {
-          assert.isOk('OK', 'Modal is hidden')          
-        } else {
-          assert.isNotOk('Not OK', 'Modal is not hidden')        
-        }
-      }, () => {
-        assert.isNotOk('Not OK', 'Could not find fdk resource link modal')        
-      });  
 
-      cy.get('li[data-format="plugin-fdk-resource-link"]').click();
-      cy.elementExists("#plugin-fdk-resource-link-editor", ($modal: any) => {
+      cy.get(".fdk-resource-link-modal").should('not.exist');  
+
+      cy.get('button[data-format="fdk-resource-link-btn"]').click();
+      cy.elementExists(".fdk-resource-link-modal", ($modal: any) => {
         const display = $modal.css("display");
         if(display === 'block') {
           assert.isOk('OK', 'Modal is visible')          
