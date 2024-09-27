@@ -1,0 +1,13 @@
+[data-format="fdk-resource-link-btn"] > i {
+    vertical-align: middle;
+}
+
+[data-format="fdk-resource-link-btn"] > i::before {
+    width: 14px;
+    height: 14px;
+    content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNC42OSAyNC43NCI+PHRpdGxlPmRpZ2RpciBlbWJsZW08L3RpdGxlPjxwYXRoIGQ9Ik0xOS43Myw3LjA2SDcuNTZhLjUuNSwwLDAsMC0uNS41VjMxLjNhLjUuNSwwLDAsMCwuNS41SDE5LjczYTEyLjM3LDEyLjM3LDAsMCwwLDAtMjQuNzNtMS4xOSwyMWE4LjgsOC44LDAsMSwxLDcuMTgtNy4xOCw4LjgsOC44LDAsMCwxLTcuMTgsNy4xOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTcuMDYgLTcuMDYpIj48L3BhdGg+PC9zdmc+");
+    font-size: inherit;
+    display: inline-block;
+    filter: grayscale(100%);
+    opacity: 0.5;
+}

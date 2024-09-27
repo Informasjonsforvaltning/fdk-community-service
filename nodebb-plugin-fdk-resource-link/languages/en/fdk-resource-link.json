@@ -1,0 +1,15 @@
+{
+    "title": "Data.norge.no link generator",
+    "cancel": "Cancel",
+    "createLink": "Create link",
+    "type": "Type",
+    "typePlaceholder": "Choose type...",
+    "dataset": "Dataset",
+    "dataservice": "Dataservice",
+    "informationModel": "Informationmodel",
+    "concept": "Concept",
+    "service": "Service",
+    "event": "Event",
+    "search": "Search",
+    "searchPlaceholder": "Search, for example traffic data..."
+}

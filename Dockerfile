@@ -1,14 +1,4 @@
-FROM node:lts AS builder
-RUN npm install -g typescript
-
-COPY nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link
-
-RUN cd nodebb-plugin-fdk-resource-link && \
-    npm install && \
-    npm run build-production
-
-
-FROM ghcr.io/nodebb/nodebb:3.8.4
+FROM ghcr.io/nodebb/nodebb:3.10.0
 
 USER root
 
@@ -19,12 +9,7 @@ RUN apt-get update && \
     ln -s /usr/bin/msmtp /usr/sbin/sendmail 
 
 COPY ./nodebb-plugin-sso-oauth2-multiple ./nodebb-plugin-sso-oauth2-multiple
-COPY --from=builder nodebb-plugin-fdk-resource-link/public ./nodebb-plugin-fdk-resource-link/public
-COPY --from=builder nodebb-plugin-fdk-resource-link/build ./nodebb-plugin-fdk-resource-link/build
-COPY --from=builder nodebb-plugin-fdk-resource-link/package.json ./nodebb-plugin-fdk-resource-link/package.json
-COPY --from=builder nodebb-plugin-fdk-resource-link/plugin.json ./nodebb-plugin-fdk-resource-link/plugin.json
-COPY --from=builder nodebb-plugin-fdk-resource-link/LICENSE ./nodebb-plugin-fdk-resource-link/LICENSE
-
+COPY ./nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link
 COPY ./nodebb-patch/controllers/authentication.js ./src/controllers/authentication.js
 
 COPY mail-template-delete-7days.html /
