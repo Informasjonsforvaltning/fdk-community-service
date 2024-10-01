@@ -7,7 +7,7 @@ cat > /etc/msmtprc << EOL
 defaults
 port $SMTP_PORT
 tls on
-tls_starttls on
+tls_starttls off
 tls_certcheck off
 tls_trust_file $SMTP_TLS_CA
 tls_host_override $SMTP_TLS_HOSTNAME
