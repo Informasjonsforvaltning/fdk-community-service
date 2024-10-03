@@ -6,7 +6,7 @@
     "library": "library.js",
     "templates": "static/templates",
     "languages": "languages",
-    "defaultLang": "en",
+    "defaultLang": "en-GB",
     "hooks": [                
         { "hook": "static:app.load", "method": "init"}
     ],

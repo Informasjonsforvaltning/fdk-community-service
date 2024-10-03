@@ -12,6 +12,7 @@ crontab scheduler.txt
 cron -f &
 
 node ./nodebb activate nodebb-plugin-fdk-resource-link
+node ./nodebb activate nodebb-plugin-fdk-consent
 node ./nodebb activate nodebb-plugin-dbsearch
 node ./nodebb activate nodebb-plugin-sso-oauth2-multiple
 

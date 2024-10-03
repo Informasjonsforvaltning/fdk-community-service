@@ -71,7 +71,7 @@ echo "$ts - Removing inactive users or users without consent"
 
 current_page=1
 page_count=1
-while [ $current_page -le $page_count ]; do
+while [ "$current_page" -le "$page_count" ]; do
   body=$(curl -s "http://localhost:4567/api/users?page=${current_page}" | base64)
   users=$(echo "${body}" | base64 --decode | jq '.users')
   pagination=$(echo "${body}" | base64 --decode | jq '.pagination')
@@ -139,7 +139,7 @@ while [ $current_page -le $page_count ]; do
     fi
 
     # Send email if users are going to removed in exactly 7 days
-    if [ $diff_lastonline -ge $((max_days_offline - notify_days)) ];
+    if [ "$diff_lastonline" -ge $((max_days_offline - notify_days)) ];
     then
       # If user has not been notified before, send a notification
       if [ ! -f "$notifyfile" ];
@@ -161,7 +161,7 @@ while [ $current_page -le $page_count ]; do
     echo "$ts - Verifying if user with uid $uid has approved gdpr consent..."
     echo "$ts - User with uid $uid joined: $diff_joindate hours ago"
     # Remove if user did not consent and joined more than one hour ago
-    if [ $diff_joindate -ge 1 ];
+    if [ "$diff_joindate" -ge 1 ];
     then
       gdpr_consent=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug/consent" | jq -r '.gdpr_consent')
       if [ "false" = "$gdpr_consent" ];
