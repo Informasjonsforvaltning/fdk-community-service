@@ -8,15 +8,22 @@ RUN apt-get update && \
     apt-get -y remove exim4-base exim4-config exim4-daemon-light && \
     ln -s /usr/bin/msmtp /usr/sbin/sendmail 
 
+# PLUGINS
 COPY ./nodebb-plugin-sso-oauth2-multiple ./nodebb-plugin-sso-oauth2-multiple
 COPY ./nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link
-COPY ./nodebb-patch/controllers/authentication.js ./src/controllers/authentication.js
+COPY ./nodebb-plugin-fdk-consent ./nodebb-plugin-fdk-consent
 
+# PATCHES
+COPY ./nodebb-patch/ ./
+COPY ./nodebb-theme-harmony-patch/ ./node_modules/nodebb-theme-harmony/
+
+# MAIL TEMPLATES FOR USER RETENTION
 COPY mail-template-delete-7days.html /
 COPY mail-template-deleted.html /
 
 RUN chown 1000:1000 -R \
     ./nodebb-plugin-fdk-resource-link \
+    ./nodebb-plugin-fdk-consent \
     ./nodebb-plugin-sso-oauth2-multiple
 
 COPY nodebb/config.json /opt/config
@@ -29,10 +36,11 @@ RUN chmod +x /usr/local/bin/send-emails.sh \
 
 RUN npm install \
     ./nodebb-plugin-sso-oauth2-multiple \
-    ./nodebb-plugin-fdk-resource-link
+    ./nodebb-plugin-fdk-resource-link \
+    ./nodebb-plugin-fdk-consent
 
 RUN npm audit fix; exit 0
     
-RUN mkdir -p /usr/src/app/files/log
+RUN mkdir -p ./files/log
 
 ENTRYPOINT ["tini", "--", "startup.sh"]

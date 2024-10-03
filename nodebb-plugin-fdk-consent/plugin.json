@@ -1,5 +1,5 @@
 {
-    "id": "nodebb-plugin-fdk-consent",
+    "id": "fdk-consent",
     "name": "NodeBB FDK consent",
     "description": "NodeBB Plugin for displaying the FDK consent page.",
     "url": "https://github.com/Informasjonsforvaltning/fdk-community-service",
@@ -8,11 +8,8 @@
         "hook": "static:app.load",
         "method": "init"
     }],
-    "staticDirs": {
-        "static": "./static"
-    },
-    "less": [
-		"static/style.less"
-	],
-    "templates": "static/templates"
+    "templates": "static/templates",
+    "languages": "languages",
+    "defaultLang": "en-GB",
+    "compatibility": "~3.x.x"
 }
