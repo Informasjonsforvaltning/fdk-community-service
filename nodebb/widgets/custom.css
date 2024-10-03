@@ -1,0 +1,35 @@
+.brand-container img {
+  height: 40px;
+}
+
+.footer {
+  margin-bottom: 2rem;
+}
+
+.footer ul {
+  list-style: none;
+  margin: auto;
+  padding: 0;
+  width: 75%;
+  text-align: center;
+  
+}
+
+.footer ul li {
+  display: inline;
+  margin-right: 0.5rem;
+}
+
+.footer ul li a {
+  color: #000;
+  white-space: nowrap;
+}
+
+.footer ul li a > * {
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.footer svg {
+max-height:2rem;
+}
