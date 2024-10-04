@@ -1,0 +1,20 @@
+{
+	"theme-name": "Harmony Tema",
+	"skins": "Stil",
+	"collapse": "Lukk",
+	"expand": "Utvid",
+	"sidebar-toggle": "Sidepanelbryter",
+	"login-register-to-search": "Logg inn eller registrer deg for å søke.",
+	"settings.title": "Tema-innstillinger",
+	"settings.enableQuickReply": "Aktiver hurtigsvar",
+	"settings.enableBreadcrumbs": "Vis brødsmuler i Kategori- og Emnesider",
+	"settings.enableBreadcrumbs.why": "Brødsmulene er synlige på de fleste sider for enkel navigering. Grunnutformingen av kategori- og emnesidene har alternative måter å lenke tilbake til foreldresider, men brødsmulene kan slås av for å redusere rot.",
+	"settings.centerHeaderElements": "Sentrer toppside-elementer",
+	"settings.mobileTopicTeasers": "Vis emne-oversikter på mobil",
+	"settings.stickyToolbar": "Feste verktøylinjen",
+	"settings.stickyToolbar.help": "Verktøylinjen på emne- og kategorisidene vil feste seg til toppen av siden",
+	"settings.autohideBottombar": "Skjul bunnlinje automatisk",
+	"settings.autohideBottombar.help": "Bunnlinjen på mobilvisning vil bli skjult når siden rulles ned",
+	"settings.openSidebars": "Åpne sidepaneler",
+	"settings.chatModals": "Aktiver chattevinduer"
+}
