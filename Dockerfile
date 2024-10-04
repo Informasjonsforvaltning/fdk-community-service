@@ -15,6 +15,7 @@ COPY ./nodebb-plugin-fdk-consent ./nodebb-plugin-fdk-consent
 
 # PATCHES
 COPY ./nodebb-patch/ ./
+COPY ./nodebb-plugin-ntfy-patch/ ./node_modules/nodebb-plugin-ntfy/
 COPY ./nodebb-theme-harmony-patch/ ./node_modules/nodebb-theme-harmony/
 
 # MAIL TEMPLATES FOR USER RETENTION
