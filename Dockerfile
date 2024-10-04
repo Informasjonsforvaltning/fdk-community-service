@@ -14,9 +14,9 @@ COPY ./nodebb-plugin-fdk-resource-link ./nodebb-plugin-fdk-resource-link
 COPY ./nodebb-plugin-fdk-consent ./nodebb-plugin-fdk-consent
 
 # PATCHES
-COPY ./nodebb-patch/ ./
-COPY ./nodebb-plugin-ntfy-patch/ ./node_modules/nodebb-plugin-ntfy/
-COPY ./nodebb-theme-harmony-patch/ ./node_modules/nodebb-theme-harmony/
+COPY ./patches/nodebb/ ./
+COPY ./patches/nodebb-plugin-ntfy/ ./node_modules/nodebb-plugin-ntfy/
+COPY ./patches/nodebb-theme-harmony/ ./node_modules/nodebb-theme-harmony/
 
 # MAIL TEMPLATES FOR USER RETENTION
 COPY mail-template-delete-7days.html /
