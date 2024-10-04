@@ -26,7 +26,7 @@
 		{{{ end }}}
 		<div class="card">
 			<div class="card-body">
-				<p>[[user:consent.email-intro]]</p>
+				<p>[[fdk-consent:email-intro]]</p>
 				{{{ if digest.enabled }}}
 				<p>[[user:consent.digest-frequency, {digest.frequency}]]</p>
 				{{{ else }}}
