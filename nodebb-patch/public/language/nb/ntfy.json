@@ -1,0 +1,19 @@
+{
+	"plugin-name": "ntfy",
+	"profile.label": "Push-varsler",
+	"profile.no-mobile-needed": "En mobil enhet er ikke nødvendig, <a href=\"https://docs.ntfy.sh/subscribe/web/\">du kan også abonnere på push-varsler via nettleseren din.</a>",
+	"profile.topic-name": "Ditt private push-varsel \"emnenavn\" er:",
+	"profile.subscribe": "Abonner",
+	"profile.topic-secrecy": "Behandle dette emnenavnet som et passord!",
+	"profile.topic-leakage": "Hvis emnenavnet lekker, kan det brukes av andre til å motta varslene dine.",
+	"profile.regenerate": "Regenerer emnenavn",
+	"profile.test": "Send testvarsel",
+
+	"toast.regenerate_success": "Emnenavn regenerert",
+	"toast.test_success": "Testvarsel sendt",
+
+	"test.title": "Testvarsel",
+	"test.body": "Hvis du mottar dette, betyr det at push-varsler er vellykket satt opp på denne enheten.",
+
+	"admin.title": "Push-varsler (ntfy)"
+}
