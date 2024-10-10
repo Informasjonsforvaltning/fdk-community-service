@@ -9,7 +9,7 @@ describe('Datalandsbyen', function() {
       cy.get('#login').click();
       cy.get('span.avatar').should('to.contain', 'A')
     }, () => {
-      cy.url().should('include', '/user/admin')      
+      cy.url().should('include', '/user/admin')
     })
   });  
   
