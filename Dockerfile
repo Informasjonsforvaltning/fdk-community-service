@@ -41,7 +41,6 @@ RUN npm install \
     ./nodebb-plugin-fdk-consent
 
 RUN npm audit fix; exit 0
-    
 RUN mkdir -p ./files/log
 
 ENTRYPOINT ["tini", "--", "startup.sh"]
