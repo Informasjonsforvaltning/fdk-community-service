@@ -66,10 +66,10 @@ $('document').ready(function() {
                     link =  `[${title}](${baseUrl}/informationmodels/${id})`;
                     break;
                 case 'EVENT':
-                    link =  `[${title}](${baseUrl}/public-services-and-events/${id})`;
+                    link =  `[${title}](${baseUrl}/public-services/${id})`;
                     break;
                 case 'SERVICE':
-                    link =  `[${title}](${baseUrl}/public-services-and-events/${id})`;
+                    link =  `[${title}](${baseUrl}/events/${id})`;
                     break;
                 default:
                     link =  null;
