@@ -6,7 +6,7 @@ cat > /etc/msmtprc << EOL
 # Set default values for all following accounts.
 defaults
 port $SMTP_PORT
-tls on
+tls off
 tls_starttls off
 tls_certcheck off
 tls_trust_file $SMTP_TLS_CA
