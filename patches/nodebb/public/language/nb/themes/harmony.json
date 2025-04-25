@@ -16,5 +16,8 @@
 	"settings.autohideBottombar": "Skjul bunnlinje automatisk",
 	"settings.autohideBottombar.help": "Bunnlinjen på mobilvisning vil bli skjult når siden rulles ned",
 	"settings.openSidebars": "Åpne sidepaneler",
-	"settings.chatModals": "Aktiver chattevinduer"
+	"settings.chatModals": "Aktiver chattevinduer",
+	"settings.topicSidebarTools": "Venstrevisning av verktøylinjen",
+	"settings.topicSidebarTools.help": "Verktøylinjen på emne- og kategorisidene vil flyttes til venstre av siden",
+	"settings.topMobilebar": "Flytt navigasjonslinjen på mobilvisning til toppen av siden"
 }
