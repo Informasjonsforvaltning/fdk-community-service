@@ -28,10 +28,10 @@ RUN chown 1000:1000 -R \
     ./nodebb-plugin-sso-oauth2-multiple
 
 COPY nodebb/config.json /opt/config
-COPY send-emails.sh /usr/local/bin
+COPY user-retention.sh /usr/local/bin
 COPY startup.prod.sh /usr/local/bin/startup.sh
 COPY setup-msmtp.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/send-emails.sh \
+RUN chmod +x /usr/local/bin/user-retention.sh \
     /usr/local/bin/startup.sh \
     /usr/local/bin/setup-msmtp.sh
 
