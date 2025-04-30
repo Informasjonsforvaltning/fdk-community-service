@@ -4,33 +4,37 @@ FILES_DIR="/usr/src/app/files"
 
 sendUserDeletedEmail() {
   uid="$1"
-  flagFile="$FILES_DIR/mail/deleted-$uid"
 
   mkdir -p "$FILES_DIR/mail"
 
-  if [ ! -f "$flagFile" ]; then
-    echo "$ts - Sending deleted email to user with uid $uid"
+  echo "$ts - Sending deleted email to user with uid $uid"
 
-    userslug="$2"
-    
-    details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid?_uid=$TOKEN_UID" | jq -r '.response')
-    email=$(echo "${details}" | jq -r '.email')
-    name=$(echo "${details}" | jq -r '.fullname')
+  userslug="$2"
 
-    mail=$(cat /mail-template-deleted.html)
-    mail="${mail//@@BASE_URL@@/$BASE_URL}"
-    mail="${mail//@@UID@@/$uid}"
-    mail="${mail//@@NAME@@/$name}"
-    mail="${mail//@@USERSLUG@@/$userslug}"
-    mail="${mail//@@EMAIL@@/$email}"
+  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid?_uid=$TOKEN_UID" | jq -r '.response')
+  email=$(echo "${details}" | jq -r '.email')
+  name=$(echo "${details}" | jq -r '.fullname')
 
-    if [ "true" = "$TEST_MODE" ];
-    then
-      echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL
+  mail=$(cat /mail-template-deleted.html)
+  mail="${mail//@@BASE_URL@@/$BASE_URL}"
+  mail="${mail//@@UID@@/$uid}"
+  mail="${mail//@@NAME@@/$name}"
+  mail="${mail//@@USERSLUG@@/$userslug}"
+  mail="${mail//@@EMAIL@@/$email}"
+
+  if [ "true" = "$TEST_MODE" ];
+  then
+    if echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL; then
+      return 0
     else
-      if echo "$mail" | /usr/sbin/sendmail $email; then
-        touch $flagFile  # Success
-      fi
+      return 1
+    fi
+  else
+    if echo "$mail" | /usr/sbin/sendmail $email; then
+      echo "$ts - Deleted email was sent successfully to user with uid $uid"
+      return 0
+    else
+      return 1
     fi
   fi
 }
@@ -107,6 +111,8 @@ while [ "$current_page" -le "$page_count" ]; do
     notifyfile="$FILES_DIR/mail/delete-notify-$uid"
     notifydate=$(date +%s%N | cut -b1-13)
 
+    deletedfile="$FILES_DIR/mail/deleted-$uid"
+
     if [ "true" = "$TEST_MODE" ];
     then
       notifyfile="$FILES_DIR/mail/delete-notify-$uid-test"
@@ -128,14 +134,18 @@ while [ "$current_page" -le "$page_count" ]; do
     then
       if [ -f "$notifyfile" ] && [ $diff_notify -ge $notify_days ];
       then
-        echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days and notified $diff_notify days ago)"
-        if [ "true" != "$TEST_MODE" ];
-        then
-          curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
-          echo ""
-        fi
+        if [ ! -f "$deletedfile" ]; then
+          if sendUserDeletedEmail "$uid" "$userslug"; then
+            echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days and notified $diff_notify days ago)"
+            if [ "true" != "$TEST_MODE" ];
+            then
+              curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
+              echo ""
+            fi
 
-        sendUserDeletedEmail "$uid" "$userslug"
+            touch $deletedfile
+          fi
+        fi
       else
         if [ ! -f "$notifyfile" ];
         then
@@ -148,46 +158,48 @@ while [ "$current_page" -le "$page_count" ]; do
     fi
 
     # Send email if users are going to removed in exactly 7 days
-    if [ "$diff_lastonline" -ge $((max_days_offline - notify_days)) ];
-    then
-      # If user has not been notified before, send a notification
-      if [ ! -f "$notifyfile" ];
+    if [ ! -f "$deletedfile" ]; then
+      if [ "$diff_lastonline" -ge $((max_days_offline - notify_days)) ];
       then
-        if sendDeleteUserInXDaysEmail "$uid" "$userslug"; then
-          echo "$(date +%s%N | cut -b1-13)" > $notifyfile
-        else
-          echo "$ts - Failed to send notification email for user with uid $uid"
-        fi
-      else
-        # If use has been notified before, send a notification again of last notification was more than 
-        # 365 days ago
-        if [ $diff_notify -ge $((notify_days + max_days_offline)) ];
+        # If user has not been notified before, send a notification
+        if [ ! -f "$notifyfile" ];
         then
           if sendDeleteUserInXDaysEmail "$uid" "$userslug"; then
             echo "$(date +%s%N | cut -b1-13)" > $notifyfile
           else
             echo "$ts - Failed to send notification email for user with uid $uid"
           fi
+        else
+          # If use has been notified before, send a notification again of last notification was more than
+          # 365 days ago
+          if [ $diff_notify -ge $((notify_days + max_days_offline)) ];
+          then
+            if sendDeleteUserInXDaysEmail "$uid" "$userslug"; then
+              echo "$(date +%s%N | cut -b1-13)" > $notifyfile
+            else
+              echo "$ts - Failed to send notification email for user with uid $uid"
+            fi
+          fi
         fi
-      fi 
-    fi
+      fi
 
-    echo "$ts - Verifying if user with uid $uid has approved gdpr consent..."
-    echo "$ts - User with uid $uid joined: $diff_joindate hours ago"
-    # Remove if user did not consent and joined more than one hour ago
-    if [ "$diff_joindate" -ge 1 ];
-    then
-      gdpr_consent=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug/consent" | jq -r '.gdpr_consent')
-      if [ "false" = "$gdpr_consent" ];
+      echo "$ts - Verifying if user with uid $uid has approved gdpr consent..."
+      echo "$ts - User with uid $uid joined: $diff_joindate hours ago"
+      # Remove if user did not consent and joined more than one hour ago
+      if [ "$diff_joindate" -ge 1 ];
       then
-        echo "$ts - Removing user without gdpr consent with uid $uid"
-        if [ "true" != "$TEST_MODE" ];
+        gdpr_consent=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug/consent" | jq -r '.gdpr_consent')
+        if [ "false" = "$gdpr_consent" ];
         then
-          curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
-          echo ""
+          echo "$ts - Removing user without gdpr consent with uid $uid"
+          if [ "true" != "$TEST_MODE" ];
+          then
+            curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
+            echo ""
+          fi
+        else
+          echo "$ts - User with uid $uid has approved gdpr consent"
         fi
-      else
-        echo "$ts - User with uid $uid has approved gdpr consent"
       fi
     fi
   done
