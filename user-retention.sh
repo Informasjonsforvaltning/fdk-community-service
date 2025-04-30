@@ -90,6 +90,12 @@ while [ "$current_page" -le "$page_count" ]; do
   pagination=$(echo "${body}" | base64 --decode | jq '.pagination')
   page_count=$(echo "${pagination}" | jq -r '.pageCount')
 
+  if [ "$current_page" -eq 1 ]; then
+    echo "$ts - Total number of users: $(echo "${pagination}" | jq -r '.total')"
+    echo "$ts - Total number of pages: $(echo "${pagination}" | jq -r '.pageCount')"
+  fi
+  echo "$ts - Processing page $current_page of $page_count"
+
   for row in $(echo "${users}" | jq -r '.[] | @base64'); do
     _jq() {
          echo ${row} | base64 --decode | jq -r ${1}
@@ -144,6 +150,8 @@ while [ "$current_page" -le "$page_count" ]; do
             fi
 
             touch $deletedfile
+          else
+            echo "$ts - Failed to send deleted email for user with uid $uid"
           fi
         fi
       else
