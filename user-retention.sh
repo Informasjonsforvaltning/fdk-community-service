@@ -91,8 +91,8 @@ while [ "$current_page" -le "$page_count" ]; do
   page_count=$(echo "${pagination}" | jq -r '.pageCount')
 
   if [ "$current_page" -eq 1 ]; then
-    echo "$ts - Total number of users: $(echo "${pagination}" | jq -r '.total')"
-    echo "$ts - Total number of pages: $(echo "${pagination}" | jq -r '.pageCount')"
+    echo "$ts - Total number of users: $(echo "${body}" | jq -r '.userCount')"
+    echo "$ts - Total number of pages: $page_count"
   fi
   echo "$ts - Processing page $current_page of $page_count"
 
