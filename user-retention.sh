@@ -28,8 +28,9 @@ sendUserDeletedEmail() {
     then
       echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL
     else
-      echo "$mail" | /usr/sbin/sendmail $email
-      touch $flagFile
+      if echo "$mail" | /usr/sbin/sendmail $email; then
+        touch $flagFile  # Success
+      fi
     fi
   fi
 }
@@ -54,9 +55,17 @@ sendDeleteUserInXDaysEmail() {
 
   if [ "true" = "$TEST_MODE" ];
   then
-    echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL
+    if echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL; then
+      return 0  # Success
+    else
+      return 1  # Failure
+    fi
   else
-    echo "$mail" | /usr/sbin/sendmail $email
+    if echo "$mail" | /usr/sbin/sendmail $email; then
+      return 0  # Success
+    else
+      return 1  # Failure
+    fi
   fi
 }
 
@@ -144,16 +153,21 @@ while [ "$current_page" -le "$page_count" ]; do
       # If user has not been notified before, send a notification
       if [ ! -f "$notifyfile" ];
       then
-        echo "$(date +%s%N | cut -b1-13)" > $notifyfile
-        sendDeleteUserInXDaysEmail "$uid" "$userslug"
-
+        if sendDeleteUserInXDaysEmail "$uid" "$userslug"; then
+          echo "$(date +%s%N | cut -b1-13)" > $notifyfile
+        else
+          echo "$ts - Failed to send notification email for user with uid $uid"
+        fi
       else
         # If use has been notified before, send a notification again of last notification was more than 
         # 365 days ago
         if [ $diff_notify -ge $((notify_days + max_days_offline)) ];
         then
-          echo "$(date +%s%N | cut -b1-13)" > $notifyfile
-          sendDeleteUserInXDaysEmail "$uid" "$userslug"
+          if sendDeleteUserInXDaysEmail "$uid" "$userslug"; then
+            echo "$(date +%s%N | cut -b1-13)" > $notifyfile
+          else
+            echo "$ts - Failed to send notification email for user with uid $uid"
+          fi
         fi
       fi 
     fi
