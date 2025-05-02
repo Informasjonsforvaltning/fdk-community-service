@@ -31,9 +31,12 @@ OAuth.addRoutes = async ({ router, middleware }) => {
 	];
 
 	routeHelpers.setupApiRoute(router, 'get', '/oauth2-multiple/discover', middlewares, controllers.getOpenIdMetadata);
+
 	routeHelpers.setupApiRoute(router, 'post', '/oauth2-multiple/strategies', middlewares, controllers.editStrategy);
 	routeHelpers.setupApiRoute(router, 'get', '/oauth2-multiple/strategies/:name', middlewares, controllers.getStrategy);
 	routeHelpers.setupApiRoute(router, 'delete', '/oauth2-multiple/strategies/:name', middlewares, controllers.deleteStrategy);
+
+	routeHelpers.setupApiRoute(router, 'get', '/oauth2-multiple/provider/:provider/user/:oAuthId', middlewares, controllers.userByOAuthId);
 };
 
 OAuth.addAdminNavigation = (header) => {
@@ -63,9 +66,9 @@ async function getStrategies(names, full) {
 	strategies
 		.filter(strategy => strategy !== null)
 		.forEach((strategy, idx) => {
-			strategy.name = names[idx];
-			strategy.enabled = strategy.enabled === 'true' || strategy.enabled === true;		
-			strategy.callbackUrl = `${nconf.get('url')}/auth/${names[idx]}/callback`;
+		strategy.name = names[idx];
+		strategy.enabled = strategy.enabled === 'true' || strategy.enabled === true;
+		strategy.callbackUrl = `${nconf.get('url')}/auth/${names[idx]}/callback`;
 	});
 
 	return strategies;
@@ -277,10 +280,10 @@ OAuth.login = async (payload) => {
 		}
 	}
 
-	// Save provider-specific information to the user	
+	// Save provider-specific information to the user
 	await user.setUserField(uid, `${payload.name}Id`, payload.oAuthid);
 	await db.setObjectField(`${payload.name}Id:uid`, payload.oAuthid, uid);
-	
+
 	return { uid };
 };
 
@@ -343,7 +346,11 @@ OAuth.getLogoutUrlBySessionId = async (sessionId) => await db.getObjectField('oa
 OAuth.deleteUserData = async (data) => {
 	const names = await db.getSortedSetMembers('oauth2-multiple:strategies');
 	const oAuthIds = await user.getUserFields(data.uid, names.map(name => `${name}Id`));
-	delete oAuthIds.uid;
+	Object.keys(oAuthIds).forEach((prop) => {
+		if (!names.includes(prop.replace(/Id$/, ''))) {
+			delete oAuthIds[prop];
+		}
+	});
 
 	const promises = [];
 	for (const [provider, id] of Object.entries(oAuthIds)) {
