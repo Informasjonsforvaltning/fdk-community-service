@@ -194,7 +194,7 @@ while [ "$current_page" -le "$page_count" ]; do
             fi
           else
             # If use has been notified before, send a notification again one day before removal
-            if [ $diff_notify -e 1 ];
+            if [ $diff_notify -eq 1 ];
             then
               if [ ! -f "$notifyfile2" ];
               then
