@@ -163,7 +163,10 @@ OAuth.federatedLogout = async ({req, uid}) => {
 			// This is because we cannot rely on the sessionID.
 			winston.info("[plugin/sso-oauth2-multiple] store logoutUrl: " + logoutUrl);
 			OAuth._federatedLogoutUrls[uid] = logoutUrl;
+
+			// Make sure we are being redirected
 			req.body = { noscript: 'true' };
+			delete req.headers['x-csrf-token'];
 		}
 	}
 }
