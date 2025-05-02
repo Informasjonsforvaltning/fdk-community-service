@@ -149,7 +149,7 @@ OAuth.loadStrategies = async (strategies) => {
 };
 
 OAuth.federatedLogout = async ({uid}) => {
-	winston.info("[plugin/sso-oauth2-multiple] federated logout");  
+	winston.info("[plugin/sso-oauth2-multiple] federated logout");
 	const sids = await db.getSortedSetRevRange(`uid:${uid}:sessions`, 0, 19);
 	for (const sid of sids) {
 		const strategy = await OAuth.getStrategyBySessionId(sid);
@@ -160,7 +160,8 @@ OAuth.federatedLogout = async ({uid}) => {
 				`&client_id=${encodeURIComponent(strategy.id)}` + 
 				`&post_logout_redirect_uri=${encodeURIComponent(nconf.get('url'))}`;
 			// We only support federated logout per userid for now. 
-			// This is because we cannot rely on the sessionID. 
+			// This is because we cannot rely on the sessionID.
+			winston.info("[plugin/sso-oauth2-multiple] store logoutUrl: " + logoutUrl);
 			OAuth._federatedLogoutUrls[uid] = logoutUrl;
 		}
 	}
@@ -170,6 +171,7 @@ OAuth.federatedLogoutFilter = function(payload) {
 	// We only support federated logout per userid for now. 
 	// This is because we cannot rely on the sessionID.
 	const logoutUrl = `${OAuth._federatedLogoutUrls[payload.uid]}`;
+	winston.info("[plugin/sso-oauth2-multiple] retrieve logoutUrl: " + logoutUrl);
 	delete OAuth._federatedLogoutUrls[payload.uid];
 	payload.next = logoutUrl ?? '/';
 };
