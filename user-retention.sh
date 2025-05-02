@@ -45,12 +45,13 @@ sendDeleteUserInXDaysEmail() {
   echo "$ts - Sending notification email to user with uid $uid"
 
   userslug="$2"
+  count="$3"
 
   details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid?_uid=$TOKEN_UID" | jq -r '.response')
   email=$(echo "${details}" | jq -r '.email')
   name=$(echo "${details}" | jq -r '.fullname')
 
-  mail=$(cat /mail-template-delete-7days.html)
+  mail=$(cat "/mail-template-delete-${count}days.html")
   mail="${mail//@@BASE_URL@@/$BASE_URL}"
   mail="${mail//@@UID@@/$uid}"
   mail="${mail//@@NAME@@/$name}"
@@ -115,6 +116,7 @@ while [ "$current_page" -le "$page_count" ]; do
     lastonline=$(_jq '.lastonline')
 
     notifyfile="$FILES_DIR/mail/delete-notify-$uid"
+    notifyfile2="$FILES_DIR/mail/delete-notify2-$uid"
     notifydate=$(date +%s%N | cut -b1-13)
 
     deletedfile="$FILES_DIR/mail/deleted-$uid"
@@ -140,18 +142,21 @@ while [ "$current_page" -le "$page_count" ]; do
     then
       if [ -f "$notifyfile" ] && [ $diff_notify -ge $notify_days ];
       then
-        if [ ! -f "$deletedfile" ]; then
-          if sendUserDeletedEmail "$uid" "$userslug"; then
-            echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days and notified $diff_notify days ago)"
-            if [ "true" != "$TEST_MODE" ];
-            then
-              curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
-              echo ""
-            fi
+        if [ $diff_notify -lt $((notify_days + max_days_offline)) ];
+        then
+          if [ ! -f "$deletedfile" ]; then
+            if sendUserDeletedEmail "$uid" "$userslug"; then
+              echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days and notified $diff_notify days ago)"
+              if [ "true" != "$TEST_MODE" ];
+              then
+                curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
+                echo ""
+              fi
 
-            touch $deletedfile
-          else
-            echo "$ts - Failed to send deleted email for user with uid $uid"
+              touch $deletedfile
+            else
+              echo "$ts - Failed to send deleted email for user with uid $uid"
+            fi
           fi
         fi
       else
@@ -172,7 +177,7 @@ while [ "$current_page" -le "$page_count" ]; do
         # If user has not been notified before, send a notification
         if [ ! -f "$notifyfile" ];
         then
-          if sendDeleteUserInXDaysEmail "$uid" "$userslug"; then
+          if sendDeleteUserInXDaysEmail "$uid" "$userslug" "7"; then
             echo "$(date +%s%N | cut -b1-13)" > $notifyfile
           else
             echo "$ts - Failed to send notification email for user with uid $uid"
@@ -182,10 +187,23 @@ while [ "$current_page" -le "$page_count" ]; do
           # 365 days ago
           if [ $diff_notify -ge $((notify_days + max_days_offline)) ];
           then
-            if sendDeleteUserInXDaysEmail "$uid" "$userslug"; then
+            if sendDeleteUserInXDaysEmail "$uid" "$userslug" "7"; then
               echo "$(date +%s%N | cut -b1-13)" > $notifyfile
             else
               echo "$ts - Failed to send notification email for user with uid $uid"
+            fi
+          else
+            # If use has been notified before, send a notification again one day before removal
+            if [ $diff_notify -e 1 ];
+            then
+              if [ ! -f "$notifyfile2" ];
+              then
+                if sendDeleteUserInXDaysEmail "$uid" "$userslug" "1"; then
+                  echo "$(date +%s%N | cut -b1-13)" > $notifyfile2
+                else
+                  echo "$ts - Failed to send notification email for user with uid $uid"
+                fi
+              fi
             fi
           fi
         fi
