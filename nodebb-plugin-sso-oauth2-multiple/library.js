@@ -148,7 +148,7 @@ OAuth.loadStrategies = async (strategies) => {
 	return strategies;
 };
 
-OAuth.federatedLogout = async ({uid}) => {
+OAuth.federatedLogout = async ({req, uid}) => {
 	winston.info("[plugin/sso-oauth2-multiple] federated logout");
 	const sids = await db.getSortedSetRevRange(`uid:${uid}:sessions`, 0, 19);
 	for (const sid of sids) {
@@ -163,6 +163,7 @@ OAuth.federatedLogout = async ({uid}) => {
 			// This is because we cannot rely on the sessionID.
 			winston.info("[plugin/sso-oauth2-multiple] store logoutUrl: " + logoutUrl);
 			OAuth._federatedLogoutUrls[uid] = logoutUrl;
+			req.body = { noscript: 'true' };
 		}
 	}
 }
