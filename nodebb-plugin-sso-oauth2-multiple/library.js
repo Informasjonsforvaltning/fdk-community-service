@@ -100,6 +100,9 @@ OAuth.loadStrategies = async (strategies) => {
 			return done(new Error('insufficient-scope'));
 		}
 		try {
+
+			console.log('Profile', profile);
+			console.log('Params', params);
 			const user = await OAuth.login({
 				name,
 				oAuthid: id,
@@ -116,6 +119,8 @@ OAuth.loadStrategies = async (strategies) => {
 			await db.setObjectField('oauth2-multiple:session-idtoken', req.sessionID, params.id_token);
 
 			done(null, user);
+
+
 
 			plugins.hooks.fire('action:oauth2.login', { name, user, profile });
 		} catch (err) {
@@ -163,10 +168,6 @@ OAuth.federatedLogout = async ({req, uid}) => {
 			// This is because we cannot rely on the sessionID.
 			winston.info("[plugin/sso-oauth2-multiple] store logoutUrl: " + logoutUrl);
 			OAuth._federatedLogoutUrls[uid] = logoutUrl;
-
-			// Make sure we are being redirected
-			req.body = { noscript: 'true' };
-			delete req.headers['x-csrf-token'];
 		}
 	}
 }
@@ -175,7 +176,6 @@ OAuth.federatedLogoutFilter = function(payload) {
 	// We only support federated logout per userid for now. 
 	// This is because we cannot rely on the sessionID.
 	const logoutUrl = `${OAuth._federatedLogoutUrls[payload.uid]}`;
-	winston.info("[plugin/sso-oauth2-multiple] retrieve logoutUrl: " + logoutUrl);
 	delete OAuth._federatedLogoutUrls[payload.uid];
 	payload.next = logoutUrl ?? '/';
 };
@@ -202,6 +202,7 @@ OAuth.getUserProfile = function (name, userRoute, accessToken, done) {
 };
 
 OAuth.parseUserReturn = async (provider, profile) => {
+	console.log('Orignal profile', profile);
 	const {
 		id, sub,
 		name, nickname, preferred_username,
