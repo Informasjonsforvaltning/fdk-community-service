@@ -19,6 +19,7 @@ COPY ./patches/nodebb-plugin-ntfy/ ./node_modules/nodebb-plugin-ntfy/
 COPY ./patches/nodebb-theme-harmony/ ./node_modules/nodebb-theme-harmony/
 
 # MAIL TEMPLATES FOR USER RETENTION
+COPY mail-template-delete-1days.html /
 COPY mail-template-delete-7days.html /
 COPY mail-template-deleted.html /
 
