@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-sso-oauth2-multiple",
-  "version": "1.4.2",
+  "version": "1.5.1",
   "description": "NodeBB Multiple OAuth2 SSO",
   "main": "library.js",
   "repository": {
@@ -34,15 +34,15 @@
     "passport-oauth": "~1.0.0"
   },
   "nbbpm": {
-    "compatibility": "^3.3.0"
+    "compatibility": "^4.3.0"
   },
   "devDependencies": {
     "@commitlint/config-angular": "17.6.7",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-nodebb": "0.2.1",
+    "eslint-config-nodebb": "1.1.4",
     "eslint-plugin-import": "2.x",
-    "husky": "9.1.5",
-    "lint-staged": "15.2.10"
+    "husky": "9.1.7",
+    "lint-staged": "15.5.1"
   },
   "husky": {
     "hooks": {

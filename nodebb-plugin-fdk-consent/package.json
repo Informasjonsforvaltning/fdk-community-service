@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Informasjonsforvaltning/fdk-community-service#readme",
   "nbbpm": {
-    "compatibility": "^2.0.0",
+    "compatibility": "^4.3.0",
     "index": false
   }
 }
