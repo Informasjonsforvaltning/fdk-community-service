@@ -31,11 +31,9 @@ OAuth.addRoutes = async ({ router, middleware }) => {
 	];
 
 	routeHelpers.setupApiRoute(router, 'get', '/oauth2-multiple/discover', middlewares, controllers.getOpenIdMetadata);
-
 	routeHelpers.setupApiRoute(router, 'post', '/oauth2-multiple/strategies', middlewares, controllers.editStrategy);
 	routeHelpers.setupApiRoute(router, 'get', '/oauth2-multiple/strategies/:name', middlewares, controllers.getStrategy);
 	routeHelpers.setupApiRoute(router, 'delete', '/oauth2-multiple/strategies/:name', middlewares, controllers.deleteStrategy);
-
 	routeHelpers.setupApiRoute(router, 'get', '/oauth2-multiple/provider/:provider/user/:oAuthId', middlewares, controllers.userByOAuthId);
 };
 
@@ -66,10 +64,10 @@ async function getStrategies(names, full) {
 	strategies
 		.filter(strategy => strategy !== null)
 		.forEach((strategy, idx) => {
-		strategy.name = names[idx];
-		strategy.enabled = strategy.enabled === 'true' || strategy.enabled === true;
-		strategy.callbackUrl = `${nconf.get('url')}/auth/${names[idx]}/callback`;
-	});
+			strategy.name = names[idx];
+			strategy.enabled = strategy.enabled === 'true' || strategy.enabled === true;
+			strategy.callbackUrl = `${nconf.get('url')}/auth/${names[idx]}/callback`;
+		});
 
 	return strategies;
 }
@@ -100,9 +98,6 @@ OAuth.loadStrategies = async (strategies) => {
 			return done(new Error('insufficient-scope'));
 		}
 		try {
-
-			console.log('Profile', profile);
-			console.log('Params', params);
 			const user = await OAuth.login({
 				name,
 				oAuthid: id,
@@ -119,8 +114,6 @@ OAuth.loadStrategies = async (strategies) => {
 			await db.setObjectField('oauth2-multiple:session-idtoken', req.sessionID, params.id_token);
 
 			done(null, user);
-
-
 
 			plugins.hooks.fire('action:oauth2.login', { name, user, profile });
 		} catch (err) {
@@ -202,7 +195,6 @@ OAuth.getUserProfile = function (name, userRoute, accessToken, done) {
 };
 
 OAuth.parseUserReturn = async (provider, profile) => {
-	console.log('Orignal profile', profile);
 	const {
 		id, sub,
 		name, nickname, preferred_username,
