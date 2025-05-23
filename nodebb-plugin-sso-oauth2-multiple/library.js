@@ -34,6 +34,7 @@ OAuth.addRoutes = async ({ router, middleware }) => {
 	routeHelpers.setupApiRoute(router, 'post', '/oauth2-multiple/strategies', middlewares, controllers.editStrategy);
 	routeHelpers.setupApiRoute(router, 'get', '/oauth2-multiple/strategies/:name', middlewares, controllers.getStrategy);
 	routeHelpers.setupApiRoute(router, 'delete', '/oauth2-multiple/strategies/:name', middlewares, controllers.deleteStrategy);
+	routeHelpers.setupApiRoute(router, 'get', '/oauth2-multiple/provider/:provider/user/:oAuthId', middlewares, controllers.userByOAuthId);
 };
 
 OAuth.addAdminNavigation = (header) => {
@@ -64,9 +65,9 @@ async function getStrategies(names, full) {
 		.filter(strategy => strategy !== null)
 		.forEach((strategy, idx) => {
 			strategy.name = names[idx];
-			strategy.enabled = strategy.enabled === 'true' || strategy.enabled === true;		
+			strategy.enabled = strategy.enabled === 'true' || strategy.enabled === true;
 			strategy.callbackUrl = `${nconf.get('url')}/auth/${names[idx]}/callback`;
-	});
+		});
 
 	return strategies;
 }
@@ -145,8 +146,8 @@ OAuth.loadStrategies = async (strategies) => {
 	return strategies;
 };
 
-OAuth.federatedLogout = async ({uid}) => {
-	winston.info("[plugin/sso-oauth2-multiple] federated logout");  
+OAuth.federatedLogout = async ({req, uid}) => {
+	winston.info("[plugin/sso-oauth2-multiple] federated logout");
 	const sids = await db.getSortedSetRevRange(`uid:${uid}:sessions`, 0, 19);
 	for (const sid of sids) {
 		const strategy = await OAuth.getStrategyBySessionId(sid);
@@ -157,7 +158,8 @@ OAuth.federatedLogout = async ({uid}) => {
 				`&client_id=${encodeURIComponent(strategy.id)}` + 
 				`&post_logout_redirect_uri=${encodeURIComponent(nconf.get('url'))}`;
 			// We only support federated logout per userid for now. 
-			// This is because we cannot rely on the sessionID. 
+			// This is because we cannot rely on the sessionID.
+			winston.info("[plugin/sso-oauth2-multiple] store logoutUrl: " + logoutUrl);
 			OAuth._federatedLogoutUrls[uid] = logoutUrl;
 		}
 	}
@@ -277,10 +279,10 @@ OAuth.login = async (payload) => {
 		}
 	}
 
-	// Save provider-specific information to the user	
+	// Save provider-specific information to the user
 	await user.setUserField(uid, `${payload.name}Id`, payload.oAuthid);
 	await db.setObjectField(`${payload.name}Id:uid`, payload.oAuthid, uid);
-	
+
 	return { uid };
 };
 
@@ -343,7 +345,11 @@ OAuth.getLogoutUrlBySessionId = async (sessionId) => await db.getObjectField('oa
 OAuth.deleteUserData = async (data) => {
 	const names = await db.getSortedSetMembers('oauth2-multiple:strategies');
 	const oAuthIds = await user.getUserFields(data.uid, names.map(name => `${name}Id`));
-	delete oAuthIds.uid;
+	Object.keys(oAuthIds).forEach((prop) => {
+		if (!names.includes(prop.replace(/Id$/, ''))) {
+			delete oAuthIds[prop];
+		}
+	});
 
 	const promises = [];
 	for (const [provider, id] of Object.entries(oAuthIds)) {
