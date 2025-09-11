@@ -1,4 +1,4 @@
-FROM ghcr.io/nodebb/nodebb:3.10.3
+FROM ghcr.io/nodebb/nodebb:4.3.0
 
 USER root
 
@@ -19,6 +19,7 @@ COPY ./patches/nodebb-plugin-ntfy/ ./node_modules/nodebb-plugin-ntfy/
 COPY ./patches/nodebb-theme-harmony/ ./node_modules/nodebb-theme-harmony/
 
 # MAIL TEMPLATES FOR USER RETENTION
+COPY mail-template-delete-1days.html /
 COPY mail-template-delete-7days.html /
 COPY mail-template-deleted.html /
 
@@ -28,10 +29,10 @@ RUN chown 1000:1000 -R \
     ./nodebb-plugin-sso-oauth2-multiple
 
 COPY nodebb/config.json /opt/config
-COPY send-emails.sh /usr/local/bin
+COPY user-retention.sh /usr/local/bin
 COPY startup.prod.sh /usr/local/bin/startup.sh
 COPY setup-msmtp.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/send-emails.sh \
+RUN chmod +x /usr/local/bin/user-retention.sh \
     /usr/local/bin/startup.sh \
     /usr/local/bin/setup-msmtp.sh
 

@@ -481,7 +481,7 @@ authenticationController.logout = async function (req, res, next) {
 		};
 		plugins.hooks.fire('filter:user.logout', payload);
 
-		if (req.body.noscript === 'true') {
+		if (typeof req.body === 'object' && req.body.noscript === 'true') {
 			return res.redirect(payload.next);
 		}
 		res.status(200).send(payload);
