@@ -18,6 +18,6 @@
     "main": "library.js",
     "repository": {},
     "nbbpm": {
-      "compatibility": "^4.3.0"
+      "compatibility": "^4.x"
     }
 }
