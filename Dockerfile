@@ -41,6 +41,7 @@ RUN npm install \
     ./nodebb-plugin-fdk-resource-link \
     ./nodebb-plugin-fdk-consent
 
+RUN npm pkg set overrides.multer=2.0.2 && npm install
 RUN npm audit fix; exit 0
 RUN mkdir -p ./files/log
 
