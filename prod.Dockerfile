@@ -1,4 +1,4 @@
-FROM ghcr.io/nodebb/nodebb:4.6.3
+FROM ghcr.io/nodebb/nodebb:4.8.0
 
 USER root
 
