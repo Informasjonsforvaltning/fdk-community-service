@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v5
     
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           start: docker compose up
           wait-on: 'http://localhost:4567'
