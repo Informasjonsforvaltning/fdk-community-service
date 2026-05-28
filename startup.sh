@@ -11,10 +11,11 @@ echo "*/15 * * * * TEST_MODE=$TEST_MODE TEST_EMAIL=$TEST_EMAIL API_TOKEN=$API_TO
 crontab scheduler.txt
 cron -f &
 
-node ./nodebb activate nodebb-plugin-fdk-resource-link
-node ./nodebb activate nodebb-plugin-fdk-consent
-node ./nodebb activate nodebb-plugin-dbsearch
-node ./nodebb activate nodebb-plugin-sso-oauth2-multiple
+NODEBB_CONFIG="/opt/config/config.json"
+node ./nodebb activate nodebb-plugin-fdk-resource-link --config="$NODEBB_CONFIG"
+node ./nodebb activate nodebb-plugin-fdk-consent --config="$NODEBB_CONFIG"
+node ./nodebb activate nodebb-plugin-dbsearch --config="$NODEBB_CONFIG"
+node ./nodebb activate nodebb-plugin-sso-oauth2-multiple --config="$NODEBB_CONFIG"
 
 export FORCE_BUILD_BEFORE_START=true
 echo "Running entrypoint.sh"
