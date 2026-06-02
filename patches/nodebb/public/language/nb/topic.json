@@ -1,5 +1,5 @@
 {
-    "guest-cta.title": "Hei! Det ser ut til at du er interessert i denne tråden, men du har ingen konto ennå.",
-    "guest-cta.message": "Lei av å skrolle gjennom de samme innleggene hver gang du er innom? Når du registrerer deg, kommer du alltid tilbake til akkurat der du var sist, og kan velge å bli varslet om nye svar (enten via e-post eller push-varsel). Du vil også kunne lagre bokmerker og gi innlegg en stemme opp for å vise andre medlemmer at du setter pris på dem.",
+    "guest-cta.title": "Hei! Det ser ut til at du er interessert i denne tråden, men du er ikke innlogget.",
+    "guest-cta.message": "Lei av å måtte skrolle gjennom de samme innleggene hver gang du besøker siden? Når du er innlogget, kommer du alltid tilbake til nøyaktig der du var sist, og du kan velge å bli varslet om nye svar (via e-post eller push-varsel). Du kan også lagre bokmerker og gi tommel opp til innlegg for å vise andre i fellesskapet at du setter pris på bidragene deres.",
     "guest-cta.closing": "Med ditt bidrag kan denne tråden bli enda bedre 💗"
 }
