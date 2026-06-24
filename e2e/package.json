@@ -5,7 +5,7 @@
   },
   "overrides": {
     "@cypress/request": "^4.0.1",
-    "form-data": "^4.0.4",
+    "form-data": "^4.0.6",
     "tmp": "^0.2.6",
     "qs": "^6.15.2"
   },
