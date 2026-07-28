@@ -45,7 +45,7 @@
     "lint-staged": "16.2.7"
   },
   "overrides": {
-    "js-yaml": "^4.2.0"
+    "js-yaml": "^4.3.0"
   },
   "husky": {
     "hooks": {
