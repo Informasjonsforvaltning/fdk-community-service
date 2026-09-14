@@ -45,7 +45,7 @@
     "lint-staged": "16.2.7"
   },
   "overrides": {
-    "js-yaml": "^4.3.1",
+    "js-yaml": "^4.3.2",
     "brace-expansion": "^1.1.16"
   },
   "husky": {
