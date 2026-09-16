@@ -67,14 +67,25 @@ max() {
   if [ "$1" -ge "$2" ]; then echo "$1"; else echo "$2"; fi
 }
 
-# send_mail <template> <uid> <userslug> [<delete_at_ms>]
-send_mail() {
-  local template="$1" uid="$2" userslug="$3" delete_at="$4"
-  local details email name mail delete_date=""
+# fetch_user_details <uid>: sets USER_EMAIL and USER_NAME
+fetch_user_details() {
+  local details
+  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "$API_URL/api/v3/users/$1?_uid=$TOKEN_UID" | jq -r '.response')
+  USER_EMAIL=$(echo "$details" | jq -r '.email // empty')
+  USER_NAME=$(echo "$details" | jq -r '.fullname // .username // empty')
+}
 
-  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "$API_URL/api/v3/users/$uid?_uid=$TOKEN_UID" | jq -r '.response')
-  email=$(echo "$details" | jq -r '.email // empty')
-  name=$(echo "$details" | jq -r '.fullname // .username // empty')
+# send_mail <template> <uid> <userslug> [<delete_at_ms>] [<email> <name>]
+# Looks up email and name unless they are given (needed after the user is deleted).
+send_mail() {
+  local template="$1" uid="$2" userslug="$3" delete_at="$4" email="$5" name="$6"
+  local mail delete_date=""
+
+  if [ -z "$email" ]; then
+    fetch_user_details "$uid"
+    email="$USER_EMAIL"
+    name="$USER_NAME"
+  fi
 
   if [ -z "$email" ]; then
     log "User with uid $uid has no email address, cannot send $template"
@@ -107,14 +118,22 @@ send_mail() {
   fi
 }
 
+# delete_user <uid>: returns non-zero if the API call failed
 delete_user() {
-  local uid="$1"
+  local uid="$1" response status
   if [ "true" = "$TEST_MODE" ]; then
     log "TEST MODE: would have deleted user with uid $uid"
-  else
-    curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "$API_URL/api/v3/users/$uid/account?_uid=$TOKEN_UID"
-    echo ""
+    return 0
   fi
+
+  response=$(curl -s -w '\n%{http_code}' -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "$API_URL/api/v3/users/$uid/account?_uid=$TOKEN_UID")
+  status="${response##*$'\n'}"
+  if [ "$status" -ge 200 ] 2>/dev/null && [ "$status" -lt 300 ]; then
+    log "Deleted user with uid $uid"
+    return 0
+  fi
+  log "Failed to delete user with uid $uid (HTTP $status): ${response%$'\n'*}"
+  return 1
 }
 
 process_inactive_user() {
@@ -166,14 +185,18 @@ process_inactive_user() {
     return
   done
 
-  # All warnings sent: delete when the deletion date has passed.
+  # All warnings sent: delete when the deletion date has passed. The deletion
+  # date is never earlier than lastonline + MAX_OFFLINE, so no separate offline
+  # check is needed here. Email and name are fetched before deleting so the
+  # confirmation can be sent afterwards.
   delete_at=$(cat "$STATE_DIR/$uid.warning${#WARNING_TEMPLATES[@]}")
-  if [ "$NOW_MS" -ge "$delete_at" ] && [ "$offline" -gt "$MAX_OFFLINE" ]; then
-    if send_mail "deleted" "$uid" "$userslug"; then
-      log "Removing inactive user with uid $uid (not online for $days_offline days, first warned on $(format_date "$(cat "$STATE_DIR/$uid.warning1")"))"
-      delete_user "$uid"
+  if [ "$NOW_MS" -ge "$delete_at" ]; then
+    log "Removing inactive user with uid $uid (not online for $days_offline days, first warned on $(format_date "$(cat "$STATE_DIR/$uid.warning1")"))"
+    fetch_user_details "$uid"
+    if delete_user "$uid"; then
       touch "$deleted"
       rm -f "$STATE_DIR/$uid.warning"*
+      send_mail "deleted" "$uid" "$userslug" "" "$USER_EMAIL" "$USER_NAME"
     fi
   else
     log "User with uid $uid is scheduled for deletion on $(format_date "$delete_at")"
