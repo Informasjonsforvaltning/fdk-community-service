@@ -20,6 +20,17 @@ Password: **MyPassword**
 - `SMTP_HOSTNAME` - The full hostname.  Must be correctly formed, fully qualified domain name or GMail will reject connection.
 - `TEST_MODE` - Run remove users script in test mode (true/false)
 - `TEST_EMAIL` - Send notification emails to this address when in test mode
+- `TOKEN_UID` - User id the API tokens belong to. This user is never deleted by the retention script.
+
+## User retention
+`user-retention.sh` runs from cron inside the container. Users who have not logged in for 365 days are
+deleted, after warning emails 6 weeks, 1 week and 1 day before the deletion date. The deletion date is fixed
+when the first warning is sent and is never earlier than 6 weeks after that warning, so users who are already
+inactive for more than a year when the job is (re)enabled still get the full notice period. State is kept per
+user in `/usr/src/app/files/retention/` and cleared when the user logs in again.
+
+With `TEST_MODE=true` the periods are 3 days / 48h / 24h / 6h, all emails go to `TEST_EMAIL`, state is kept in
+`/usr/src/app/files/retention-test/` and no users are deleted.
 
 ## Example SMTP config
 - SSMTP_SERVER=outlook.com

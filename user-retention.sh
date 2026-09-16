@@ -1,236 +1,270 @@
 #!/bin/bash
+#
+# User retention / GDPR cleanup for Datalandsbyen (NodeBB).
+#
+# Inactive users
+# --------------
+# A user who has not been online for MAX_OFFLINE is deleted, but only after a
+# series of warning emails, sent WARNING_BEFORE[i] before the deletion date
+# (6 weeks, 1 week and 1 day in production).
+#
+# The deletion date is fixed when the first warning is sent:
+#   delete_at = max(lastonline + MAX_OFFLINE, now + WARNING_BEFORE[0])
+# so a user who is already far past the limit (e.g. because this job has been
+# inactive for a while) still gets the full notice period before the account
+# is removed. If a later warning is sent late for the same reason, the
+# deletion date is pushed so the user always gets at least WARNING_BEFORE[i]
+# notice after that warning.
+#
+# State is kept per user in $STATE_DIR:
+#   <uid>.warning<n>  - warning n sent, content: scheduled deletion (epoch ms)
+#   <uid>.deleted     - deletion email sent and account deleted (or would have
+#                       been, in test mode)
+# The state is cleared as soon as the user logs in again.
+#
+# Users without consent
+# ---------------------
+# Users who have not accepted the GDPR consent within an hour of joining are
+# deleted without warning.
+#
+# TEST_MODE=true shortens all periods, sends every email to TEST_EMAIL, uses a
+# separate state directory and never actually deletes anyone.
 
-FILES_DIR="/usr/src/app/files"
+FILES_DIR="${FILES_DIR:-/usr/src/app/files}"
+TEMPLATE_DIR="${TEMPLATE_DIR:-/}"
+SENDMAIL="${SENDMAIL:-/usr/sbin/sendmail}"
+API_URL="${API_URL:-http://localhost:4567}"
 
-sendUserDeletedEmail() {
-  uid="$1"
+HOUR_MS=$((60 * 60 * 1000))
+DAY_MS=$((24 * HOUR_MS))
 
-  mkdir -p "$FILES_DIR/mail"
+# Templates are mail-template-<name>.html in $TEMPLATE_DIR, in sending order.
+WARNING_TEMPLATES=(delete-6weeks delete-7days delete-1days)
 
-  echo "$ts - Sending deleted email to user with uid $uid"
-
-  userslug="$2"
-
-  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid?_uid=$TOKEN_UID" | jq -r '.response')
-  email=$(echo "${details}" | jq -r '.email')
-  name=$(echo "${details}" | jq -r '.fullname')
-
-  mail=$(cat /mail-template-deleted.html)
-  mail="${mail//@@BASE_URL@@/$BASE_URL}"
-  mail="${mail//@@UID@@/$uid}"
-  mail="${mail//@@NAME@@/$name}"
-  mail="${mail//@@USERSLUG@@/$userslug}"
-  mail="${mail//@@EMAIL@@/$email}"
-
-  if [ "true" = "$TEST_MODE" ];
-  then
-    if echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL; then
-      return 0
-    else
-      return 1
-    fi
-  else
-    if echo "$mail" | /usr/sbin/sendmail $email; then
-      echo "$ts - Deleted email was sent successfully to user with uid $uid"
-      return 0
-    else
-      return 1
-    fi
-  fi
-}
-
-sendDeleteUserInXDaysEmail() {
-  uid="$1"
-  
-  echo "$ts - Sending notification email to user with uid $uid"
-
-  userslug="$2"
-  count="$3"
-
-  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/v3/users/$uid?_uid=$TOKEN_UID" | jq -r '.response')
-  email=$(echo "${details}" | jq -r '.email')
-  name=$(echo "${details}" | jq -r '.fullname')
-
-  mail=$(cat "/mail-template-delete-${count}days.html")
-  mail="${mail//@@BASE_URL@@/$BASE_URL}"
-  mail="${mail//@@UID@@/$uid}"
-  mail="${mail//@@NAME@@/$name}"
-  mail="${mail//@@USERSLUG@@/$userslug}"
-  mail="${mail//@@EMAIL@@/$email}"
-
-  if [ "true" = "$TEST_MODE" ];
-  then
-    if echo "$mail" | /usr/sbin/sendmail $TEST_EMAIL; then
-      return 0  # Success
-    else
-      return 1  # Failure
-    fi
-  else
-    if echo "$mail" | /usr/sbin/sendmail $email; then
-      return 0  # Success
-    else
-      return 1  # Failure
-    fi
-  fi
-}
-
-ts=`date +%Y/%m/%d-%H:%M:%S`
-
-
-if [ "true" = "$TEST_MODE" ];
-then
-  echo "$ts - #### RUNNING IN TEST MODE ####"
+if [ "true" = "$TEST_MODE" ]; then
+  MAX_OFFLINE=$((3 * DAY_MS))
+  WARNING_BEFORE=($((2 * DAY_MS)) $((1 * DAY_MS)) $((6 * HOUR_MS)))
+  STATE_DIR="$FILES_DIR/retention-test"
+else
+  MAX_OFFLINE=$((365 * DAY_MS))
+  WARNING_BEFORE=($((42 * DAY_MS)) $((7 * DAY_MS)) $((1 * DAY_MS)))
+  STATE_DIR="$FILES_DIR/retention"
 fi
-echo "$ts - Removing inactive users or users without consent"
+
+NOW_MS=$(( $(date +%s) * 1000 ))
+
+log() {
+  echo "$(date +%Y/%m/%d-%H:%M:%S) - $*"
+}
+
+# Format an epoch-ms timestamp as dd.mm.yyyy (GNU date first, BSD date as fallback).
+format_date() {
+  local sec=$(( $1 / 1000 ))
+  date -d "@$sec" +%d.%m.%Y 2>/dev/null || date -r "$sec" +%d.%m.%Y
+}
+
+max() {
+  if [ "$1" -ge "$2" ]; then echo "$1"; else echo "$2"; fi
+}
+
+# fetch_user_details <uid>: sets USER_EMAIL and USER_NAME
+fetch_user_details() {
+  local details
+  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "$API_URL/api/v3/users/$1?_uid=$TOKEN_UID" | jq -r '.response')
+  USER_EMAIL=$(echo "$details" | jq -r '.email // empty')
+  USER_NAME=$(echo "$details" | jq -r '.fullname // .username // empty')
+}
+
+# send_mail <template> <uid> <userslug> [<delete_at_ms>] [<email> <name>]
+# Looks up email and name unless they are given (needed after the user is deleted).
+send_mail() {
+  local template="$1" uid="$2" userslug="$3" delete_at="$4" email="$5" name="$6"
+  local mail delete_date=""
+
+  if [ -z "$email" ]; then
+    fetch_user_details "$uid"
+    email="$USER_EMAIL"
+    name="$USER_NAME"
+  fi
+
+  if [ -z "$email" ]; then
+    log "User with uid $uid has no email address, cannot send $template"
+    return 1
+  fi
+
+  if [ -n "$delete_at" ]; then
+    delete_date=$(format_date "$delete_at")
+  fi
+
+  mail=$(cat "$TEMPLATE_DIR/mail-template-$template.html")
+  mail="${mail//@@BASE_URL@@/$BASE_URL}"
+  mail="${mail//@@UID@@/$uid}"
+  mail="${mail//@@NAME@@/$name}"
+  mail="${mail//@@USERSLUG@@/$userslug}"
+  mail="${mail//@@EMAIL@@/$email}"
+  mail="${mail//@@DELETE_DATE@@/$delete_date}"
+
+  local recipient="$email"
+  if [ "true" = "$TEST_MODE" ]; then
+    recipient="$TEST_EMAIL"
+  fi
+
+  if echo "$mail" | "$SENDMAIL" "$recipient"; then
+    log "Sent $template email for user with uid $uid to $recipient"
+    return 0
+  else
+    log "Failed to send $template email for user with uid $uid to $recipient"
+    return 1
+  fi
+}
+
+# delete_user <uid>: returns non-zero if the API call failed
+delete_user() {
+  local uid="$1" response status
+  if [ "true" = "$TEST_MODE" ]; then
+    log "TEST MODE: would have deleted user with uid $uid"
+    return 0
+  fi
+
+  response=$(curl -s -w '\n%{http_code}' -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "$API_URL/api/v3/users/$uid/account?_uid=$TOKEN_UID")
+  status="${response##*$'\n'}"
+  if [ "$status" -ge 200 ] 2>/dev/null && [ "$status" -lt 300 ]; then
+    log "Deleted user with uid $uid"
+    return 0
+  fi
+  log "Failed to delete user with uid $uid (HTTP $status): ${response%$'\n'*}"
+  return 1
+}
+
+process_inactive_user() {
+  local uid="$1" userslug="$2" lastonline="$3"
+  local deleted="$STATE_DIR/$uid.deleted"
+  local offline=$((NOW_MS - lastonline))
+  local days_offline=$((offline / DAY_MS))
+  local n warning previous delete_at
+
+  log "User with uid $uid was last online $days_offline days ago"
+
+  if [ -f "$deleted" ]; then
+    log "User with uid $uid has already been deleted"
+    return
+  fi
+
+  # Not (yet) inactive long enough to be warned. Clear any state from an
+  # earlier inactivity period; the user has been back since then.
+  if [ "$offline" -lt $((MAX_OFFLINE - WARNING_BEFORE[0])) ]; then
+    if ls "$STATE_DIR/$uid.warning"* >/dev/null 2>&1; then
+      log "User with uid $uid has been online after being warned, cancelling scheduled deletion"
+      rm -f "$STATE_DIR/$uid.warning"*
+    fi
+    return
+  fi
+
+  # Send the next warning that is due. The first warning fixes the deletion
+  # date; later warnings may push it if they are sent late.
+  for n in "${!WARNING_TEMPLATES[@]}"; do
+    warning="$STATE_DIR/$uid.warning$((n + 1))"
+    [ -f "$warning" ] && continue
+
+    if [ "$n" -eq 0 ]; then
+      delete_at=$(max $((lastonline + MAX_OFFLINE)) $((NOW_MS + WARNING_BEFORE[0])))
+    else
+      previous="$STATE_DIR/$uid.warning$n"
+      delete_at=$(cat "$previous")
+      if [ "$NOW_MS" -lt $((delete_at - WARNING_BEFORE[n])) ]; then
+        log "User with uid $uid is scheduled for deletion on $(format_date "$delete_at"), warning $((n + 1)) in $(( (delete_at - WARNING_BEFORE[n] - NOW_MS) / HOUR_MS )) hours"
+        return
+      fi
+      delete_at=$(max "$delete_at" $((NOW_MS + WARNING_BEFORE[n])))
+    fi
+
+    log "User with uid $uid is scheduled for deletion on $(format_date "$delete_at"), sending warning $((n + 1)) (${WARNING_TEMPLATES[n]})"
+    if send_mail "${WARNING_TEMPLATES[n]}" "$uid" "$userslug" "$delete_at"; then
+      echo "$delete_at" > "$warning"
+    fi
+    return
+  done
+
+  # All warnings sent: delete when the deletion date has passed. The deletion
+  # date is never earlier than lastonline + MAX_OFFLINE, so no separate offline
+  # check is needed here. Email and name are fetched before deleting so the
+  # confirmation can be sent afterwards.
+  delete_at=$(cat "$STATE_DIR/$uid.warning${#WARNING_TEMPLATES[@]}")
+  if [ "$NOW_MS" -ge "$delete_at" ]; then
+    log "Removing inactive user with uid $uid (not online for $days_offline days, first warned on $(format_date "$(cat "$STATE_DIR/$uid.warning1")"))"
+    fetch_user_details "$uid"
+    if delete_user "$uid"; then
+      touch "$deleted"
+      rm -f "$STATE_DIR/$uid.warning"*
+      send_mail "deleted" "$uid" "$userslug" "" "$USER_EMAIL" "$USER_NAME"
+    fi
+  else
+    log "User with uid $uid is scheduled for deletion on $(format_date "$delete_at")"
+  fi
+}
+
+process_consent() {
+  local uid="$1" userslug="$2" joindate="$3"
+  local hours_since_join=$(( (NOW_MS - joindate) / HOUR_MS ))
+  local gdpr_consent
+
+  if [ -f "$STATE_DIR/$uid.deleted" ]; then
+    return
+  fi
+
+  log "User with uid $uid joined $hours_since_join hours ago"
+  if [ "$hours_since_join" -ge 1 ]; then
+    gdpr_consent=$(curl -s -H "Authorization: Bearer $API_TOKEN" "$API_URL/api/user/$userslug/consent" | jq -r '.gdpr_consent')
+    if [ "false" = "$gdpr_consent" ]; then
+      log "Removing user without gdpr consent with uid $uid"
+      delete_user "$uid"
+    else
+      log "User with uid $uid has approved gdpr consent"
+    fi
+  fi
+}
+
+# ---------------------------------------------------------------------------
+
+mkdir -p "$STATE_DIR"
+
+if [ "true" = "$TEST_MODE" ]; then
+  log "#### RUNNING IN TEST MODE ####"
+fi
+log "Removing inactive users or users without consent (delete after $((MAX_OFFLINE / DAY_MS)) days offline, warnings $((WARNING_BEFORE[0] / HOUR_MS))h, $((WARNING_BEFORE[1] / HOUR_MS))h and $((WARNING_BEFORE[2] / HOUR_MS))h before)"
 
 current_page=1
 page_count=1
 while [ "$current_page" -le "$page_count" ]; do
-  body=$(curl -s "http://localhost:4567/api/users?page=${current_page}" | base64)
-  users=$(echo "${body}" | base64 --decode | jq '.users')
-  pagination=$(echo "${body}" | base64 --decode | jq '.pagination')
-  page_count=$(echo "${pagination}" | jq -r '.pageCount')
+  body=$(curl -s "$API_URL/api/users?page=${current_page}")
+  page_count=$(echo "$body" | jq -r '.pagination.pageCount // empty')
+
+  if ! [ "$page_count" -ge 1 ] 2>/dev/null; then
+    log "Could not read user list from $API_URL/api/users (page $current_page), aborting"
+    exit 1
+  fi
 
   if [ "$current_page" -eq 1 ]; then
-    echo "$ts - Total number of users: $(echo "${body}" | jq -r '.userCount')"
-    echo "$ts - Total number of pages: $page_count"
+    log "Total number of users: $(echo "$body" | jq -r '.userCount')"
+    log "Total number of pages: $page_count"
   fi
-  echo "$ts - Processing page $current_page of $page_count"
+  log "Processing page $current_page of $page_count"
 
-  for row in $(echo "${users}" | jq -r '.[] | @base64'); do
-    _jq() {
-         echo ${row} | base64 --decode | jq -r ${1}
-    }
+  while IFS=$'\t' read -r uid userslug joindate lastonline; do
+    [ -z "$uid" ] && continue
 
-    max_days_offline=365
-    notify_days=7
-    if [ "true" = "$TEST_MODE" ];
-    then
-      max_days_offline=3
-      notify_days=1
+    if [ -n "$TOKEN_UID" ] && [ "$uid" = "$TOKEN_UID" ]; then
+      log "Skipping API user with uid $uid"
+      continue
     fi
 
-    uid=$(_jq '.uid')
-    userslug=$(_jq '.userslug')
-    joindate=$(_jq '.joindate')
-    lastonline=$(_jq '.lastonline')
-
-    notifyfile="$FILES_DIR/mail/delete-notify-$uid"
-    notifyfile2="$FILES_DIR/mail/delete-notify2-$uid"
-    notifydate=$(date +%s%N | cut -b1-13)
-
-    deletedfile="$FILES_DIR/mail/deleted-$uid"
-
-    if [ "true" = "$TEST_MODE" ];
-    then
-      notifyfile="$FILES_DIR/mail/delete-notify-$uid-test"
-    fi
-    
-    if [ -f "$notifyfile" ]; 
-    then
-      notifydate=$(cat "$notifyfile")
+    if [ -z "$lastonline" ] || [ "$lastonline" = "null" ] || [ "$lastonline" -eq 0 ]; then
+      lastonline="$joindate"
     fi
 
-    diff_lastonline=$((($(date +%s%N | cut -b1-13) - lastonline)/(60*60*24*1000)))
-    diff_joindate=$((($(date +%s%N | cut -b1-13) - joindate)/(60*60*1000)))
-    diff_notify=$((($(date +%s%N | cut -b1-13) - notifydate)/(60*60*24*1000)))
+    process_inactive_user "$uid" "$userslug" "$lastonline"
+    process_consent "$uid" "$userslug" "$joindate"
+  done < <(echo "$body" | jq -r '.users[] | [.uid, .userslug, .joindate, .lastonline] | @tsv')
 
-    echo "$ts - Verifying if user with uid $uid has been inactive too long..."
-    echo "$ts - User with uid $uid was last online: $diff_lastonline days ago"
-    # Remove user if not active more than one year and is 7 days after notification
-    if [ $diff_lastonline -gt $max_days_offline ];
-    then
-      if [ -f "$notifyfile" ] && [ $diff_notify -ge $notify_days ];
-      then
-        if [ $diff_notify -lt $((notify_days + max_days_offline)) ];
-        then
-          if [ ! -f "$deletedfile" ]; then
-            if sendUserDeletedEmail "$uid" "$userslug"; then
-              echo "$ts - Removing inactive user with uid $uid (not online for $diff_lastonline days and notified $diff_notify days ago)"
-              if [ "true" != "$TEST_MODE" ];
-              then
-                curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
-                echo ""
-              fi
-
-              touch $deletedfile
-            else
-              echo "$ts - Failed to send deleted email for user with uid $uid"
-            fi
-          fi
-        fi
-      else
-        if [ ! -f "$notifyfile" ];
-        then
-          echo "$ts - User with uid $uid has not been notified yet. Not removing user."
-        else
-          remaining_days=$((notify_days - diff_notify))
-          echo "$ts - Notification for user with uid $uid sent $diff_notify days ago. Deleting user in $remaining_days days."
-        fi        
-      fi      
-    fi
-
-    # Send email if users are going to removed in exactly 7 days
-    if [ ! -f "$deletedfile" ]; then
-      if [ "$diff_lastonline" -ge $((max_days_offline - notify_days)) ];
-      then
-        # If user has not been notified before, send a notification
-        if [ ! -f "$notifyfile" ];
-        then
-          if sendDeleteUserInXDaysEmail "$uid" "$userslug" "7"; then
-            echo "$(date +%s%N | cut -b1-13)" > $notifyfile
-          else
-            echo "$ts - Failed to send notification email for user with uid $uid"
-          fi
-        else
-          # If use has been notified before, send a notification again of last notification was more than
-          # 365 days ago
-          if [ $diff_notify -ge $((notify_days + max_days_offline)) ];
-          then
-            if sendDeleteUserInXDaysEmail "$uid" "$userslug" "7"; then
-              echo "$(date +%s%N | cut -b1-13)" > $notifyfile
-            else
-              echo "$ts - Failed to send notification email for user with uid $uid"
-            fi
-          else
-            # If use has been notified before, send a notification again one day before removal
-            if [ $diff_notify -eq 1 ];
-            then
-              if [ ! -f "$notifyfile2" ];
-              then
-                if sendDeleteUserInXDaysEmail "$uid" "$userslug" "1"; then
-                  echo "$(date +%s%N | cut -b1-13)" > $notifyfile2
-                else
-                  echo "$ts - Failed to send notification email for user with uid $uid"
-                fi
-              fi
-            fi
-          fi
-        fi
-      fi
-
-      echo "$ts - Verifying if user with uid $uid has approved gdpr consent..."
-      echo "$ts - User with uid $uid joined: $diff_joindate hours ago"
-      # Remove if user did not consent and joined more than one hour ago
-      if [ "$diff_joindate" -ge 1 ];
-      then
-        gdpr_consent=$(curl -s -H "Authorization: Bearer $API_TOKEN" "http://localhost:4567/api/user/$userslug/consent" | jq -r '.gdpr_consent')
-        if [ "false" = "$gdpr_consent" ];
-        then
-          echo "$ts - Removing user without gdpr consent with uid $uid"
-          if [ "true" != "$TEST_MODE" ];
-          then
-            curl -s -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "http://localhost:4567/api/v3/users/$uid/account?_uid=$TOKEN_UID"
-            echo ""
-          fi
-        else
-          echo "$ts - User with uid $uid has approved gdpr consent"
-        fi
-      fi
-    fi
-  done
-
-  current_page=$((current_page+1))
+  current_page=$((current_page + 1))
 done
-
-
