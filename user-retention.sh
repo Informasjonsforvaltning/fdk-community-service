@@ -34,6 +34,10 @@ FILES_DIR="${FILES_DIR:-/usr/src/app/files}"
 TEMPLATE_DIR="${TEMPLATE_DIR:-/}"
 SENDMAIL="${SENDMAIL:-/usr/sbin/sendmail}"
 API_URL="${API_URL:-http://localhost:4567}"
+# NodeBB's "Require HTTPS" API setting rejects plain-http calls to /api/v3 with
+# 426. NodeBB runs with trust proxy on, so telling it the call came in over
+# https lets the local calls through without disabling that setting.
+API_PROTO_HEADER="X-Forwarded-Proto: https"
 
 HOUR_MS=$((60 * 60 * 1000))
 DAY_MS=$((24 * HOUR_MS))
@@ -70,7 +74,7 @@ max() {
 # fetch_user_details <uid>: sets USER_EMAIL and USER_NAME
 fetch_user_details() {
   local details
-  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" "$API_URL/api/v3/users/$1?_uid=$TOKEN_UID" | jq -r '.response')
+  details=$(curl -s -H "Authorization: Bearer $API_TOKEN" -H "$API_PROTO_HEADER" "$API_URL/api/v3/users/$1?_uid=$TOKEN_UID" | jq -r '.response')
   USER_EMAIL=$(echo "$details" | jq -r '.email // empty')
   USER_NAME=$(echo "$details" | jq -r '.fullname // .username // empty')
 }
@@ -126,7 +130,7 @@ delete_user() {
     return 0
   fi
 
-  response=$(curl -s -w '\n%{http_code}' -H "Authorization: Bearer $API_TOKEN_WRITE" -X DELETE "$API_URL/api/v3/users/$uid/account?_uid=$TOKEN_UID")
+  response=$(curl -s -w '\n%{http_code}' -H "Authorization: Bearer $API_TOKEN_WRITE" -H "$API_PROTO_HEADER" -X DELETE "$API_URL/api/v3/users/$uid/account?_uid=$TOKEN_UID")
   status="${response##*$'\n'}"
   if [ "$status" -ge 200 ] 2>/dev/null && [ "$status" -lt 300 ]; then
     log "Deleted user with uid $uid"
