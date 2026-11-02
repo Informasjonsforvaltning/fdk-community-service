@@ -6,7 +6,9 @@ RUN apt-get update && \
     apt-get -y upgrade && \
     apt-get -y install cron jq msmtp curl && \
     apt-get -y remove exim4-base exim4-config exim4-daemon-light && \
-    ln -s /usr/bin/msmtp /usr/sbin/sendmail 
+    ln -s /usr/bin/msmtp /usr/sbin/sendmail
+
+RUN npm install -g npm@12 && npm cache clean --force
 
 # PLUGINS
 COPY ./nodebb-plugin-sso-oauth2-multiple ./nodebb-plugin-sso-oauth2-multiple
