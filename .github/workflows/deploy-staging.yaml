@@ -16,12 +16,24 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
+      - name: Start stack
+        run: docker compose up -d --build
+
+      - name: Wait for app
+        run: |
+          for i in $(seq 1 120); do
+            if curl -sf -o /dev/null http://localhost:4567; then
+              echo "App is up"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "App did not respond within 600 seconds"
+          exit 1
+
       - name: Cypress run
         uses: cypress-io/github-action@09090944bd8aaa2a517cefb6e38bf1aae336b42b  # v7.4.3
         with:
-          start: docker compose -f ../docker-compose.yml up
-          wait-on: 'http://localhost:4567'
-          wait-on-timeout: 600
           working-directory: e2e
           record: true
         env:       
