@@ -1,0 +1,8 @@
+{
+	"missing-email.title": "Login could not be completed",
+	"missing-email.reason": "We did not receive your email address from the login. This usually happens when you are already logged in to another service with a login method that does not share your email address.",
+	"missing-email.instructions": "Log out, then log in again with a login method that provides your email address.",
+	"missing-email.logout": "Log out and try again",
+	"missing-email.logout-note": "This also logs you out of other services that share the same login. Afterwards you return here and can click \"Log in\".",
+	"missing-email.alternative": "You can also log out of the other services yourself, or open the site in a private browser window, and log in from there."
+}
