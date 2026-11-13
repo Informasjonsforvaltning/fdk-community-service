@@ -20,5 +20,7 @@
 	"acpScripts": [
 		"static/lib/acp.js"
 	],
-	"templates": "static/templates"
+	"templates": "static/templates",
+	"languages": "languages",
+	"defaultLang": "en-GB"
 }

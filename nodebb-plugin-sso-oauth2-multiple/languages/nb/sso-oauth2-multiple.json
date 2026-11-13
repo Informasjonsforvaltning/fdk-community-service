@@ -1,0 +1,8 @@
+{
+	"missing-email.title": "Innloggingen ble ikke fullført",
+	"missing-email.reason": "Vi fikk ikke e-postadressen din fra innloggingen. Det skjer gjerne når du allerede er logget inn i en annen tjeneste med en innloggingsmetode som ikke deler e-postadressen.",
+	"missing-email.instructions": "Logg ut, og logg deretter inn på nytt med en innloggingsmetode som gir oss e-postadressen din.",
+	"missing-email.logout": "Logg ut og prøv igjen",
+	"missing-email.logout-note": "Du blir også logget ut av andre tjenester som bruker samme innlogging. Etterpå kommer du tilbake hit og kan klikke «Logg inn».",
+	"missing-email.alternative": "Du kan også logge ut av de andre tjenestene selv, eller åpne nettsiden i et privat nettleservindu, og logge inn derfra."
+}

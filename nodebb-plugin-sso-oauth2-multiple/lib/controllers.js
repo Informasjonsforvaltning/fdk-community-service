@@ -37,6 +37,20 @@ Controllers.renderAdminPage = async (req, res) => {
 	});
 };
 
+Controllers.renderMissingEmailPage = async (req, res) => {
+	const main = require('../library');
+	const state = req.session && req.session[main.MISSING_EMAIL_SESSION_KEY];
+
+	if (!state || req.loggedIn) {
+		return helpers.redirect(res, '/login');
+	}
+
+	res.render('oauth2-multiple/missing-email', {
+		title: '[[sso-oauth2-multiple:missing-email.title]]',
+		logoutUrl: state.logoutUrl,
+	});
+};
+
 Controllers.getOpenIdMetadata = async (req, res) => {
 	const { domain } = req.query;
 	if (!domain) {

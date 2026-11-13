@@ -16,11 +16,16 @@ const OAuth = module.exports;
 
 OAuth._federatedLogoutUrls = {};
 
+const MISSING_EMAIL_PATH = '/oauth2-multiple/missing-email';
+const MISSING_EMAIL_SESSION_KEY = 'oauth2MultipleMissingEmail';
+OAuth.MISSING_EMAIL_SESSION_KEY = MISSING_EMAIL_SESSION_KEY;
+
 OAuth.init = async (params) => {
 	const { router /* , middleware , controllers */ } = params;
 	const controllers = require('./lib/controllers');
 
 	routeHelpers.setupAdminPageRoute(router, '/admin/plugins/sso-oauth2-multiple', controllers.renderAdminPage);
+	routeHelpers.setupPageRoute(router, MISSING_EMAIL_PATH, controllers.renderMissingEmailPage);
 };
 
 OAuth.addRoutes = async ({ router, middleware }) => {
@@ -94,6 +99,14 @@ OAuth.loadStrategies = async (strategies) => {
 		passReqToCallback: true,
 	}, async (req, _token, _refreshToken, params, profile, done) => {
 		const { id, displayName, email } = profile;
+		if (id && !email) {
+			// The identity provider reused an existing session that carries no email.
+			winston.info(`[plugin/sso-oauth2-multiple] Login via ${name} rejected: no email in profile (remote id ${id})`);
+			req.session[MISSING_EMAIL_SESSION_KEY] = {
+				logoutUrl: buildLogoutUrl(configured.find(s => s.name === name), params.id_token),
+			};
+			return done(null, false);
+		}
 		if (![id, displayName, email].every(Boolean)) {
 			return done(new Error('insufficient-scope'));
 		}
@@ -106,6 +119,7 @@ OAuth.loadStrategies = async (strategies) => {
 				email_verified: true
 			});
 			winston.verbose(`[plugin/sso-oauth2-multiple] Successful login to uid ${user.uid} via ${name} (remote id ${id})`);
+			delete req.session[MISSING_EMAIL_SESSION_KEY];
 			await authenticationController.onSuccessfulLogin(req, user.uid);
 			await OAuth.assignGroups({ provider: name, user, profile });
 			await OAuth.updateProfile(user.uid, profile);
@@ -141,10 +155,20 @@ OAuth.loadStrategies = async (strategies) => {
 		},
 		color: '#666',
 		scope: scope || 'openid email profile',
+		failureUrl: MISSING_EMAIL_PATH,
 	})));
 
 	return strategies;
 };
+
+function buildLogoutUrl(strategy, idToken) {
+	if (!strategy || !strategy.logoutUrl || !idToken) {
+		return null;
+	}
+	return `${strategy.logoutUrl}?id_token_hint=${encodeURIComponent(idToken)}` +
+		`&client_id=${encodeURIComponent(strategy.id)}` +
+		`&post_logout_redirect_uri=${encodeURIComponent(nconf.get('url'))}`;
+}
 
 OAuth.federatedLogout = async ({req, uid}) => {
 	winston.info("[plugin/sso-oauth2-multiple] federated logout");
@@ -152,11 +176,8 @@ OAuth.federatedLogout = async ({req, uid}) => {
 	for (const sid of sids) {
 		const strategy = await OAuth.getStrategyBySessionId(sid);
 		const idToken = await OAuth.getIdTokenBySessionId(sid);
-		if(strategy && idToken && strategy.logoutUrl) {
-			const logoutUrl =
-				`${strategy.logoutUrl}?id_token_hint=${encodeURIComponent(idToken)}`+ 
-				`&client_id=${encodeURIComponent(strategy.id)}` + 
-				`&post_logout_redirect_uri=${encodeURIComponent(nconf.get('url'))}`;
+		const logoutUrl = buildLogoutUrl(strategy, idToken);
+		if (logoutUrl) {
 			// We only support federated logout per userid for now. 
 			// This is because we cannot rely on the sessionID.
 			winston.info("[plugin/sso-oauth2-multiple] store logoutUrl: " + logoutUrl);
@@ -219,7 +240,7 @@ OAuth.parseUserReturn = async (provider, profile) => {
 		email_verified,
 	};
 
-	if (forceUsernameViaEmail || (!normalized.displayName && email && usernameViaEmail === 'on')) {
+	if (email && (forceUsernameViaEmail || (!normalized.displayName && usernameViaEmail === 'on'))) {
 		normalized.displayName = email.split('@')[0];
 	}
 
