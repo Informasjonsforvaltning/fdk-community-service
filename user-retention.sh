@@ -114,10 +114,10 @@ send_mail() {
   fi
 
   if echo "$mail" | "$SENDMAIL" "$recipient"; then
-    log "Sent $template email for user with uid $uid to $recipient"
+    log "Sent $template email for user with uid $uid"
     return 0
   else
-    log "Failed to send $template email for user with uid $uid to $recipient"
+    log "Failed to send $template email for user with uid $uid"
     return 1
   fi
 }
@@ -136,7 +136,7 @@ delete_user() {
     log "Deleted user with uid $uid"
     return 0
   fi
-  log "Failed to delete user with uid $uid (HTTP $status): ${response%$'\n'*}"
+  log "Failed to delete user with uid $uid (HTTP $status)"
   return 1
 }
 
