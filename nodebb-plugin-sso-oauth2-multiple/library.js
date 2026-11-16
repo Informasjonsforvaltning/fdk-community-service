@@ -118,7 +118,7 @@ OAuth.loadStrategies = async (strategies) => {
 				email,
 				email_verified: true
 			});
-			winston.verbose(`[plugin/sso-oauth2-multiple] Successful login to uid ${user.uid} via ${name} (remote id ${id})`);
+			winston.verbose(`[plugin/sso-oauth2-multiple] Successful login to uid ${user.uid} via ${name}`);
 			delete req.session[MISSING_EMAIL_SESSION_KEY];
 			await authenticationController.onSuccessfulLogin(req, user.uid);
 			await OAuth.assignGroups({ provider: name, user, profile });
@@ -171,7 +171,6 @@ function buildLogoutUrl(strategy, idToken) {
 }
 
 OAuth.federatedLogout = async ({req, uid}) => {
-	winston.info("[plugin/sso-oauth2-multiple] federated logout");
 	const sids = await db.getSortedSetRevRange(`uid:${uid}:sessions`, 0, 19);
 	for (const sid of sids) {
 		const strategy = await OAuth.getStrategyBySessionId(sid);
@@ -180,7 +179,6 @@ OAuth.federatedLogout = async ({req, uid}) => {
 		if (logoutUrl) {
 			// We only support federated logout per userid for now. 
 			// This is because we cannot rely on the sessionID.
-			winston.info("[plugin/sso-oauth2-multiple] store logoutUrl: " + logoutUrl);
 			OAuth._federatedLogoutUrls[uid] = logoutUrl;
 		}
 	}
@@ -189,9 +187,9 @@ OAuth.federatedLogout = async ({req, uid}) => {
 OAuth.federatedLogoutFilter = function(payload) {
 	// We only support federated logout per userid for now. 
 	// This is because we cannot rely on the sessionID.
-	const logoutUrl = `${OAuth._federatedLogoutUrls[payload.uid]}`;
+	const logoutUrl = OAuth._federatedLogoutUrls[payload.uid];
 	delete OAuth._federatedLogoutUrls[payload.uid];
-	payload.next = logoutUrl ?? '/';
+	payload.next = logoutUrl ?? payload.next;
 };
 
 OAuth.getUserProfile = function (name, userRoute, accessToken, done) {

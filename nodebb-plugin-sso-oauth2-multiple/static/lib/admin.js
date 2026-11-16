@@ -202,8 +202,7 @@ function handleAutoDiscovery() {
 			}
 
 			successEl.classList.replace('d-none', 'd-flex');
-		} catch (e) {
-			console.log(e);
+		} catch {
 			failureEl.classList.replace('d-none', 'd-flex');
 		} finally {
 			detailsEl.classList.remove('opacity-50');
