@@ -32,7 +32,7 @@ jobs:
           exit 1
 
       - name: Cypress run
-        uses: cypress-io/github-action@09090944bd8aaa2a517cefb6e38bf1aae336b42b  # v7.4.3
+        uses: cypress-io/github-action@0ed14f5d30c4ad6e5e8ffb6f57dbb69150137a3f  # v7.4.10
         with:
           working-directory: e2e
           record: true
